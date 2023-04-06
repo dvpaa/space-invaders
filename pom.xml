@@ -12,5 +12,14 @@
         <maven.compiler.source>11</maven.compiler.source>
         <maven.compiler.target>11</maven.compiler.target>
     </properties>
-    
+
+    <dependencies>
+        <dependency>
+            <groupId>com.dnsalias.java</groupId>
+            <artifactId>timer</artifactId>
+            <version>1.0</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/lib/gagetimer.jar</systemPath>
+        </dependency>
+    </dependencies>
 </project>
