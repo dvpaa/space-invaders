@@ -1,9 +1,6 @@
 package org.newdawn.spaceinvaders;
 
-import java.awt.Canvas;
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Graphics2D;
+import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
@@ -11,8 +8,7 @@ import java.awt.event.WindowEvent;
 import java.awt.image.BufferStrategy;
 import java.util.ArrayList;
 
-import javax.swing.JFrame;
-import javax.swing.JPanel;
+import javax.swing.*;
 
 import org.newdawn.spaceinvaders.entity.AlienEntity;
 import org.newdawn.spaceinvaders.entity.Entity;
@@ -76,6 +72,8 @@ public class Game extends Canvas
 	/** The game window that we'll update with the frame count */
 	private JFrame container;
 
+	private GameTimer gameTimer = new GameTimer(); // add GameTimer by Eungyu
+
 	/**
 	 * Construct our game and set it running.
 	 */
@@ -87,6 +85,13 @@ public class Game extends Canvas
 		JPanel panel = (JPanel) container.getContentPane();
 		panel.setPreferredSize(new Dimension(800,600));
 		panel.setLayout(null);
+
+		JLabel timerlabel = gameTimer.getTimerLabel(); // add GameTimer by Eungyu
+		timerlabel.setBounds(750,0, 50, 25); // add GameTimer by Eungyu
+		timerlabel.setOpaque(true); // add GameTimer by Eungyu
+		timerlabel.setBackground(Color.black); // add GameTimer by Eungyu
+		timerlabel.setForeground(Color.white); // add GameTimer by Eungyu
+		panel.add(timerlabel); // add GameTimer by Eungyu
 
 		// setup our canvas size and put it into the content of the frame
 		setBounds(0,0,800,600);
@@ -139,6 +144,9 @@ public class Game extends Canvas
 		leftPressed = false;
 		rightPressed = false;
 		firePressed = false;
+
+		gameTimer.startTimer(); // add GameTimer by Eungyu
+
 	}
 
 	/**
@@ -184,7 +192,8 @@ public class Game extends Canvas
 	 * Notification that the player has died.
 	 */
 	public void notifyDeath() {
-		message = "Oh no! They got you, try again?";
+		gameTimer.stopTimer(); // add GameTimer by Eungyu
+		message = "Oh no! They got you, try again? \nYour time is " + gameTimer.getEndTime(); // add GameTimer by Eungyu
 		waitingForKeyPress = true;
 	}
 
@@ -193,7 +202,8 @@ public class Game extends Canvas
 	 * are dead.
 	 */
 	public void notifyWin() {
-		message = "Well done! You Win!";
+		gameTimer.stopTimer();
+		message = "Well done! You Win! \nYour time is " + gameTimer.getEndTime(); // add GameTimer by Eungyu
 		waitingForKeyPress = true;
 	}
 
