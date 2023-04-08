@@ -24,22 +24,25 @@ public class AlienEntity extends Entity {
 	private int frameNumber;
 
 	private int health = 2;
+
+	private int power = 1;
+
 	/**
 	 * Create a new alien entity
-	 * 
+	 *
 	 * @param game The game in which this entity is being created
-	 * @param x The intial x location of this alien
-	 * @param y The intial y location of this alient
+	 * @param x    The intial x location of this alien
+	 * @param y    The intial y location of this alient
 	 */
-	public AlienEntity(Game game,int x,int y) {
-		super("sprites/alien.gif",x,y);
-		
+	public AlienEntity(Game game, int x, int y) {
+		super("sprites/alien.gif", x, y);
+
 		// setup the animatin frames
 		frames[0] = sprite;
 		frames[1] = SpriteStore.get().getSprite("sprites/alien2.gif");
 		frames[2] = sprite;
 		frames[3] = SpriteStore.get().getSprite("sprites/alien3.gif");
-		
+
 		this.game = game;
 		dx = -moveSpeed;
 	}
@@ -121,5 +124,10 @@ public class AlienEntity extends Entity {
 			}
 
 		}
+	}
+
+	@Override
+	public ShotEntity fire() {
+		return new ShotEntity(game, "sprites/shot.gif",this.getX()+25,this.getY()+30, this.power, -1);
 	}
 }
