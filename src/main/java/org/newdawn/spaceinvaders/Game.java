@@ -147,7 +147,7 @@ public class Game extends Canvas
 	 */
 	private void initEntities() {
 		// create the player ship and place it roughly in the center of the screen
-		ship = new ShipEntity(this, "sprites/ship.gif",370,550);
+		ship = new ShipEntity(this, "sprites/ship.gif",370,550, 1);
 		entities.add(ship);
 
 		// create a block of aliens (5 rows, by 12 aliens, spaced evenly)
@@ -225,7 +225,7 @@ public class Game extends Canvas
 	 * since we must first check that the player can fire at this
 	 * point, i.e. has he/she waited long enough between shots
 	 */
-	public void tryToFire() {
+	public void tryToFire(ShipEntity ship) {
 		// check that we have waiting long enough to fire
 		if (System.currentTimeMillis() - lastFire < firingInterval) {
 			return;
@@ -233,7 +233,7 @@ public class Game extends Canvas
 
 		// if we waited long enough, create the shot entity, and record the time.
 		lastFire = System.currentTimeMillis();
-		ShotEntity shot = new ShotEntity(this, "sprites/shot.gif",ship.getX()+10,ship.getY()-30);
+		ShotEntity shot = ship.fire();
 		entities.add(shot);
 	}
 
@@ -350,7 +350,7 @@ public class Game extends Canvas
 
 			// if we're pressing fire, attempt to fire
 			if (firePressed) {
-				tryToFire();
+				tryToFire((ShipEntity) ship);
 			}
 
 			// we want each frame to take 10 milliseconds, to do this
