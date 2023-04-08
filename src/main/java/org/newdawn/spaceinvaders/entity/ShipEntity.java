@@ -10,19 +10,23 @@ import org.newdawn.spaceinvaders.Game;
 public class ShipEntity extends Entity {
 	/** The game in which the ship exists */
 	private Game game;
-	
+
+	private int power;
+
 	/**
 	 * Create a new entity to represent the players ship
-	 *  
+	 *
 	 * @param game The game in which the ship is being created
-	 * @param ref The reference to the sprite to show for the ship
-	 * @param x The initial x location of the player's ship
-	 * @param y The initial y location of the player's ship
+	 * @param ref  The reference to the sprite to show for the ship
+	 * @param x    The initial x location of the player's ship
+	 * @param y    The initial y location of the player's ship
 	 */
-	public ShipEntity(Game game,String ref,int x,int y) {
-		super(ref,x,y);
-		
+	public ShipEntity(Game game, String ref, int x, int y, int power) {
+
+		super(ref, x, y);
+
 		this.game = game;
+		this.power = power;
 	}
 	
 	/**
@@ -57,5 +61,10 @@ public class ShipEntity extends Entity {
 		if (other instanceof AlienEntity) {
 			game.notifyDeath();
 		}
+	}
+
+	@Override
+	public ShotEntity fire() {
+		return new ShotEntity(game, "sprites/shot.gif",this.getX()+10,this.getY()-30, this.power, 1);
 	}
 }

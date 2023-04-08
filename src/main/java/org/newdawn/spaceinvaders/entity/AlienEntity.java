@@ -22,23 +22,27 @@ public class AlienEntity extends Entity {
 	private long frameDuration = 250;
 	/** The current frame of animation being displayed */
 	private int frameNumber;
-	
+
+	private int health = 2;
+
+	private int power = 1;
+
 	/**
 	 * Create a new alien entity
-	 * 
+	 *
 	 * @param game The game in which this entity is being created
-	 * @param x The intial x location of this alien
-	 * @param y The intial y location of this alient
+	 * @param x    The intial x location of this alien
+	 * @param y    The intial y location of this alient
 	 */
-	public AlienEntity(Game game,int x,int y) {
-		super("sprites/alien.gif",x,y);
-		
+	public AlienEntity(Game game, int x, int y) {
+		super("sprites/alien.gif", x, y);
+
 		// setup the animatin frames
 		frames[0] = sprite;
 		frames[1] = SpriteStore.get().getSprite("sprites/alien2.gif");
 		frames[2] = sprite;
 		frames[3] = SpriteStore.get().getSprite("sprites/alien3.gif");
-		
+
 		this.game = game;
 		dx = -moveSpeed;
 	}
@@ -107,5 +111,23 @@ public class AlienEntity extends Entity {
 	 */
 	public void collidedWith(Entity other) {
 		// collisions with aliens are handled elsewhere
+		// if we've hit an alien, kill it!
+		if (other instanceof ShotEntity) {
+			ShotEntity _other = (ShotEntity) other;
+			health -= _other.attack();
+
+			// remove the affected entities
+			if (health <= 0) {
+				game.removeEntity(this);
+				// notify the game that the alien has been killed
+				game.notifyAlienKilled();
+			}
+
+		}
+	}
+
+	@Override
+	public ShotEntity fire() {
+		return new ShotEntity(game, "sprites/shot.gif",this.getX()+25,this.getY()+30, this.power, -1);
 	}
 }
