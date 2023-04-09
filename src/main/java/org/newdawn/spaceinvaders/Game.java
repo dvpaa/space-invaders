@@ -7,13 +7,16 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.image.BufferStrategy;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Comparator;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.swing.*;
 
 import org.newdawn.spaceinvaders.entity.AlienEntity;
 import org.newdawn.spaceinvaders.entity.Entity;
 import org.newdawn.spaceinvaders.entity.ShipEntity;
-import org.newdawn.spaceinvaders.entity.ShotEntity;
 
 /**
  * The main hook of our game. This class with both act as a manager
@@ -37,7 +40,7 @@ public class Game extends Canvas
 	/** True if the game is currently "running", i.e. the game loop is looping */
 	private boolean gameRunning = true;
 	/** The list of all the entities that exist in our game */
-	private ArrayList entities = new ArrayList();
+	private ArrayList<Entity> entities = new ArrayList<>();
 	/** The list of entities that need to be removed from the game this loop */
 	private ArrayList removeList = new ArrayList();
 	/** The entity representing the player */
@@ -45,7 +48,9 @@ public class Game extends Canvas
 	/** The speed at which the player's ship should move (pixels/sec) */
 	private double moveSpeed = 300;
 	/** The time at which last fired a shot */
-	private long lastFire = 0;
+	private long lastShipFire = 0;
+
+	private long lastAlienFire = 0;
 	/** The interval between our players shot (ms) */
 	private long firingInterval = 500;
 	/** The number of aliens left on the screen */
@@ -222,7 +227,7 @@ public class Game extends Canvas
 	 */
 	private void initEntities() {
 		// create the player ship and place it roughly in the center of the screen
-		ship = new ShipEntity(this, "sprites/ship.gif",370,550);
+		ship = new ShipEntity(this, "sprites/ship.gif",370,550, 1);
 		entities.add(ship);
 
 		// create a block of aliens (5 rows, by 12 aliens, spaced evenly)
@@ -300,16 +305,47 @@ public class Game extends Canvas
 	 * since we must first check that the player can fire at this
 	 * point, i.e. has he/she waited long enough between shots
 	 */
-	public void tryToFire() {
+	public void tryToFire(Entity ship) {
 		// check that we have waiting long enough to fire
-		if (System.currentTimeMillis() - lastFire < firingInterval) {
+		if (System.currentTimeMillis() - lastShipFire < firingInterval) {
 			return;
 		}
 
 		// if we waited long enough, create the shot entity, and record the time.
-		lastFire = System.currentTimeMillis();
-		ShotEntity shot = new ShotEntity(this, "sprites/shot.gif",ship.getX()+10,ship.getY()-30);
+		lastShipFire = System.currentTimeMillis();
+		Entity shot = ship.fire();
 		entities.add(shot);
+	}
+
+
+	public void attackFromAlien(Entity alien) {
+		if (System.currentTimeMillis() - lastAlienFire < firingInterval) {
+			return;
+		}
+		lastAlienFire = System.currentTimeMillis();
+		Entity shot = alien.fire();
+		entities.add(shot);
+	}
+
+	public Entity selectAttackAlien(ArrayList<Entity> entities) {
+		List<Entity> list = entities.stream()
+				.filter(entity -> entity instanceof AlienEntity)
+				.sorted(Comparator.comparing(Entity::getY).reversed())
+				.limit(12)
+				.collect(Collectors.toList());
+
+		int standardY = list.get(0).getY();
+		int idx = 11;
+		for (int i = 1; i < list.size(); i++) {
+			if (standardY != list.get(i).getY()) {
+				idx = i - 1;
+				break;
+			}
+		}
+		int max = idx;
+		int min = 0;
+		int randomInt = (int) (Math.random() * (max - min + 1) + min);
+		return list.get(randomInt);
 	}
 
 	/**
@@ -425,8 +461,13 @@ public class Game extends Canvas
 
 			// if we're pressing fire, attempt to fire
 			if (firePressed) {
-				tryToFire();
+				tryToFire(ship);
 			}
+
+			if ((System.currentTimeMillis() / 100) % 2 == 0) {
+				attackFromAlien(selectAttackAlien(entities));
+			}
+
 
 			// we want each frame to take 10 milliseconds, to do this
 			// we've recorded when we started the frame. We add 10 milliseconds
