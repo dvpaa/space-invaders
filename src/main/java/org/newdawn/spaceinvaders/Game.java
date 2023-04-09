@@ -50,9 +50,18 @@ public class Game extends Canvas
 	/** The time at which last fired a shot */
 	private long lastShipFire = 0;
 
+	private long lastShipSkill1 = 0;
+
+	private long lastShipSkill2 = 0;
+
 	private long lastAlienFire = 0;
 	/** The interval between our players shot (ms) */
 	private long firingInterval = 500;
+
+	private long skillInterval1 = 2000;
+
+	private long skillInterval2 = 2000;
+
 	/** The number of aliens left on the screen */
 	private int alienCount;
 
@@ -66,6 +75,11 @@ public class Game extends Canvas
 	private boolean rightPressed = false;
 	/** True if we are firing */
 	private boolean firePressed = false;
+
+	private boolean skilPressed1 = false;
+
+	private boolean skilPressed2 = false;
+
 	/** True if game logic needs to be applied this loop, normally as a result of a game event */
 	private boolean logicRequiredThisLoop = false;
 	/** The last time at which we recorded the frame rate */
@@ -214,11 +228,12 @@ public class Game extends Canvas
 		// clear out any existing entities and intialise a new set
 		entities.clear();
 		initEntities();
-
 		// blank out any keyboard settings we might currently have
 		leftPressed = false;
 		rightPressed = false;
 		firePressed = false;
+		skilPressed1 = false;
+		skilPressed2 = false;
 	}
 
 	/**
@@ -317,6 +332,29 @@ public class Game extends Canvas
 		entities.add(shot);
 	}
 
+	public void tryToSkill1(Entity ship) {
+		// check that we have waiting long enough to fire
+		if (System.currentTimeMillis() - lastShipSkill1 < skillInterval1) {
+			return;
+		}
+
+		// if we waited long enough, create the shot entity, and record the time.
+		lastShipSkill1 = System.currentTimeMillis();
+		Entity shot = ship.skill1();
+		entities.add(shot);
+	}
+
+	public void tryToSkill2(Entity ship) {
+		// check that we have waiting long enough to fire
+		if (System.currentTimeMillis() - lastShipSkill2 < skillInterval2) {
+			return;
+		}
+
+		// if we waited long enough, create the shot entity, and record the time.
+		lastShipSkill2 = System.currentTimeMillis();
+		Entity shot = ship.skill2();
+		entities.add(shot);
+	}
 
 	public void attackFromAlien(Entity alien) {
 		if (System.currentTimeMillis() - lastAlienFire < firingInterval) {
@@ -464,6 +502,14 @@ public class Game extends Canvas
 				tryToFire(ship);
 			}
 
+			if (skilPressed1) {
+				tryToSkill1(ship);
+			}
+
+			if (skilPressed2) {
+				tryToSkill2(ship);
+			}
+
 			if ((System.currentTimeMillis() / 100) % 2 == 0) {
 				attackFromAlien(selectAttackAlien(entities));
 			}
@@ -517,6 +563,12 @@ public class Game extends Canvas
 			if (e.getKeyCode() == KeyEvent.VK_SPACE) {
 				firePressed = true;
 			}
+			if (e.getKeyCode() == KeyEvent.VK_Z) {
+				skilPressed1 = true;
+			}
+			if (e.getKeyCode() == KeyEvent.VK_X) {
+				skilPressed2 = true;
+			}
 		}
 
 		/**
@@ -539,6 +591,12 @@ public class Game extends Canvas
 			}
 			if (e.getKeyCode() == KeyEvent.VK_SPACE) {
 				firePressed = false;
+			}
+			if (e.getKeyCode() == KeyEvent.VK_Z) {
+				skilPressed1 = false;
+			}
+			if (e.getKeyCode() == KeyEvent.VK_X) {
+				skilPressed2 = false;
 			}
 		}
 

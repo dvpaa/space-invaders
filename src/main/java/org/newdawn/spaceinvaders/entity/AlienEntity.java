@@ -122,12 +122,11 @@ public class AlienEntity extends Entity {
 				// notify the game that the alien has been killed
 				game.notifyAlienKilled();
 			}
-
 		}
 	}
 
 	@Override
 	public ShotEntity fire() {
-		return new ShotEntity(game, "sprites/shot.gif",this.getX()+25,this.getY()+30, this.power, -1);
+		return new ShotEntity(game, "sprites/alienshot.png",this.getX()+25,this.getY()+30, this.power, -1);
 	}
 }
