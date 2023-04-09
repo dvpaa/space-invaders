@@ -50,7 +50,6 @@ public class Game extends Canvas
 	private long firingInterval = 500;
 	/** The number of aliens left on the screen */
 	private int alienCount;
-
 	/** The message to display which waiting for a key press */
 	private String message = "";
 	/** True if we're holding up game play until a key has been pressed */
@@ -86,12 +85,12 @@ public class Game extends Canvas
 		panel.setPreferredSize(new Dimension(800,600));
 		panel.setLayout(null);
 
-		JLabel timerlabel = gameTimer.getTimerLabel(); // add GameTimer by Eungyu
-		timerlabel.setBounds(750,0, 50, 25); // add GameTimer by Eungyu
-		timerlabel.setOpaque(true); // add GameTimer by Eungyu
-		timerlabel.setBackground(Color.black); // add GameTimer by Eungyu
-		timerlabel.setForeground(Color.white); // add GameTimer by Eungyu
-		panel.add(timerlabel); // add GameTimer by Eungyu
+		JLabel timerlabel = gameTimer.getTimerLabel(); // 타이머 라벨 추가 add GameTimer by Eungyu
+		timerlabel.setBounds(750,0, 50, 25); // 타이머 크기, 위치 지정 add GameTimer by Eungyu
+		timerlabel.setOpaque(true); // 라벨 배경 색깔 적용 add GameTimer by Eungyu
+		timerlabel.setBackground(Color.black); // 뒷배경 검은색 설정 add GameTimer by Eungyu
+		timerlabel.setForeground(Color.white); // 글씨 하얀색 설정 add GameTimer by Eungyu
+		panel.add(timerlabel); // 패널에 타이머 라벨 추가 add GameTimer by Eungyu
 
 		// setup our canvas size and put it into the content of the frame
 		setBounds(0,0,800,600);
@@ -145,7 +144,7 @@ public class Game extends Canvas
 		rightPressed = false;
 		firePressed = false;
 
-		gameTimer.startTimer(); // add GameTimer by Eungyu
+		gameTimer.startTimer(); // 게임시작시 타이머 시작 add GameTimer by Eungyu
 
 	}
 
@@ -192,8 +191,9 @@ public class Game extends Canvas
 	 * Notification that the player has died.
 	 */
 	public void notifyDeath() {
-		gameTimer.stopTimer(); // add GameTimer by Eungyu
-		message = "Oh no! They got you, try again? \nYour time is " + gameTimer.getEndTime(); // add GameTimer by Eungyu
+		gameTimer.stopTimer(); // 게임 종료시 타이머 종료 add GameTimer by Eungyu
+		// 종료시 message를 시간이랑 같이 초기화 add GameTimer by Eungyu
+		message = "Oh no! They got you, try again? \nYour time is " + gameTimer.getEndTime();
 		waitingForKeyPress = true;
 	}
 
@@ -203,7 +203,8 @@ public class Game extends Canvas
 	 */
 	public void notifyWin() {
 		gameTimer.stopTimer();
-		message = "Well done! You Win! \nYour time is " + gameTimer.getEndTime(); // add GameTimer by Eungyu
+		// 종료시 message를 시간이랑 같이 초기화 add GameTimer by Eungyu
+		message = "Well done! You Win! \nYour time is " + gameTimer.getEndTime();
 		waitingForKeyPress = true;
 	}
 
