@@ -153,4 +153,12 @@ public abstract class Entity {
 	public ShotEntity fire() {
 		return null;
 	}
+
+	public Entity skill1() {
+		return null;
+	}
+
+	public Entity skill2() {
+		return null;
+	}
 }

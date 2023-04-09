@@ -13,6 +13,10 @@ public class ShipEntity extends Entity {
 
 	private int power;
 
+	private int health = 2;
+
+	private int magicPoint = 1;
+
 	/**
 	 * Create a new entity to represent the players ship
 	 *
@@ -61,10 +65,30 @@ public class ShipEntity extends Entity {
 		if (other instanceof AlienEntity) {
 			game.notifyDeath();
 		}
+
+		if (other instanceof ShotEntity) {
+			ShotEntity _other = (ShotEntity) other;
+			this.health -= _other.attack();
+
+			// remove the affected entities
+			if (this.health <= 0) {
+				game.notifyDeath();
+			}
+		}
 	}
 
 	@Override
 	public ShotEntity fire() {
 		return new ShotEntity(game, "sprites/shot.gif",this.getX()+10,this.getY()-30, this.power, 1);
+	}
+
+	@Override
+	public Entity skill1() {
+		return new ShotEntity(game, "sprites/shot2.png", this.getX(), this.getY()-70, 5, 1.5);
+	}
+
+	@Override
+	public Entity skill2() {
+		return new ShotEntity(game, "sprites/shot2.png", this.getX(), this.getY()-70, 5, 1.5);
 	}
 }
