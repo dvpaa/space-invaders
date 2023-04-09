@@ -1,10 +1,7 @@
 package org.newdawn.spaceinvaders;
 
 import java.awt.*;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
+import java.awt.event.*;
 import java.awt.image.BufferStrategy;
 import java.util.ArrayList;
 
@@ -75,84 +72,100 @@ public class Game extends Canvas
 	private JFrame MainPage;
 	private JFrame SelectStagePage;
 
+	public void mainPage(){
+		// 게임 실행 하자마자 나오는 메인 페이지
+		MainPage = new JFrame("Space Invaders Main Page");
+		// frame 크기 800x600으로 설정
+		MainPage.setPreferredSize(new Dimension(800, 600));
+
+		// content pane 가져오기
+		Container MainPageContainPane = MainPage.getContentPane();
+
+		// 화면에 게임 이름 이미지로 넣기(수정)
+		JLabel showGameName = new JLabel("Space Invaders");
+		showGameName.setBounds(100, 100, 100, 20);
+		MainPage.add(showGameName);
+
+		// 버튼 생성 & 위치 설정
+		JButton GameStartButton = new JButton("GameStart");
+		GameStartButton.setBounds(100, 300, 600, 60);
+		JButton GoStoreButton = new JButton("Store");
+		GoStoreButton.setBounds(100, 380, 600, 60);
+		JButton GoRankingButton = new JButton("Ranking");
+		GoRankingButton.setBounds(100, 460, 600, 60);
+
+		// 버튼 눌렀을 때 페이지 이동
+		GameStartButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				selectStagePage();
+				MainPage.setVisible(false); // 창 안보이게 하기
+			}
+		});
+
+		// 화면에 버튼 보이도록 contain pane에 버튼 붙이기
+		MainPageContainPane.add(GameStartButton);
+		MainPageContainPane.add(GoStoreButton);
+		MainPageContainPane.add(GoRankingButton);
+
+		//panel의 레이아웃 매니저를 null로 설정 : 컴포넌트들의 위치와 크기를 수동으로 설정 가능 하도록
+		// setLayout(null)으로 설정하면 각 구성 요소의 위치와 크기를 직접 지정해야 함
+		MainPage.setLayout(null);
+		MainPage.pack();
+		MainPage.setVisible(true);
+
+		MainPage.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+	}
+
+	public void selectStagePage(){
+		// stage 선택 페이지
+		SelectStagePage = new JFrame("SelectStagePage"); // frame 생성
+
+		// frame 크기 800x600으로 설정
+		SelectStagePage.setPreferredSize(new Dimension(800,600));
+
+		// content pane 가져오기
+		Container SelectStageContainPane = SelectStagePage.getContentPane();
+
+		// 어떤 페이지인지 알 수 있도록 "STAGE"써있는 이미지 넣기
+		JLabel stageShowGameName = new JLabel("STAGE");
+		stageShowGameName.setBounds(0, 0, 800, 100); // x, y, width, height
+		SelectStagePage.add(stageShowGameName);
+
+		// 버튼 생성 & 위치 설정
+		JButton[] stageButton = new JButton[5];
+		for(int i=0;i<5;i++){
+			stageButton[i] = new JButton("STAGE " + (i+1));
+			int y = 130 + 70*i;
+			stageButton[i].setBounds(100, y, 500, 60);
+		}
+
+		for(int i=0; i<5 ; i++){
+			SelectStageContainPane.add(stageButton[i]);
+		}
+
+		stageButton[0].addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				new Game();
+				SelectStagePage.setVisible(false); // 창 안보이게 하기
+			}
+		});
+
+		SelectStagePage.setLayout(null);
+		SelectStagePage.pack();
+		SelectStagePage.setVisible(true);
+
+		SelectStagePage.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		// ~~ stage 선택 페이지
+	}
+
 	/**
 	 * Construct our game and set it running.
 	 */
 	public Game() {
-
-			// 게임 실행을 누르자마자 나오는 메인 페이지
-			MainPage = new JFrame("Space Invaders Main Page");
-			// frame 크기 800x600으로 설정
-			MainPage.setPreferredSize(new Dimension(800, 600));
-
-			// content pane 가져오기
-			Container MainPageContainPane = MainPage.getContentPane();
-
-			// 화면에 게임 이름 이미지로 넣기(수정)
-			JLabel showGameName = new JLabel("Space Invaders");
-//		showGameName.setBounds(100, 100, 100, 20);
-			MainPage.add(showGameName);
-
-			// 버튼 생성 & 위치 설정
-			JButton GameStartButton = new JButton("GameStart");
-			GameStartButton.setBounds(100, 300, 600, 60);
-			JButton GoStoreButton = new JButton("Store");
-			GoStoreButton.setBounds(100, 380, 600, 60);
-			JButton GoRankingButton = new JButton("Ranking");
-			GoRankingButton.setBounds(100, 460, 600, 60);
-
-			// 화면에 버튼 보이도록 contain pane에 버튼 붙이기
-			MainPageContainPane.add(GameStartButton);
-			MainPageContainPane.add(GoStoreButton);
-			MainPageContainPane.add(GoRankingButton);
-
-			//panel의 레이아웃 매니저를 null로 설정 : 컴포넌트들의 위치와 크기를 수동으로 설정 가능 하도록
-			// setLayout(null)으로 설정하면 각 구성 요소의 위치와 크기를 직접 지정해야 함
-			MainPage.setLayout(null);
-			MainPage.pack();
-			MainPage.setVisible(true);
-
-			MainPage.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
-
-			// stage 선택 페이지
-			SelectStagePage = new JFrame("SelectStagePage"); // frame 생성
-
-			// frame 크기 800x600으로 설정
-			SelectStagePage.setPreferredSize(new Dimension(800,600));
-
-			// content pane 가져오기
-			Container SelectStageContainPane = SelectStagePage.getContentPane();
-
-			// 어떤 페이지인지 알 수 있도록 "STAGE"써있는 이미지 넣기
-			JLabel stageShowGameName = new JLabel("STAGE");
-			stageShowGameName.setBounds(0, 0, 800, 100); // x, y, width, height
-			SelectStagePage.add(stageShowGameName);
-
-			// 버튼 생성 & 위치 설정
-			JButton[] stageButton = new JButton[5];
-			for(int i=0;i<5;i++){
-				stageButton[i] = new JButton("STAGE " + (i+1));
-				int y = 130 + 70*i;
-				stageButton[i].setBounds(100, y, 500, 60);
-			}
-
-			for(int i=0; i<5 ; i++){
-				SelectStageContainPane.add(stageButton[i]);
-			}
-
-			SelectStagePage.setLayout(null);
-			SelectStagePage.pack();
-			SelectStagePage.setVisible(true);
-
-			SelectStagePage.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-			// ~~ stage 선택 페이지
-
-
-
 		/** 원본 container ~~ **/
 		// create a frame to contain our game
-		// container는 fisrtPage game start -> stage1 을 눌러야 화면이 나오도록
 		container = new JFrame("Space Invaders 102");
 
 		// get hold the content of the frame and set up the resolution of the game
@@ -169,7 +182,7 @@ public class Game extends Canvas
 		// going to do that our self in accelerated mode
 		setIgnoreRepaint(true);
 
-		// finally make the window visible 
+		// finally make the window visible
 		container.pack();
 		container.setResizable(false);
 		container.setVisible(true);
@@ -181,7 +194,6 @@ public class Game extends Canvas
 				System.exit(0);
 			}
 		});
-
 		/** ~~ 원본 container **/
 
 		// add a key input system (defined below) to our canvas
@@ -542,6 +554,7 @@ public class Game extends Canvas
 	 */
 	public static void main(String argv[]) {
 		Game g = new Game();
+		g.mainPage();
 
 		// Start the main game loop, note: this method will not
 		// return until the game has finished running. Hence we are
