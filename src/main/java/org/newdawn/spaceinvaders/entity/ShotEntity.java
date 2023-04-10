@@ -14,21 +14,28 @@ public class ShotEntity extends Entity {
 	private Game game;
 	/** True if this shot has been "used", i.e. its hit something */
 	private boolean used = false;
-	
+
+	private int power;
+
 	/**
 	 * Create a new shot from the player
-	 * 
-	 * @param game The game in which the shot has been created
+	 *
+	 * @param game   The game in which the shot has been created
 	 * @param sprite The sprite representing this shot
-	 * @param x The initial x location of the shot
-	 * @param y The initial y location of the shot
+	 * @param x      The initial x location of the shot
+	 * @param y      The initial y location of the shot
 	 */
-	public ShotEntity(Game game,String sprite,int x,int y) {
-		super(sprite,x,y);
-		
+	public ShotEntity(Game game, String sprite, int x, int y, int power, double direction) {
+
+		super(sprite, x, y);
+
 		this.game = game;
-		
-		dy = moveSpeed;
+
+		dy = moveSpeed * direction;
+
+		this.power = power;
+
+
 	}
 
 	/**
@@ -58,16 +65,11 @@ public class ShotEntity extends Entity {
 		if (used) {
 			return;
 		}
-		
-		// if we've hit an alien, kill it!
-		if (other instanceof AlienEntity) {
-			// remove the affected entities
-			game.removeEntity(this);
-			game.removeEntity(other);
-			
-			// notify the game that the alien has been killed
-			game.notifyAlienKilled();
-			used = true;
-		}
+		game.removeEntity(this);
+		used = true;
+	}
+
+	public int attack() {
+		return this.power;
 	}
 }
