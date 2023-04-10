@@ -7,13 +7,16 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.image.BufferStrategy;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Comparator;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.swing.*;
 
 import org.newdawn.spaceinvaders.entity.AlienEntity;
 import org.newdawn.spaceinvaders.entity.Entity;
 import org.newdawn.spaceinvaders.entity.ShipEntity;
-import org.newdawn.spaceinvaders.entity.ShotEntity;
 
 /**
  * The main hook of our game. This class with both act as a manager
@@ -37,7 +40,7 @@ public class Game extends Canvas
 	/** True if the game is currently "running", i.e. the game loop is looping */
 	private boolean gameRunning = true;
 	/** The list of all the entities that exist in our game */
-	private ArrayList entities = new ArrayList();
+	private ArrayList<Entity> entities = new ArrayList<>();
 	/** The list of entities that need to be removed from the game this loop */
 	private ArrayList removeList = new ArrayList();
 	/** The entity representing the player */
@@ -45,9 +48,20 @@ public class Game extends Canvas
 	/** The speed at which the player's ship should move (pixels/sec) */
 	private double moveSpeed = 300;
 	/** The time at which last fired a shot */
-	private long lastFire = 0;
+	private long lastShipFire = 0;
+
+	private long lastShipSkill1 = 0;
+
+	private long lastShipSkill2 = 0;
+
+	private long lastAlienFire = 0;
 	/** The interval between our players shot (ms) */
 	private long firingInterval = 500;
+
+	private long skillInterval1 = 2000;
+
+	private long skillInterval2 = 2000;
+
 	/** The number of aliens left on the screen */
 	private int alienCount;
 	/** The message to display which waiting for a key press */
@@ -60,6 +74,11 @@ public class Game extends Canvas
 	private boolean rightPressed = false;
 	/** True if we are firing */
 	private boolean firePressed = false;
+
+	private boolean skilPressed1 = false;
+
+	private boolean skilPressed2 = false;
+
 	/** True if game logic needs to be applied this loop, normally as a result of a game event */
 	private boolean logicRequiredThisLoop = false;
 	/** The last time at which we recorded the frame rate */
@@ -72,15 +91,91 @@ public class Game extends Canvas
 	private JFrame container;
 
 	private GameTimer gameTimer = new GameTimer(); // add GameTimer by Eungyu
+	private JFrame MainPage;
+	private JFrame SelectStagePage;
 
 	/**
 	 * Construct our game and set it running.
 	 */
 	public Game() {
+
+			// 게임 실행을 누르자마자 나오는 메인 페이지
+			MainPage = new JFrame("Space Invaders Main Page");
+			// frame 크기 800x600으로 설정
+			MainPage.setPreferredSize(new Dimension(800, 600));
+
+			// content pane 가져오기
+			Container MainPageContainPane = MainPage.getContentPane();
+
+			// 화면에 게임 이름 이미지로 넣기(수정)
+			JLabel showGameName = new JLabel("Space Invaders");
+//		showGameName.setBounds(100, 100, 100, 20);
+			MainPage.add(showGameName);
+
+			// 버튼 생성 & 위치 설정
+			JButton GameStartButton = new JButton("GameStart");
+			GameStartButton.setBounds(100, 300, 600, 60);
+			JButton GoStoreButton = new JButton("Store");
+			GoStoreButton.setBounds(100, 380, 600, 60);
+			JButton GoRankingButton = new JButton("Ranking");
+			GoRankingButton.setBounds(100, 460, 600, 60);
+
+			// 화면에 버튼 보이도록 contain pane에 버튼 붙이기
+			MainPageContainPane.add(GameStartButton);
+			MainPageContainPane.add(GoStoreButton);
+			MainPageContainPane.add(GoRankingButton);
+
+			//panel의 레이아웃 매니저를 null로 설정 : 컴포넌트들의 위치와 크기를 수동으로 설정 가능 하도록
+			// setLayout(null)으로 설정하면 각 구성 요소의 위치와 크기를 직접 지정해야 함
+			MainPage.setLayout(null);
+			MainPage.pack();
+			MainPage.setVisible(true);
+
+			MainPage.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+
+			// stage 선택 페이지
+			SelectStagePage = new JFrame("SelectStagePage"); // frame 생성
+
+			// frame 크기 800x600으로 설정
+			SelectStagePage.setPreferredSize(new Dimension(800,600));
+
+			// content pane 가져오기
+			Container SelectStageContainPane = SelectStagePage.getContentPane();
+
+			// 어떤 페이지인지 알 수 있도록 "STAGE"써있는 이미지 넣기
+			JLabel stageShowGameName = new JLabel("STAGE");
+			stageShowGameName.setBounds(0, 0, 800, 100); // x, y, width, height
+			SelectStagePage.add(stageShowGameName);
+
+			// 버튼 생성 & 위치 설정
+			JButton[] stageButton = new JButton[5];
+			for(int i=0;i<5;i++){
+				stageButton[i] = new JButton("STAGE " + (i+1));
+				int y = 130 + 70*i;
+				stageButton[i].setBounds(100, y, 500, 60);
+			}
+
+			for(int i=0; i<5 ; i++){
+				SelectStageContainPane.add(stageButton[i]);
+			}
+
+			SelectStagePage.setLayout(null);
+			SelectStagePage.pack();
+			SelectStagePage.setVisible(true);
+
+			SelectStagePage.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+			// ~~ stage 선택 페이지
+
+
+
+		/** 원본 container ~~ **/
 		// create a frame to contain our game
+		// container는 fisrtPage game start -> stage1 을 눌러야 화면이 나오도록
 		container = new JFrame("Space Invaders 102");
 
 		// get hold the content of the frame and set up the resolution of the game
+		// 게임 프레임 & 해상도 설정
 		JPanel panel = (JPanel) container.getContentPane();
 		panel.setPreferredSize(new Dimension(800,600));
 		panel.setLayout(null);
@@ -113,6 +208,8 @@ public class Game extends Canvas
 			}
 		});
 
+		/** ~~ 원본 container **/
+
 		// add a key input system (defined below) to our canvas
 		// so we can respond to key pressed
 		addKeyListener(new KeyInputHandler());
@@ -138,14 +235,15 @@ public class Game extends Canvas
 		// clear out any existing entities and intialise a new set
 		entities.clear();
 		initEntities();
-
 		// blank out any keyboard settings we might currently have
 		leftPressed = false;
 		rightPressed = false;
 		firePressed = false;
+    skilPressed1 = false;
+		skilPressed2 = false;
 
 		gameTimer.startTimer(); // 게임시작시 타이머 시작 add GameTimer by Eungyu
-
+		
 	}
 
 	/**
@@ -154,7 +252,7 @@ public class Game extends Canvas
 	 */
 	private void initEntities() {
 		// create the player ship and place it roughly in the center of the screen
-		ship = new ShipEntity(this, "sprites/ship.gif",370,550);
+		ship = new ShipEntity(this, "sprites/ship.gif",370,550, 1);
 		entities.add(ship);
 
 		// create a block of aliens (5 rows, by 12 aliens, spaced evenly)
@@ -236,16 +334,70 @@ public class Game extends Canvas
 	 * since we must first check that the player can fire at this
 	 * point, i.e. has he/she waited long enough between shots
 	 */
-	public void tryToFire() {
+	public void tryToFire(Entity ship) {
 		// check that we have waiting long enough to fire
-		if (System.currentTimeMillis() - lastFire < firingInterval) {
+		if (System.currentTimeMillis() - lastShipFire < firingInterval) {
 			return;
 		}
 
 		// if we waited long enough, create the shot entity, and record the time.
-		lastFire = System.currentTimeMillis();
-		ShotEntity shot = new ShotEntity(this, "sprites/shot.gif",ship.getX()+10,ship.getY()-30);
+		lastShipFire = System.currentTimeMillis();
+		Entity shot = ship.fire();
 		entities.add(shot);
+	}
+
+	public void tryToSkill1(Entity ship) {
+		// check that we have waiting long enough to fire
+		if (System.currentTimeMillis() - lastShipSkill1 < skillInterval1) {
+			return;
+		}
+
+		// if we waited long enough, create the shot entity, and record the time.
+		lastShipSkill1 = System.currentTimeMillis();
+		Entity shot = ship.skill1();
+		entities.add(shot);
+	}
+
+	public void tryToSkill2(Entity ship) {
+		// check that we have waiting long enough to fire
+		if (System.currentTimeMillis() - lastShipSkill2 < skillInterval2) {
+			return;
+		}
+
+		// if we waited long enough, create the shot entity, and record the time.
+		lastShipSkill2 = System.currentTimeMillis();
+		Entity shot = ship.skill2();
+		entities.add(shot);
+	}
+
+	public void attackFromAlien(Entity alien) {
+		if (System.currentTimeMillis() - lastAlienFire < firingInterval) {
+			return;
+		}
+		lastAlienFire = System.currentTimeMillis();
+		Entity shot = alien.fire();
+		entities.add(shot);
+	}
+
+	public Entity selectAttackAlien(ArrayList<Entity> entities) {
+		List<Entity> list = entities.stream()
+				.filter(entity -> entity instanceof AlienEntity)
+				.sorted(Comparator.comparing(Entity::getY).reversed())
+				.limit(12)
+				.collect(Collectors.toList());
+
+		int standardY = list.get(0).getY();
+		int idx = 11;
+		for (int i = 1; i < list.size(); i++) {
+			if (standardY != list.get(i).getY()) {
+				idx = i - 1;
+				break;
+			}
+		}
+		int max = idx;
+		int min = 0;
+		int randomInt = (int) (Math.random() * (max - min + 1) + min);
+		return list.get(randomInt);
 	}
 
 	/**
@@ -361,8 +513,21 @@ public class Game extends Canvas
 
 			// if we're pressing fire, attempt to fire
 			if (firePressed) {
-				tryToFire();
+				tryToFire(ship);
 			}
+
+			if (skilPressed1) {
+				tryToSkill1(ship);
+			}
+
+			if (skilPressed2) {
+				tryToSkill2(ship);
+			}
+
+			if ((System.currentTimeMillis() / 100) % 2 == 0) {
+				attackFromAlien(selectAttackAlien(entities));
+			}
+
 
 			// we want each frame to take 10 milliseconds, to do this
 			// we've recorded when we started the frame. We add 10 milliseconds
@@ -412,6 +577,12 @@ public class Game extends Canvas
 			if (e.getKeyCode() == KeyEvent.VK_SPACE) {
 				firePressed = true;
 			}
+			if (e.getKeyCode() == KeyEvent.VK_Z) {
+				skilPressed1 = true;
+			}
+			if (e.getKeyCode() == KeyEvent.VK_X) {
+				skilPressed2 = true;
+			}
 		}
 
 		/**
@@ -434,6 +605,12 @@ public class Game extends Canvas
 			}
 			if (e.getKeyCode() == KeyEvent.VK_SPACE) {
 				firePressed = false;
+			}
+			if (e.getKeyCode() == KeyEvent.VK_Z) {
+				skilPressed1 = false;
+			}
+			if (e.getKeyCode() == KeyEvent.VK_X) {
+				skilPressed2 = false;
 			}
 		}
 
