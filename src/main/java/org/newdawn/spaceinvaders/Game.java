@@ -64,7 +64,6 @@ public class Game extends Canvas
 
 	/** The number of aliens left on the screen */
 	private int alienCount;
-
 	/** The message to display which waiting for a key press */
 	private String message = "";
 	/** True if we're holding up game play until a key has been pressed */
@@ -91,6 +90,7 @@ public class Game extends Canvas
 	/** The game window that we'll update with the frame count */
 	private JFrame container;
 
+	private GameTimer gameTimer = new GameTimer(); // add GameTimer by Eungyu
 	private JFrame MainPage;
 	private JFrame SelectStagePage;
 
@@ -180,6 +180,13 @@ public class Game extends Canvas
 		panel.setPreferredSize(new Dimension(800,600));
 		panel.setLayout(null);
 
+		JLabel timerlabel = gameTimer.getTimerLabel(); // 타이머 라벨 추가 add GameTimer by Eungyu
+		timerlabel.setBounds(750,0, 50, 25); // 타이머 크기, 위치 지정 add GameTimer by Eungyu
+		timerlabel.setOpaque(true); // 라벨 배경 색깔 적용 add GameTimer by Eungyu
+		timerlabel.setBackground(Color.black); // 뒷배경 검은색 설정 add GameTimer by Eungyu
+		timerlabel.setForeground(Color.white); // 글씨 하얀색 설정 add GameTimer by Eungyu
+		panel.add(timerlabel); // 패널에 타이머 라벨 추가 add GameTimer by Eungyu
+
 		// setup our canvas size and put it into the content of the frame
 		setBounds(0,0,800,600);
 		panel.add(this);
@@ -232,8 +239,11 @@ public class Game extends Canvas
 		leftPressed = false;
 		rightPressed = false;
 		firePressed = false;
-		skilPressed1 = false;
+    skilPressed1 = false;
 		skilPressed2 = false;
+
+		gameTimer.startTimer(); // 게임시작시 타이머 시작 add GameTimer by Eungyu
+		
 	}
 
 	/**
@@ -279,7 +289,9 @@ public class Game extends Canvas
 	 * Notification that the player has died.
 	 */
 	public void notifyDeath() {
-		message = "Oh no! They got you, try again?";
+		gameTimer.stopTimer(); // 게임 종료시 타이머 종료 add GameTimer by Eungyu
+		// 종료시 message를 시간이랑 같이 초기화 add GameTimer by Eungyu
+		message = "Oh no! They got you, try again? \nYour time is " + gameTimer.getEndTime();
 		waitingForKeyPress = true;
 	}
 
@@ -288,7 +300,9 @@ public class Game extends Canvas
 	 * are dead.
 	 */
 	public void notifyWin() {
-		message = "Well done! You Win!";
+		gameTimer.stopTimer();
+		// 종료시 message를 시간이랑 같이 초기화 add GameTimer by Eungyu
+		message = "Well done! You Win! \nYour time is " + gameTimer.getEndTime();
 		waitingForKeyPress = true;
 	}
 
