@@ -87,6 +87,7 @@ public class Game extends Canvas
 	private JFrame container;
 
 	private GameTimer gameTimer = new GameTimer(); // add GameTimer by Eungyu
+	private int score=0; // 점수 초기화
 	private JFrame mainPage;
 	private JFrame selectStagePage;
 
@@ -302,7 +303,7 @@ public class Game extends Canvas
 	public void notifyDeath() {
 		gameTimer.stopTimer(); // 게임 종료시 타이머 종료 add GameTimer by Eungyu
 		// 종료시 message를 시간이랑 같이 초기화 add GameTimer by Eungyu
-		message = "Oh no! They got you, try again? \nYour time is " + gameTimer.getEndTime();
+		message = "Oh no! They got you, try again? \nYour time is " + gameTimer.getEndTime() + "\n Your score is " + score;
 		waitingForKeyPress = true;
 	}
 
@@ -313,7 +314,7 @@ public class Game extends Canvas
 	public void notifyWin() {
 		gameTimer.stopTimer();
 		// 종료시 message를 시간이랑 같이 초기화 add GameTimer by Eungyu
-		message = "Well done! You Win! \nYour time is " + gameTimer.getEndTime();
+		message = "Well done! You Win! \nYour time is " + gameTimer.getEndTime() + "\n Your score is " + gameTimer.setScore();
 		waitingForKeyPress = true;
 	}
 
