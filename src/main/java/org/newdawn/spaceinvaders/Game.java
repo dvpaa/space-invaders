@@ -13,6 +13,7 @@ import javax.swing.*;
 import org.newdawn.spaceinvaders.entity.AlienEntity;
 import org.newdawn.spaceinvaders.entity.Entity;
 import org.newdawn.spaceinvaders.entity.ShipEntity;
+import org.newdawn.spaceinvaders.gui.Frame;
 
 /**
  * The main hook of our game. This class with both act as a manager
@@ -666,12 +667,14 @@ public class Game extends Canvas
 	 * @param argv The arguments that are passed into our game
 	 */
 	public static void main(String argv[]) {
-		Game g = new Game();
-		g.mainPage();
+//		Game g = new Game();
+//		g.mainPage();
+//
+//		// Start the main game loop, note: this method will not
+//		// return until the game has finished running. Hence we are
+//		// using the actual main thread to run the game.
+//		g.gameLoop();
 
-		// Start the main game loop, note: this method will not
-		// return until the game has finished running. Hence we are
-		// using the actual main thread to run the game.
-		g.gameLoop();
+		new Frame();
 	}
 }
