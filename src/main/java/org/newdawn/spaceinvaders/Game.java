@@ -106,7 +106,7 @@ public class Game extends Canvas
 		panel.setLayout(null);
 
 		JLabel timerlabel = gameTimer.getTimerLabel(); // 타이머 라벨 추가 add GameTimer by Eungyu
-		timerlabel.setBounds(750,0, 50, 25); // 타이머 크기, 위치 지정 add GameTimer by Eungyu
+		timerlabel.setBounds(740,0, 60, 25); // 타이머 크기, 위치 지정 add GameTimer by Eungyu
 		timerlabel.setOpaque(true); // 라벨 배경 색깔 적용 add GameTimer by Eungyu
 		timerlabel.setBackground(Color.black); // 뒷배경 검은색 설정 add GameTimer by Eungyu
 		timerlabel.setForeground(Color.white); // 글씨 하얀색 설정 add GameTimer by Eungyu
@@ -204,7 +204,7 @@ public class Game extends Canvas
 		selectStagePage.setPreferredSize(new Dimension(800,600));
 
 		// content pane 가져오기
-		Container SelectStageContainPane = selectStagePage.getContentPane();
+		Container selectStageContainPane = selectStagePage.getContentPane();
 
 		// 어떤 페이지인지 알 수 있도록 "STAGE"써있는 이미지 넣기
 		JLabel stageShowGameName = new JLabel("STAGE");
@@ -220,7 +220,7 @@ public class Game extends Canvas
 		}
 
 		for(int i=0; i<5 ; i++){
-			SelectStageContainPane.add(stageButton[i]);
+			selectStageContainPane.add(stageButton[i]);
 		}
 
 		stageButton[0].addActionListener(new ActionListener() {
@@ -251,7 +251,7 @@ public class Game extends Canvas
 		leftPressed = false;
 		rightPressed = false;
 		firePressed = false;
-    skilPressed1 = false;
+    	skilPressed1 = false;
 		skilPressed2 = false;
 
 		gameTimer.startTimer(); // 게임시작시 타이머 시작 add GameTimer by Eungyu
