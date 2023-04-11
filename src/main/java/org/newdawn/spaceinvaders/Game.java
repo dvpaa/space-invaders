@@ -6,6 +6,7 @@ import java.awt.image.BufferStrategy;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Random;
 import java.util.stream.Collectors;
 
 import javax.swing.*;
@@ -13,6 +14,7 @@ import javax.swing.*;
 import org.newdawn.spaceinvaders.entity.AlienEntity;
 import org.newdawn.spaceinvaders.entity.Entity;
 import org.newdawn.spaceinvaders.entity.ShipEntity;
+import org.newdawn.spaceinvaders.entity.item.AttackItemEntity;
 
 /**
  * The main hook of our game. This class with both act as a manager
@@ -57,6 +59,10 @@ public class Game extends Canvas
 	private long skillInterval1 = 2000;
 
 	private long skillInterval2 = 2000;
+
+	private long itemInterval = 10000; // 아이템 생성 텀
+
+	private long lastItemGenerate = 0;
 
 	/** The number of aliens left on the screen */
 	private int alienCount;
@@ -443,6 +449,14 @@ public class Game extends Canvas
 				container.setTitle(windowTitle+" (FPS: "+fps+")");
 				lastFpsTime = 0;
 				fps = 0;
+			}
+
+			// 아이템 생성
+			if(System.currentTimeMillis() - lastItemGenerate > itemInterval) {
+				Random random = new Random();
+				lastItemGenerate = System.currentTimeMillis();
+				Entity item = new AttackItemEntity(this,random.nextInt(600),0);
+				entities.add(item);
 			}
 
 			// Get hold of a graphics context for the accelerated 
