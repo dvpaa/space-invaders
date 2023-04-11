@@ -129,6 +129,10 @@ public abstract class Entity {
 	public int getY() {
 		return (int) y;
 	}
+
+	public Sprite getSprite() {
+		return sprite;
+	}
 	
 	/**
 	 * Check if this entity collised with another.
