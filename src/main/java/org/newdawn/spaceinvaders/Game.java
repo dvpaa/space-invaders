@@ -105,7 +105,7 @@ public class Game extends Canvas
 		panel.setLayout(null);
 
 		JLabel timerlabel = gameTimer.getTimerLabel(); // 타이머 라벨 추가 add GameTimer by Eungyu
-		timerlabel.setBounds(750,0, 50, 25); // 타이머 크기, 위치 지정 add GameTimer by Eungyu
+		timerlabel.setBounds(740,0, 60, 25); // 타이머 크기, 위치 지정 add GameTimer by Eungyu
 		timerlabel.setOpaque(true); // 라벨 배경 색깔 적용 add GameTimer by Eungyu
 		timerlabel.setBackground(Color.black); // 뒷배경 검은색 설정 add GameTimer by Eungyu
 		timerlabel.setForeground(Color.white); // 글씨 하얀색 설정 add GameTimer by Eungyu
