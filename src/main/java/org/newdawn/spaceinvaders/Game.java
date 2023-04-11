@@ -90,6 +90,66 @@ public class Game extends Canvas
 	private JFrame mainPage;
 	private JFrame selectStagePage;
 
+	/**
+	 * Construct our game and set it running.
+	 */
+	public Game() {
+		/** 원본 container ~~ **/
+		// create a frame to contain our game
+		container = new JFrame("Space Invaders 102");
+
+		// get hold the content of the frame and set up the resolution of the game
+		// 게임 프레임 & 해상도 설정
+		JPanel panel = (JPanel) container.getContentPane();
+		panel.setPreferredSize(new Dimension(800,600));
+		panel.setLayout(null);
+
+		JLabel timerlabel = gameTimer.getTimerLabel(); // 타이머 라벨 추가 add GameTimer by Eungyu
+		timerlabel.setBounds(750,0, 50, 25); // 타이머 크기, 위치 지정 add GameTimer by Eungyu
+		timerlabel.setOpaque(true); // 라벨 배경 색깔 적용 add GameTimer by Eungyu
+		timerlabel.setBackground(Color.black); // 뒷배경 검은색 설정 add GameTimer by Eungyu
+		timerlabel.setForeground(Color.white); // 글씨 하얀색 설정 add GameTimer by Eungyu
+		panel.add(timerlabel); // 패널에 타이머 라벨 추가 add GameTimer by Eungyu
+
+		// setup our canvas size and put it into the content of the frame
+		setBounds(0,0,800,600);
+		panel.add(this);
+
+		// Tell AWT not to bother repainting our canvas since we're
+		// going to do that our self in accelerated mode
+		setIgnoreRepaint(true);
+
+		// finally make the window visible
+		container.pack();
+		container.setResizable(false);
+		container.setVisible(true);
+
+		// add a listener to respond to the user closing the window. If they
+		// do we'd like to exit the game
+		container.addWindowListener(new WindowAdapter() {
+			public void windowClosing(WindowEvent e) {
+				System.exit(0);
+			}
+		});
+		/** ~~ 원본 container **/
+
+		// add a key input system (defined below) to our canvas
+		// so we can respond to key pressed
+		addKeyListener(new KeyInputHandler());
+
+		// request the focus so key events come to us
+		requestFocus();
+
+		// create the buffering strategy which will allow AWT
+		// to manage our accelerated graphics
+		createBufferStrategy(2);
+		strategy = getBufferStrategy();
+
+		// initialise the entities in our game so there's something
+		// to see at startup
+		initEntities();
+	}
+
 	public void mainPage(){
 		// 게임 실행 하자마자 나오는 메인 페이지
 		mainPage = new JFrame("Space Invaders Main Page");
@@ -179,66 +239,6 @@ public class Game extends Canvas
 	}
 
 	/**
-	 * Construct our game and set it running.
-	 */
-	public Game() {
-		/** 원본 container ~~ **/
-		// create a frame to contain our game
-		container = new JFrame("Space Invaders 102");
-
-		// get hold the content of the frame and set up the resolution of the game
-		// 게임 프레임 & 해상도 설정
-		JPanel panel = (JPanel) container.getContentPane();
-		panel.setPreferredSize(new Dimension(800,600));
-		panel.setLayout(null);
-
-		JLabel timerlabel = gameTimer.getTimerLabel(); // 타이머 라벨 추가 add GameTimer by Eungyu
-		timerlabel.setBounds(750,0, 50, 25); // 타이머 크기, 위치 지정 add GameTimer by Eungyu
-		timerlabel.setOpaque(true); // 라벨 배경 색깔 적용 add GameTimer by Eungyu
-		timerlabel.setBackground(Color.black); // 뒷배경 검은색 설정 add GameTimer by Eungyu
-		timerlabel.setForeground(Color.white); // 글씨 하얀색 설정 add GameTimer by Eungyu
-		panel.add(timerlabel); // 패널에 타이머 라벨 추가 add GameTimer by Eungyu
-
-		// setup our canvas size and put it into the content of the frame
-		setBounds(0,0,800,600);
-		panel.add(this);
-
-		// Tell AWT not to bother repainting our canvas since we're
-		// going to do that our self in accelerated mode
-		setIgnoreRepaint(true);
-
-		// finally make the window visible
-		container.pack();
-		container.setResizable(false);
-		container.setVisible(true);
-
-		// add a listener to respond to the user closing the window. If they
-		// do we'd like to exit the game
-		container.addWindowListener(new WindowAdapter() {
-			public void windowClosing(WindowEvent e) {
-				System.exit(0);
-			}
-		});
-		/** ~~ 원본 container **/
-
-		// add a key input system (defined below) to our canvas
-		// so we can respond to key pressed
-		addKeyListener(new KeyInputHandler());
-
-		// request the focus so key events come to us
-		requestFocus();
-
-		// create the buffering strategy which will allow AWT
-		// to manage our accelerated graphics
-		createBufferStrategy(2);
-		strategy = getBufferStrategy();
-
-		// initialise the entities in our game so there's something
-		// to see at startup
-		initEntities();
-	}
-
-	/**
 	 * Start a fresh game, this should clear out any old data and
 	 * create a new set.
 	 */
@@ -250,7 +250,7 @@ public class Game extends Canvas
 		leftPressed = false;
 		rightPressed = false;
 		firePressed = false;
-    skilPressed1 = false;
+    	skilPressed1 = false;
 		skilPressed2 = false;
 
 		gameTimer.startTimer(); // 게임시작시 타이머 시작 add GameTimer by Eungyu
