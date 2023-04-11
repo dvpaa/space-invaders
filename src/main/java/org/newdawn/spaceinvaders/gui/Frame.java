@@ -18,14 +18,11 @@ public class Frame extends JFrame {
 
     public Frame() {
         initSetting();
-        background = new JLabel(new ImageIcon("src/main/resources/background/introBackground.jpg"));
-        setContentPane(background);
+        objectSetting();
+        listenerSetting();
+    }
 
-        startButton = new JButton(startButtonBasic);
-        startButton.setBounds(0, 0, 180, 50);
-        startButton.setPreferredSize(new Dimension(180, 50));
-        add(startButton);
-
+    private void listenerSetting() {
         startButton.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
@@ -47,11 +44,6 @@ public class Frame extends JFrame {
                 startButton.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
             }
         });
-
-        quickButton = new JButton(quickButtonBasic);
-        quickButton.setBounds(0, 100, 180, 50);
-        quickButton.setPreferredSize(new Dimension(180, 50));
-        add(quickButton);
 
         quickButton.addMouseListener(new MouseAdapter() {
             @Override
@@ -77,7 +69,23 @@ public class Frame extends JFrame {
                 quickButton.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
             }
         });
+    }
+
+    private void objectSetting() {
+        background = new JLabel(new ImageIcon("src/main/resources/background/introBackground.jpg"));
+        setContentPane(background);
+
+        startButton = new JButton(startButtonBasic);
+        startButton.setBounds(0, 0, 180, 50);
+        startButton.setPreferredSize(new Dimension(180, 50));
+        add(startButton);
+
+        quickButton = new JButton(quickButtonBasic);
+        quickButton.setBounds(0, 100, 180, 50);
+        quickButton.setPreferredSize(new Dimension(180, 50));
+        add(quickButton);
         setVisible(true);
+
 
     }
 
