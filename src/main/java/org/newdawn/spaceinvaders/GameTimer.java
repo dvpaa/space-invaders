@@ -15,6 +15,9 @@ public class GameTimer {
     private long hours;
     private long minutes;
     private long seconds;
+    private float scoreTimer;
+    private float score; // ??
+    private float totalTimeInSec;
 
     public GameTimer(){
         timer = new Timer();
@@ -50,4 +53,18 @@ public class GameTimer {
     public String getEndTime(){
         return String.format("%02d:%02d:%02d", hours, minutes, seconds);
     } // 경과 시간 반환
+
+    public float setScore() {
+        totalTimeInSec = 360 * hours + 60 * minutes + seconds; // 시간 초로 바꿔서 기준정하기
+        if(totalTimeInSec<=60){ // 1분안에 끝내면 최고점수 100점 부여
+            score = 100;
+        } else if (totalTimeInSec>60 && totalTimeInSec<120) {
+            int minus = (int)(totalTimeInSec-60)/2;
+            score = 100-3*minus;
+        }
+        else {
+            score = 10;
+        }
+        return score;
+    }
 }
