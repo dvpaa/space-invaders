@@ -2,63 +2,93 @@ package org.newdawn.spaceinvaders.gui;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 public class Frame extends JFrame {
 
-    private Image screenImage;
-    private Graphics screenGraphic;
-    private Image introBackground = new ImageIcon("src/main/resources/background/introBackground.jpg").getImage();
-    private ImageIcon startButtonBasicImage = new ImageIcon("src/main/resources/button/startButtonBasic.png");
-    private ImageIcon startButtonEnteredImage = new ImageIcon("src/main/resources/button/startButtonEntered.png");
-
-    private JButton startButton = new JButton(startButtonBasicImage);
+    private JLabel background;
+    private ImageIcon startButtonBasic = new ImageIcon("src/main/resources/button/startButtonBasic.png");
+    private ImageIcon startButtonEntered = new ImageIcon("src/main/resources/button/startButtonEntered.png");
+    private ImageIcon quickButtonBasic = new ImageIcon("src/main/resources/button/quickButtonBasic.png");
+    private ImageIcon quickButtonEntered = new ImageIcon("src/main/resources/button/quickButtonEntered.png");
+    private JButton startButton;
+    private JButton quickButton;
 
     public Frame() {
-        setTitle("Space Invader");
-        setSize(800, 600);
-        setResizable(false);
-        setLocationRelativeTo(null);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setVisible(true);
+        initSetting();
+        background = new JLabel(new ImageIcon("src/main/resources/background/introBackground.jpg"));
+        setContentPane(background);
 
-        startButton.setBounds(0, 0, 230, 80);
-        startButton.setBorderPainted(false);
-        startButton.setContentAreaFilled(false);
-        startButton.setFocusPainted(false);
+        startButton = new JButton(startButtonBasic);
+        startButton.setBounds(0, 0, 180, 50);
+        startButton.setPreferredSize(new Dimension(180, 50));
+        add(startButton);
+
         startButton.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
-                // 게임 시작
+                // game start
+                startButton.setVisible(false);
+                quickButton.setVisible(false);
+                background.setIcon(new ImageIcon("src/main/resources/background/gameBackground.jpg"));
             }
 
             @Override
             public void mouseEntered(MouseEvent e) {
-                startButton.setIcon(startButtonEnteredImage);
+                startButton.setIcon(startButtonEntered);
                 startButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
             }
 
             @Override
             public void mouseExited(MouseEvent e) {
-                startButton.setIcon(startButtonBasicImage);
+                startButton.setIcon(startButtonBasic);
                 startButton.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
             }
         });
-        add(startButton);
+
+        quickButton = new JButton(quickButtonBasic);
+        quickButton.setBounds(0, 100, 180, 50);
+        quickButton.setPreferredSize(new Dimension(180, 50));
+        add(quickButton);
+
+        quickButton.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent e) {
+                // game start
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException ex) {
+                    ex.printStackTrace();
+                }
+                System.exit(0);
+            }
+
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                quickButton.setIcon(quickButtonEntered);
+                quickButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+                quickButton.setIcon(quickButtonBasic);
+                quickButton.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+            }
+        });
+        setVisible(true);
+
     }
 
-    public void paint(Graphics g) {
-        screenImage = createImage(800, 600);
-        screenGraphic = screenImage.getGraphics();
-        screenDraw(screenGraphic);
-        g.drawImage(screenImage, 0, 0, null);
-    }
-
-    private void screenDraw(Graphics g) {
-        g.drawImage(introBackground, 0, 0, null);
-        paintComponents(g);
-        this.repaint();
+    private void initSetting() {
+        setTitle("Space Invader");
+        setSize(800, 600);
+        setLayout(null);
+        setLocationRelativeTo(null);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setResizable(false);
+        setVisible(true);
     }
 
 }
