@@ -34,8 +34,6 @@ public abstract class ItemEntity extends Entity{
 
         return me.intersects(him);
     }
-    public void doLogic(){
-    }
 
     public void collidedWith(Entity other){
         // TODO Auto-generated method stub
@@ -46,7 +44,5 @@ public abstract class ItemEntity extends Entity{
     }
     public abstract void doItemLogic();
 
-    public boolean is_apply(){
-        return is_apply;
-    }
+    public abstract void resetItemEffect();
 }
