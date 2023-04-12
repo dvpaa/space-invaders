@@ -6,13 +6,13 @@ import org.newdawn.spaceinvaders.entity.ShipEntity;
 
 import java.awt.*;
 
-public class SpeedItem extends ItemEntity{
+public class SpeedItemEntity extends ItemEntity{
     private Rectangle me = new Rectangle();
     private Rectangle him = new Rectangle();
     private long effectTime = 10000;
     private long startTime = 0;
 
-    public SpeedItem(Game game, int x, int y) {
+    public SpeedItemEntity(Game game, int x, int y) {
         super(game, "sprites/speedItem.png", x, y);
         dx = 0;
         dy = moveSpeed * 0.5;
@@ -51,7 +51,6 @@ public class SpeedItem extends ItemEntity{
                 game.setmoveSpeed(game.getmoveSpeed()/2);
                 game.removeItem(this);
             }
-            System.out.println("speed item");
         }
     }
     public void resetItemEffect(){

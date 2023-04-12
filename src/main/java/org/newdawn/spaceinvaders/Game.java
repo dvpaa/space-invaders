@@ -3,10 +3,8 @@ package org.newdawn.spaceinvaders;
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.image.BufferStrategy;
-import java.util.ArrayList;
-import java.util.Comparator;
+import java.util.*;
 import java.util.List;
-import java.util.Random;
 import java.util.stream.Collectors;
 
 import javax.swing.*;
@@ -93,9 +91,10 @@ public class Game extends Canvas
 	private JFrame selectStagePage;
 
 	// attribute added by Eungyu
-	private long lastItemGenerate = 0;
 	private ArrayList itemList = new ArrayList();
-	private long itemInterval = 1000; // 아이템 생성 텀
+	private ArrayList randomItemList = new ArrayList();
+	private long lastItemGenerate = 0;
+	private long itemInterval = 5000; // 아이템 생성 텀
 	/**
 	 * Construct our game and set it running.
 	 */
@@ -281,6 +280,18 @@ public class Game extends Canvas
 				alienCount++;
 			}
 		}
+
+		// 생성 가능 아이템 리스트
+		Random random = new Random();
+		randomItemList.addAll(
+				Arrays.asList(
+						new PushItemEntity(this,random.nextInt(600), -35),
+						new AttackItemEntity(this,random.nextInt(600), -35),
+						new SpeedItemEntity(this,random.nextInt(600), -35),
+						new SkillCooldownItem(this,random.nextInt(600), -35),
+						new PushItemEntity(this,random.nextInt(600), -35)
+				)
+		);
 	}
 
 	/**
@@ -467,7 +478,7 @@ public class Game extends Canvas
 			if(System.currentTimeMillis() - lastItemGenerate > itemInterval) {
 				Random random = new Random();
 				lastItemGenerate = System.currentTimeMillis();
-				Entity item = new AilenSlowItemEntity(this,random.nextInt(600), -35);
+				Entity item = (Entity) randomItemList.get(random.nextInt(randomItemList.size()));
 				entities.add(item);
 			}
 

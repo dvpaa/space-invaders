@@ -5,13 +5,15 @@ import org.newdawn.spaceinvaders.entity.Entity;
 import org.newdawn.spaceinvaders.entity.ShipEntity;
 
 import java.awt.*;
+import java.util.ArrayList;
 
-public class SkillCooldownItem extends ItemEntity{
+public class PushItemEntity extends ItemEntity{
     private Rectangle me = new Rectangle();
     private Rectangle him = new Rectangle();
+    private ArrayList ailen = new ArrayList();
 
-    public SkillCooldownItem(Game game, int x, int y) {
-        super(game, "sprites/skillCooldownItem.png", x, y);
+    public PushItemEntity(Game game, int x, int y) {
+        super(game, "sprites/pushItem.png", x, y);
         dx = 0;
         dy = moveSpeed * 0.5;
     }
@@ -41,14 +43,21 @@ public class SkillCooldownItem extends ItemEntity{
     public void doItemLogic() {
         if(used){
             if(!is_apply){
-                game.setlastShipSkill1((long) (game.getlastShipSkill1()-game.getSkillInterval1()));
-                game.setlastShipSkill2((long) (game.getlastShipSkill2()-game.getSkillInterval2()));
+                is_apply = true;
+                ailen = game.getAilen();
+                for(int i=0;i< ailen.size();i++){
+                    if(((Entity)ailen.get(i)).getY()< 10){
+                        return;
+                    }
+                    ((Entity)ailen.get(i)).setY(((Entity)ailen.get(i)).getY() - 10);
+                }
                 is_apply = true;
             }
             else{
                 game.removeItem(this);
             }
         }
+
     }
     public void resetItemEffect(){
     }

@@ -52,7 +52,6 @@ public class AilenSlowItemEntity extends ItemEntity{
                 for(int i=0;i< ailen.size();i++){
                     ((Entity)ailen.get(i)).setDx(((Entity)ailen.get(i)).getDx()/10);
                 }
-                System.out.println("AilenSlowItemEntity start");
                 is_apply = true;
             }
             if(System.currentTimeMillis() - startTime > effectTime){
@@ -60,7 +59,6 @@ public class AilenSlowItemEntity extends ItemEntity{
                 for(int i=0;i< ailen.size();i++){
                     ((Entity)ailen.get(i)).setDx(((Entity)ailen.get(i)).getDx()*10);
                 }
-                System.out.println("AilenSlowItemEntity end");
                 game.removeItem(this);
             }
         }
