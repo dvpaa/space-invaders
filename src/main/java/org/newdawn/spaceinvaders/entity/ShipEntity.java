@@ -1,6 +1,7 @@
 package org.newdawn.spaceinvaders.entity;
 
 import org.newdawn.spaceinvaders.Game;
+import org.newdawn.spaceinvaders.entity.item.ItemEntity;
 
 /**
  * The entity that represents the players ship
@@ -75,6 +76,9 @@ public class ShipEntity extends Entity {
 				game.notifyDeath();
 			}
 		}
+		if (other instanceof ItemEntity) {
+			((ItemEntity) other).setShipEntity(this);
+		}
 	}
 
 	@Override
@@ -90,5 +94,12 @@ public class ShipEntity extends Entity {
 	@Override
 	public Entity skill2() {
 		return new ShotEntity(game, "sprites/shot2.png", this.getX(), this.getY()-70, 5, 1.5);
+	}
+
+	public int getPower() {
+		return power;
+	}
+	public void setPower(int power) {
+		this.power = power;
 	}
 }

@@ -15,6 +15,7 @@ import org.newdawn.spaceinvaders.entity.AlienEntity;
 import org.newdawn.spaceinvaders.entity.Entity;
 import org.newdawn.spaceinvaders.entity.ShipEntity;
 import org.newdawn.spaceinvaders.entity.item.AttackItemEntity;
+import org.newdawn.spaceinvaders.entity.item.ItemEntity;
 
 /**
  * The main hook of our game. This class with both act as a manager
@@ -41,6 +42,7 @@ public class Game extends Canvas
 	private ArrayList<Entity> entities = new ArrayList<>();
 	/** The list of entities that need to be removed from the game this loop */
 	private ArrayList removeList = new ArrayList();
+	private ArrayList itemList = new ArrayList();
 	/** The entity representing the player */
 	private Entity ship;
 	/** The speed at which the player's ship should move (pixels/sec) */
@@ -60,7 +62,7 @@ public class Game extends Canvas
 
 	private long skillInterval2 = 2000;
 
-	private long itemInterval = 10000; // 아이템 생성 텀
+	private long itemInterval = 1000; // 아이템 생성 텀
 
 	private long lastItemGenerate = 0;
 
@@ -301,6 +303,12 @@ public class Game extends Canvas
 	public void removeEntity(Entity entity) {
 		removeList.add(entity);
 	}
+	public void addItem(Entity entity) {
+		itemList.add(entity);
+	}
+	public void removeItem(Entity entity) {
+		itemList.remove(entity);
+	}
 
 	/**
 	 * Notification that the player has died.
@@ -428,6 +436,8 @@ public class Game extends Canvas
 	 * - Checking Input
 	 * <p>
 	 */
+
+
 	public void gameLoop() {
 		long lastLoopTime = SystemTimer.getTime();
 
@@ -451,13 +461,14 @@ public class Game extends Canvas
 				fps = 0;
 			}
 
-			// 아이템 생성
+//			 아이템 생성
 			if(System.currentTimeMillis() - lastItemGenerate > itemInterval) {
 				Random random = new Random();
 				lastItemGenerate = System.currentTimeMillis();
-				Entity item = new AttackItemEntity(this,random.nextInt(600),0);
+				Entity item = new AttackItemEntity(this,"sprites/attackItem.png",random.nextInt(600), -35, 0.5);
 				entities.add(item);
 			}
+
 
 			// Get hold of a graphics context for the accelerated 
 			// surface and blank it out
@@ -503,9 +514,19 @@ public class Game extends Canvas
 			// if a game event has indicated that game logic should
 			// be resolved, cycle round every entity requesting that
 			// their personal logic should be considered.
+
+			for(int i=0;i<itemList.size();i++){
+				Entity item = (Entity) itemList.get(i);
+				((ItemEntity) item).doItemLogic();
+			}
+
+
 			if (logicRequiredThisLoop) {
 				for (int i=0;i<entities.size();i++) {
 					Entity entity = (Entity) entities.get(i);
+					if(entity instanceof ItemEntity){
+						((ItemEntity) entity).doItemLogic();
+					}
 					entity.doLogic();
 				}
 
