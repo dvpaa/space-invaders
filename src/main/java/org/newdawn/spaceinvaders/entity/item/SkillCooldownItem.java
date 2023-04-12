@@ -14,7 +14,7 @@ public class SkillCooldownItem extends ItemEntity{
     public SkillCooldownItem(Game game, int x, int y) {
         super(game, "sprites/skillCooldownItem.png", x, y);
         dx = 0;
-        dy = dropSpeed * 0.5;
+        dy = moveSpeed * 0.5;
     }
     @Override
     public boolean collidesWith(Entity other) {
@@ -48,7 +48,6 @@ public class SkillCooldownItem extends ItemEntity{
                 is_apply = true;
             }
             else{
-
                 game.removeItem(this);
             }
         }

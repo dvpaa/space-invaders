@@ -10,7 +10,7 @@ public abstract class ItemEntity extends Entity{
     private Rectangle me = new Rectangle();
     private Rectangle him = new Rectangle();
     protected boolean used = false;
-    protected double dropSpeed = 300;
+    protected double moveSpeed = 300;
     protected ShipEntity shipEntity;
     protected boolean is_apply = false;
     protected Game game;

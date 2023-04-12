@@ -15,7 +15,7 @@ public class SpeedItem extends ItemEntity{
     public SpeedItem(Game game, int x, int y) {
         super(game, "sprites/speedItem.png", x, y);
         dx = 0;
-        dy = dropSpeed * 0.5;
+        dy = moveSpeed * 0.5;
     }
     @Override
     public boolean collidesWith(Entity other) {

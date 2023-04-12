@@ -30,6 +30,7 @@ public abstract class Entity {
 	protected double dx;
 	/** The current speed of this entity vertically (pixels/sec) */
 	protected double dy;
+	protected double moveSpeed;
 	/** The rectangle used for this entity during collisions  resolution */
 	private Rectangle me = new Rectangle();
 	/** The rectangle used for other entities during collision resolution */
@@ -164,5 +165,14 @@ public abstract class Entity {
 
 	public Entity skill2() {
 		return null;
+	}
+
+	// method added by Eungyu
+
+	public double getDx() {
+		return dx;
+	}
+	public void setDx(double dx) {
+		this.dx = dx;
 	}
 }

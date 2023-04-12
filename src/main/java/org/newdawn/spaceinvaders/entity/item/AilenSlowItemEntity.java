@@ -5,17 +5,19 @@ import org.newdawn.spaceinvaders.entity.Entity;
 import org.newdawn.spaceinvaders.entity.ShipEntity;
 
 import java.awt.*;
+import java.util.ArrayList;
 
-public class AttackItemEntity extends ItemEntity{
+public class AilenSlowItemEntity extends ItemEntity{
     private Rectangle me = new Rectangle();
     private Rectangle him = new Rectangle();
-    private long effectTime = 3000;
+    private long effectTime = 1000;
     private long startTime = 0;
+    private ArrayList ailen = new ArrayList();
 
 
 
-    public AttackItemEntity(Game game, int x, int y) {
-        super(game, "sprites/attackItem.png", x, y);
+    public AilenSlowItemEntity(Game game, int x, int y) {
+        super(game, "sprites/AilenSlowItem.png", x, y);
         dx = 0;
         dy = moveSpeed * 0.5;
     }
@@ -46,16 +48,27 @@ public class AttackItemEntity extends ItemEntity{
     public void doItemLogic() {
         if(used){
             if(!is_apply){
-                shipEntity.setPower(shipEntity.getPower() + 1);
+                ailen = game.getAilen();
+                for(int i=0;i< ailen.size();i++){
+                    ((Entity)ailen.get(i)).setDx(((Entity)ailen.get(i)).getDx()/10);
+                }
+                System.out.println("AilenSlowItemEntity start");
                 is_apply = true;
             }
             if(System.currentTimeMillis() - startTime > effectTime){
-                shipEntity.setPower(shipEntity.getPower() - 1);
+                ailen = game.getAilen();
+                for(int i=0;i< ailen.size();i++){
+                    ((Entity)ailen.get(i)).setDx(((Entity)ailen.get(i)).getDx()*10);
+                }
+                System.out.println("AilenSlowItemEntity end");
                 game.removeItem(this);
             }
         }
     }
     public void resetItemEffect(){
-        shipEntity.setPower(shipEntity.getPower() - 1);
+        for(int i=0;i< ailen.size();i++){
+            ((Entity)ailen.get(i)).setDx(((Entity)ailen.get(i)).getDx()*2);
+        }
     }
+
 }

@@ -14,10 +14,7 @@ import javax.swing.*;
 import org.newdawn.spaceinvaders.entity.AlienEntity;
 import org.newdawn.spaceinvaders.entity.Entity;
 import org.newdawn.spaceinvaders.entity.ShipEntity;
-import org.newdawn.spaceinvaders.entity.item.AttackItemEntity;
-import org.newdawn.spaceinvaders.entity.item.ItemEntity;
-import org.newdawn.spaceinvaders.entity.item.SkillCooldownItem;
-import org.newdawn.spaceinvaders.entity.item.SpeedItem;
+import org.newdawn.spaceinvaders.entity.item.*;
 
 /**
  * The main hook of our game. This class with both act as a manager
@@ -470,7 +467,7 @@ public class Game extends Canvas
 			if(System.currentTimeMillis() - lastItemGenerate > itemInterval) {
 				Random random = new Random();
 				lastItemGenerate = System.currentTimeMillis();
-				Entity item = new SkillCooldownItem(this,random.nextInt(600), -35);
+				Entity item = new AilenSlowItemEntity(this,random.nextInt(600), -35);
 				entities.add(item);
 			}
 
@@ -703,7 +700,6 @@ public class Game extends Canvas
 	// method added by Eungyu
 	public void addItem(Entity entity) {
 		itemList.add(entity);
-		System.out.println("Item Added");
 	}
 	public void removeItem(Entity entity) {
 		itemList.remove(entity);
@@ -731,6 +727,15 @@ public class Game extends Canvas
 	}
 	public long getSkillInterval2(){
 		return skillInterval2;
+	}
+	public ArrayList getAilen(){
+		ArrayList ailens = new ArrayList();
+		for(int i=0; i<entities.size(); i++){
+			if(entities.get(i) instanceof AlienEntity){
+				ailens.add(entities.get(i));
+			}
+		}
+		return ailens;
 	}
 	/**
 	 * The entry point into the game. We'll simply create an
