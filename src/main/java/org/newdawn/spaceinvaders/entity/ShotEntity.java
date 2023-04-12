@@ -4,7 +4,7 @@ import org.newdawn.spaceinvaders.Game;
 
 /**
  * An entity representing a shot fired by the player's ship
- * 
+ *
  * @author Kevin Glass
  */
 public class ShotEntity extends Entity {
@@ -40,23 +40,23 @@ public class ShotEntity extends Entity {
 
 	/**
 	 * Request that this shot moved based on time elapsed
-	 * 
+	 *
 	 * @param delta The time that has elapsed since last move
 	 */
 	public void move(long delta) {
 		// proceed with normal move
 		super.move(delta);
-		
+
 		// if we shot off the screen, remove ourselfs
 		if (y < -100) {
 			game.removeEntity(this);
 		}
 	}
-	
+
 	/**
 	 * Notification that this shot has collided with another
 	 * entity
-	 * 
+	 *
 	 * @parma other The other entity with which we've collided
 	 */
 	public void collidedWith(Entity other) {

@@ -79,7 +79,7 @@ public class ShipEntity extends Entity {
 
 	@Override
 	public ShotEntity fire() {
-		return new ShotEntity(game, "sprites/shot.gif",this.getX()+10,this.getY()-30, this.power, 1);
+		return new ShotEntity(game, "sprites/shot.gif",this.getX()+10,this.getY()-30, 100, 1);
 	}
 
 	@Override

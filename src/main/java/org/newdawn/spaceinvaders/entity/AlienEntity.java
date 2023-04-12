@@ -1,6 +1,7 @@
 package org.newdawn.spaceinvaders.entity;
 
 import org.newdawn.spaceinvaders.Game;
+import org.newdawn.spaceinvaders.GameConfig;
 import org.newdawn.spaceinvaders.Sprite;
 import org.newdawn.spaceinvaders.SpriteStore;
 
@@ -23,9 +24,9 @@ public class AlienEntity extends Entity {
 	/** The current frame of animation being displayed */
 	private int frameNumber;
 
-	private int health = 2;
+	private int health;
 
-	private int power = 1;
+	private int power;
 
 	/**
 	 * Create a new alien entity
@@ -36,6 +37,7 @@ public class AlienEntity extends Entity {
 	 */
 	public AlienEntity(Game game, int x, int y) {
 		super("sprites/alien.gif", x, y);
+//		super(gameConfig.getAlienRef);
 
 		// setup the animatin frames
 		frames[0] = sprite;

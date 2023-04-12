@@ -13,7 +13,8 @@ import javax.swing.*;
 import org.newdawn.spaceinvaders.entity.AlienEntity;
 import org.newdawn.spaceinvaders.entity.Entity;
 import org.newdawn.spaceinvaders.entity.ShipEntity;
-import org.newdawn.spaceinvaders.gui.Frame;
+import org.newdawn.spaceinvaders.frame.GameFrame;
+import org.newdawn.spaceinvaders.frame.MainFrame;
 
 /**
  * The main hook of our game. This class with both act as a manager
@@ -95,11 +96,10 @@ public class Game extends Canvas
 	/**
 	 * Construct our game and set it running.
 	 */
-	public Game() {
+	public Game(GameConfig gameConfig) {
 		/** 원본 container ~~ **/
 		// create a frame to contain our game
 		container = new JFrame("Space Invaders 102");
-
 		// get hold the content of the frame and set up the resolution of the game
 		// 게임 프레임 & 해상도 설정
 		JPanel panel = (JPanel) container.getContentPane();
@@ -123,6 +123,7 @@ public class Game extends Canvas
 
 		// finally make the window visible
 		container.pack();
+		container.setLocationRelativeTo(null);
 		container.setResizable(false);
 		container.setVisible(true);
 
@@ -149,95 +150,8 @@ public class Game extends Canvas
 
 		// initialise the entities in our game so there's something
 		// to see at startup
+
 		initEntities();
-	}
-
-	public void mainPage(){
-		// 게임 실행 하자마자 나오는 메인 페이지
-		mainPage = new JFrame("Space Invaders Main Page");
-		// frame 크기 800x600으로 설정
-		mainPage.setPreferredSize(new Dimension(800, 600));
-
-		// content pane 가져오기
-		Container mainPageContainPane = mainPage.getContentPane();
-
-		// 화면에 게임 이름 이미지로 넣기(수정)
-		JLabel showGameName = new JLabel("Space Invaders");
-		showGameName.setBounds(100, 100, 100, 20);
-		mainPage.add(showGameName);
-
-		// 버튼 생성 & 위치 설정
-		JButton gameStartButton = new JButton("GameStart");
-		gameStartButton.setBounds(100, 300, 600, 60);
-		JButton goStoreButton = new JButton("Store");
-		goStoreButton.setBounds(100, 380, 600, 60);
-		JButton goRankingButton = new JButton("Ranking");
-		goRankingButton.setBounds(100, 460, 600, 60);
-
-		// 버튼 눌렀을 때 페이지 이동
-		gameStartButton.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				selectStagePage();
-				mainPage.setVisible(false); // 창 안보이게 하기
-			}
-		});
-
-		// 화면에 버튼 보이도록 contain pane에 버튼 붙이기
-		mainPageContainPane.add(gameStartButton);
-		mainPageContainPane.add(goStoreButton);
-		mainPageContainPane.add(goRankingButton);
-
-		//panel의 레이아웃 매니저를 null로 설정 : 컴포넌트들의 위치와 크기를 수동으로 설정 가능 하도록
-		// setLayout(null)으로 설정하면 각 구성 요소의 위치와 크기를 직접 지정해야 함
-		mainPage.setLayout(null);
-		mainPage.pack();
-		mainPage.setVisible(true);
-
-		mainPage.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-	}
-
-	public void selectStagePage(){
-		// stage 선택 페이지
-		selectStagePage = new JFrame("SelectStagePage"); // frame 생성
-
-		// frame 크기 800x600으로 설정
-		selectStagePage.setPreferredSize(new Dimension(800,600));
-
-		// content pane 가져오기
-		Container selectStageContainPane = selectStagePage.getContentPane();
-
-		// 어떤 페이지인지 알 수 있도록 "STAGE"써있는 이미지 넣기
-		JLabel stageShowGameName = new JLabel("STAGE");
-		stageShowGameName.setBounds(0, 0, 800, 100); // x, y, width, height
-		selectStagePage.add(stageShowGameName);
-
-		// 버튼 생성 & 위치 설정
-		JButton[] stageButton = new JButton[5];
-		for(int i=0;i<5;i++){
-			stageButton[i] = new JButton("STAGE " + (i+1));
-			int y = 130 + 70*i;
-			stageButton[i].setBounds(100, y, 500, 60);
-		}
-
-		for(int i=0; i<5 ; i++){
-			selectStageContainPane.add(stageButton[i]);
-		}
-
-		stageButton[0].addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				new Game();
-				selectStagePage.setVisible(false); // 창 안보이게 하기
-			}
-		});
-
-		selectStagePage.setLayout(null);
-		selectStagePage.pack();
-		selectStagePage.setVisible(true);
-
-		selectStagePage.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		// ~~ stage 선택 페이지
 	}
 
 	/**
@@ -256,7 +170,7 @@ public class Game extends Canvas
 		skilPressed2 = false;
 
 		gameTimer.startTimer(); // 게임시작시 타이머 시작 add GameTimer by Eungyu
-		
+
 	}
 
 	/**
@@ -266,6 +180,7 @@ public class Game extends Canvas
 	private void initEntities() {
 		// create the player ship and place it roughly in the center of the screen
 		ship = new ShipEntity(this, "sprites/ship.gif",370,550, 1);
+//		ship = gameConfig.getSihpEntity();
 		entities.add(ship);
 
 		// create a block of aliens (5 rows, by 12 aliens, spaced evenly)
@@ -407,9 +322,7 @@ public class Game extends Canvas
 				break;
 			}
 		}
-		int max = idx;
-		int min = 0;
-		int randomInt = (int) (Math.random() * (max - min + 1) + min);
+		int randomInt = (int) (Math.random() * idx) ;
 		return list.get(randomInt);
 	}
 
@@ -447,7 +360,7 @@ public class Game extends Canvas
 				fps = 0;
 			}
 
-			// Get hold of a graphics context for the accelerated 
+			// Get hold of a graphics context for the accelerated
 			// surface and blank it out
 			Graphics2D g = (Graphics2D) strategy.getDrawGraphics();
 			g.setColor(Color.black);
@@ -470,7 +383,7 @@ public class Game extends Canvas
 			}
 
 			// brute force collisions, compare every entity against
-			// every other entity. If any of them collide notify 
+			// every other entity. If any of them collide notify
 			// both entities that the collision has occured
 			for (int p=0;p<entities.size();p++) {
 				for (int s=p+1;s<entities.size();s++) {
@@ -500,8 +413,8 @@ public class Game extends Canvas
 				logicRequiredThisLoop = false;
 			}
 
-			// if we're waiting for an "any key" press then draw the 
-			// current message 
+			// if we're waiting for an "any key" press then draw the
+			// current message
 			if (waitingForKeyPress) {
 				g.setColor(Color.white);
 				g.drawString(message,(800-g.getFontMetrics().stringWidth(message))/2,250);
@@ -513,7 +426,7 @@ public class Game extends Canvas
 			g.dispose();
 			strategy.show();
 
-			// resolve the movement of the ship. First assume the ship 
+			// resolve the movement of the ship. First assume the ship
 			// isn't moving. If either cursor key is pressed then
 			// update the movement appropraitely
 			ship.setHorizontalMovement(0);
@@ -544,7 +457,7 @@ public class Game extends Canvas
 
 			// we want each frame to take 10 milliseconds, to do this
 			// we've recorded when we started the frame. We add 10 milliseconds
-			// to this and then factor in the current time to give 
+			// to this and then factor in the current time to give
 			// us our final value to wait for
 			SystemTimer.sleep(lastLoopTime+10-SystemTimer.getTime());
 		}
@@ -574,7 +487,7 @@ public class Game extends Canvas
 		 * @param e The details of the key that was pressed
 		 */
 		public void keyPressed(KeyEvent e) {
-			// if we're waiting for an "any key" typed then we don't 
+			// if we're waiting for an "any key" typed then we don't
 			// want to do anything with just a "press"
 			if (waitingForKeyPress) {
 				return;
@@ -604,7 +517,7 @@ public class Game extends Canvas
 		 * @param e The details of the key that was released
 		 */
 		public void keyReleased(KeyEvent e) {
-			// if we're waiting for an "any key" typed then we don't 
+			// if we're waiting for an "any key" typed then we don't
 			// want to do anything with just a "released"
 			if (waitingForKeyPress) {
 				return;
@@ -642,7 +555,7 @@ public class Game extends Canvas
 			if (waitingForKeyPress) {
 				if (pressCount == 1) {
 					// since we've now recieved our key typed
-					// event we can mark it as such and start 
+					// event we can mark it as such and start
 					// our new game
 					waitingForKeyPress = false;
 					startGame();
@@ -667,14 +580,16 @@ public class Game extends Canvas
 	 * @param argv The arguments that are passed into our game
 	 */
 	public static void main(String argv[]) {
+		new MainFrame();
+
 //		Game g = new Game();
 //		g.mainPage();
-//
-//		// Start the main game loop, note: this method will not
-//		// return until the game has finished running. Hence we are
-//		// using the actual main thread to run the game.
+
+		// Start the main game loop, note: this method will not
+		// return until the game has finished running. Hence we are
+		// using the actual main thread to run the game.
 //		g.gameLoop();
 
-		new Frame();
+//		new MainFrame();
 	}
 }
