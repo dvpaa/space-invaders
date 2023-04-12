@@ -16,6 +16,7 @@ import org.newdawn.spaceinvaders.entity.Entity;
 import org.newdawn.spaceinvaders.entity.ShipEntity;
 import org.newdawn.spaceinvaders.entity.item.AttackItemEntity;
 import org.newdawn.spaceinvaders.entity.item.ItemEntity;
+import org.newdawn.spaceinvaders.entity.item.SkillCooldownItem;
 import org.newdawn.spaceinvaders.entity.item.SpeedItem;
 
 /**
@@ -62,10 +63,6 @@ public class Game extends Canvas
 
 	private long skillInterval2 = 2000;
 
-	private long itemInterval = 1000; // 아이템 생성 텀
-
-
-
 	/** The number of aliens left on the screen */
 	private int alienCount;
 	/** The message to display which waiting for a key press */
@@ -101,7 +98,7 @@ public class Game extends Canvas
 	// attribute added by Eungyu
 	private long lastItemGenerate = 0;
 	private ArrayList itemList = new ArrayList();
-
+	private long itemInterval = 1000; // 아이템 생성 텀
 	/**
 	 * Construct our game and set it running.
 	 */
@@ -317,7 +314,7 @@ public class Game extends Canvas
 		message = "Oh no! They got you, try again? \nYour time is " + gameTimer.getEndTime();
 		waitingForKeyPress = true;
 
-		// 게임 종료시 아이템 효과 초기화 및 아이템 제거
+		// 게임 종료시 아이템 효과 초기화 및 아이템 제거 added by Eungyu
 		for(int i=0; i<itemList.size(); i++){
 			((ItemEntity)itemList.get(i)).resetItemEffect();
 		}
@@ -333,6 +330,8 @@ public class Game extends Canvas
 		// 종료시 message를 시간이랑 같이 초기화 add GameTimer by Eungyu
 		message = "Well done! You Win! \nYour time is " + gameTimer.getEndTime();
 		waitingForKeyPress = true;
+
+		// 게임 종료시 아이템 효과 초기화 및 아이템 제거 added by Eungyu
 		for(int i=0; i<itemList.size(); i++){
 			((ItemEntity)itemList.get(i)).resetItemEffect();
 		}
@@ -444,9 +443,6 @@ public class Game extends Canvas
 	 * - Checking Input
 	 * <p>
 	 */
-	// method added by Enugyu
-
-
 	public void gameLoop() {
 		long lastLoopTime = SystemTimer.getTime();
 
@@ -470,11 +466,11 @@ public class Game extends Canvas
 				fps = 0;
 			}
 
-//			 아이템 생성
+//			 아이템 생성 added by Eungyu
 			if(System.currentTimeMillis() - lastItemGenerate > itemInterval) {
 				Random random = new Random();
 				lastItemGenerate = System.currentTimeMillis();
-				Entity item = new SpeedItem(this,random.nextInt(600), -35);
+				Entity item = new SkillCooldownItem(this,random.nextInt(600), -35);
 				entities.add(item);
 			}
 
@@ -524,6 +520,7 @@ public class Game extends Canvas
 			// be resolved, cycle round every entity requesting that
 			// their personal logic should be considered.
 
+			// 아이템 로직 added by Eungyu
 			for(int i=0;i<itemList.size();i++){
 				Entity item = (Entity) itemList.get(i);
 				((ItemEntity) item).doItemLogic();
@@ -533,6 +530,8 @@ public class Game extends Canvas
 			if (logicRequiredThisLoop) {
 				for (int i=0;i<entities.size();i++) {
 					Entity entity = (Entity) entities.get(i);
+
+					// 아이템 로직 실행 added by Eungyu
 					if(entity instanceof ItemEntity){
 						((ItemEntity) entity).doItemLogic();
 					}
@@ -714,6 +713,24 @@ public class Game extends Canvas
 	}
 	public double setmoveSpeed(double moveSpeed) {
 		return this.moveSpeed = moveSpeed;
+	}
+	public long getlastShipSkill1(){
+		return lastShipSkill1;
+	}
+	public void setlastShipSkill1(long lastShipSkill1){
+		this.lastShipSkill1 = lastShipSkill1;
+	}
+	public long getlastShipSkill2(){
+		return lastShipSkill2;
+	}
+	public void setlastShipSkill2(long lastShipSkill2){
+		this.lastShipSkill2 = lastShipSkill2;
+	}
+	public long getSkillInterval1(){
+		return skillInterval1;
+	}
+	public long getSkillInterval2(){
+		return skillInterval2;
 	}
 	/**
 	 * The entry point into the game. We'll simply create an

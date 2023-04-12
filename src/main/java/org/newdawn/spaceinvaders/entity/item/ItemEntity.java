@@ -1,7 +1,6 @@
 package org.newdawn.spaceinvaders.entity.item;
 
 import org.newdawn.spaceinvaders.Game;
-import org.newdawn.spaceinvaders.Sprite;
 import org.newdawn.spaceinvaders.entity.Entity;
 import org.newdawn.spaceinvaders.entity.ShipEntity;
 
@@ -11,7 +10,7 @@ public abstract class ItemEntity extends Entity{
     private Rectangle me = new Rectangle();
     private Rectangle him = new Rectangle();
     protected boolean used = false;
-    protected double movespeed = 300;
+    protected double dropSpeed = 300;
     protected ShipEntity shipEntity;
     protected boolean is_apply = false;
     protected Game game;
