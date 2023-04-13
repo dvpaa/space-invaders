@@ -92,6 +92,7 @@ public class Game extends Canvas
 	private JFrame mainPage;
 	private JFrame selectStagePage;
 	private MainFrame frame;
+	private JButton mainButton;
 
 	/**
 	 * Construct our game and set it running.
@@ -106,6 +107,18 @@ public class Game extends Canvas
 		JPanel panel = (JPanel) container.getContentPane();
 		panel.setPreferredSize(new Dimension(800,600));
 		panel.setLayout(null);
+
+		mainButton = new JButton("M");
+		mainButton.setBounds(750 , 550, 30, 30);
+		mainButton.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mousePressed(MouseEvent e) {
+				container.setVisible(false);
+				frame.setVisible(true);
+			}
+		});
+		panel.add(mainButton);
+		mainButton.setVisible(true);
 
 		JLabel timerlabel = gameTimer.getTimerLabel(); // 타이머 라벨 추가 add GameTimer by Eungyu
 		timerlabel.setBounds(740,0, 60, 25); // 타이머 크기, 위치 지정 add GameTimer by Eungyu

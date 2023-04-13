@@ -67,8 +67,8 @@ public class ShotEntity extends Entity {
 		}
 		if (!(other instanceof ShotEntity)) {
 			game.removeEntity(this);
+			used = true;
 		}
-		used = true;
 	}
 
 	public int attack() {
