@@ -5,6 +5,7 @@ import java.awt.event.*;
 import java.awt.image.BufferStrategy;
 import java.util.*;
 import java.util.List;
+import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 import javax.swing.*;
@@ -92,9 +93,9 @@ public class Game extends Canvas
 
 	// attribute added by Eungyu
 	private ArrayList itemList = new ArrayList();
-	private ArrayList randomItemList = new ArrayList();
+	private ArrayList<Supplier<Entity>> randomItemList = new ArrayList();
 	private long lastItemGenerate = 0;
-	private long itemInterval = 5000; // 아이템 생성 텀
+	private long itemInterval = 10000; // 아이템 생성 텀
 	/**
 	 * Construct our game and set it running.
 	 */
@@ -283,15 +284,13 @@ public class Game extends Canvas
 
 		// 생성 가능 아이템 리스트
 		Random random = new Random();
-		randomItemList.addAll(
-				Arrays.asList(
-						new PushItemEntity(this,random.nextInt(600), -35),
-						new AttackItemEntity(this,random.nextInt(600), -35),
-						new SpeedItemEntity(this,random.nextInt(600), -35),
-						new SkillCooldownItem(this,random.nextInt(600), -35),
-						new PushItemEntity(this,random.nextInt(600), -35)
-				)
-		);
+		randomItemList.addAll(Arrays.asList(
+				() -> new PushItemEntity(this, random.nextInt(800),-35),
+				() -> new AttackItemEntity(this, random.nextInt(800),-35),
+				() -> new SpeedItemEntity(this, random.nextInt(800),-35),
+				() -> new SkillCooldownItem(this, random.nextInt(800),-35),
+				() -> new AilenSlowItemEntity(this, random.nextInt(800),-35)
+		));
 	}
 
 	/**
@@ -478,7 +477,7 @@ public class Game extends Canvas
 			if(System.currentTimeMillis() - lastItemGenerate > itemInterval) {
 				Random random = new Random();
 				lastItemGenerate = System.currentTimeMillis();
-				Entity item = (Entity) randomItemList.get(random.nextInt(randomItemList.size()));
+				Entity item = randomItemList.get(random.nextInt(randomItemList.size())).get();
 				entities.add(item);
 			}
 

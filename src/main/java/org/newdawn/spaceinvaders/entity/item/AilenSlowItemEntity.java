@@ -10,7 +10,7 @@ import java.util.ArrayList;
 public class AilenSlowItemEntity extends ItemEntity{
     private Rectangle me = new Rectangle();
     private Rectangle him = new Rectangle();
-    private long effectTime = 1000;
+    private long effectTime = 5000;
     private long startTime = 0;
     private ArrayList ailen = new ArrayList();
 
