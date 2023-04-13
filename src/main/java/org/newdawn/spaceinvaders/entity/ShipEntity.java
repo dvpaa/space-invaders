@@ -1,6 +1,7 @@
 package org.newdawn.spaceinvaders.entity;
 
 import org.newdawn.spaceinvaders.Game;
+import org.newdawn.spaceinvaders.configuration.GameConfig;
 
 /**
  * The entity that represents the players ship
@@ -13,24 +14,28 @@ public class ShipEntity extends Entity {
 
 	private int power;
 
-	private int health = 2;
+	private int health;
 
-	private int magicPoint = 1;
+	private int magicPoint;
+	private GameConfig gameConfig;
 
-	/**
-	 * Create a new entity to represent the players ship
-	 *
-	 * @param game The game in which the ship is being created
-	 * @param ref  The reference to the sprite to show for the ship
-	 * @param x    The initial x location of the player's ship
-	 * @param y    The initial y location of the player's ship
-	 */
-	public ShipEntity(Game game, String ref, int x, int y, int power) {
 
-		super(ref, x, y);
+//	public ShipEntity(Game game, String ref, int x, int y, int power) {
+//
+//		super(ref, x, y);
+//
+//		this.game = game;
+//		this.power = power;
+//	}
+	public ShipEntity(Game game, GameConfig gameConfig, int x, int y) {
+
+		super(gameConfig.getShipRef(), x, y);
 
 		this.game = game;
-		this.power = power;
+		this.gameConfig = gameConfig;
+		this.power = gameConfig.getShipPower();
+		this.health = gameConfig.getShipHealth();
+		this.magicPoint = gameConfig.getShipMagicPoint();
 	}
 	
 	/**
@@ -79,16 +84,16 @@ public class ShipEntity extends Entity {
 
 	@Override
 	public ShotEntity fire() {
-		return new ShotEntity(game, "sprites/shot.gif",this.getX()+10,this.getY()-30, 100, 1);
+		return new ShotEntity(game, gameConfig, gameConfig.getShipShotRef(), true, this.getX() + 10, this.getY() - 30);
 	}
 
 	@Override
 	public Entity skill1() {
-		return new ShotEntity(game, "sprites/shot2.png", this.getX(), this.getY()-70, 5, 1.5);
+		return new ShotEntity(game, gameConfig, gameConfig.getShipFirstSkillRef(), true, this.getX(), this.getY()-70);
 	}
 
 	@Override
 	public Entity skill2() {
-		return new ShotEntity(game, "sprites/shot2.png", this.getX(), this.getY()-70, 5, 1.5);
+		return new ShotEntity(game, gameConfig, gameConfig.getShipFirstSkillRef(), true, this.getX(), this.getY()-70);
 	}
 }

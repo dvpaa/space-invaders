@@ -1,9 +1,9 @@
 package org.newdawn.spaceinvaders.entity;
 
 import org.newdawn.spaceinvaders.Game;
-import org.newdawn.spaceinvaders.GameConfig;
 import org.newdawn.spaceinvaders.Sprite;
 import org.newdawn.spaceinvaders.SpriteStore;
+import org.newdawn.spaceinvaders.configuration.GameConfig;
 
 /**
  * An entity which represents one of our space invader aliens.
@@ -27,27 +27,35 @@ public class AlienEntity extends Entity {
 	private int health;
 
 	private int power;
+	private GameConfig gameConfig;
 
-	/**
-	 * Create a new alien entity
-	 *
-	 * @param game The game in which this entity is being created
-	 * @param x    The intial x location of this alien
-	 * @param y    The intial y location of this alient
-	 */
-	public AlienEntity(Game game, int x, int y) {
-		super("sprites/alien.gif", x, y);
+//	public AlienEntity(Game game, int x, int y) {
+//		super("sprites/alien.gif", x, y);
+////		super(gameConfig.getAlienRef);
+//
+//		// setup the animatin frames
+//		frames[0] = sprite;
+//		frames[1] = SpriteStore.get().getSprite("sprites/alien2.gif");
+//		frames[2] = sprite;
+//		frames[3] = SpriteStore.get().getSprite("sprites/alien3.gif");
+//
+//		this.game = game;
+//		dx = -moveSpeed;
+//	}
+public AlienEntity(Game game, GameConfig gameConfig, String alienRef, int x, int y) {
+	super(alienRef, x, y);
 //		super(gameConfig.getAlienRef);
+	this.gameConfig = gameConfig;
 
-		// setup the animatin frames
-		frames[0] = sprite;
-		frames[1] = SpriteStore.get().getSprite("sprites/alien2.gif");
-		frames[2] = sprite;
-		frames[3] = SpriteStore.get().getSprite("sprites/alien3.gif");
+	// setup the animatin frames
+	frames[0] = sprite;
+	frames[1] = SpriteStore.get().getSprite("sprites/alien2.gif");
+	frames[2] = sprite;
+	frames[3] = SpriteStore.get().getSprite("sprites/alien3.gif");
 
-		this.game = game;
-		dx = -moveSpeed;
-	}
+	this.game = game;
+	dx = gameConfig.getAlienMoveSpeed();
+}
 
 	/**
 	 * Request that this alien moved based on time elapsed
@@ -129,6 +137,7 @@ public class AlienEntity extends Entity {
 
 	@Override
 	public ShotEntity fire() {
-		return new ShotEntity(game, "sprites/alienshot.png",this.getX()+25,this.getY()+30, this.power, -1);
+//		return new ShotEntity(game, "sprites/alienshot.png",this.getX()+25,this.getY()+30, this.power, -1);
+		return new ShotEntity(game, gameConfig, gameConfig.getAlienShotRef(), false, this.getX() + 25, this.getY() + 30);
 	}
 }

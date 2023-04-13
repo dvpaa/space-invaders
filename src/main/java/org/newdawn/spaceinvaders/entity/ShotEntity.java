@@ -1,6 +1,7 @@
 package org.newdawn.spaceinvaders.entity;
 
 import org.newdawn.spaceinvaders.Game;
+import org.newdawn.spaceinvaders.configuration.GameConfig;
 
 /**
  * An entity representing a shot fired by the player's ship
@@ -25,15 +26,31 @@ public class ShotEntity extends Entity {
 	 * @param x      The initial x location of the shot
 	 * @param y      The initial y location of the shot
 	 */
-	public ShotEntity(Game game, String sprite, int x, int y, int power, double direction) {
-
-		super(sprite, x, y);
-
+//	public ShotEntity(Game game, String sprite, int x, int y, int power, double direction) {
+//
+//		super(sprite, x, y);
+//
+//		this.game = game;
+//
+//		dy = moveSpeed * direction;
+//
+//		this.power = power;
+//
+//
+//	}
+	public ShotEntity(Game game, GameConfig gameConfig, String shotRef, boolean isShip, int x, int y) {
+		super(shotRef, x, y);
+		if (isShip) {
+			this.moveSpeed = gameConfig.getShipShotMoveSpeed();
+			this.power = gameConfig.getShipPower();
+		} else {
+			this.moveSpeed = gameConfig.getAlienShotMoveSpeed();
+			this.power = gameConfig.getAlienPower();
+		}
 		this.game = game;
 
-		dy = moveSpeed * direction;
+		dy = moveSpeed;
 
-		this.power = power;
 
 
 	}
