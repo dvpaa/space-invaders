@@ -17,6 +17,7 @@ public class ShotEntity extends Entity {
 	private boolean used = false;
 
 	private int power;
+	private boolean isSkill;
 
 	/**
 	 * Create a new shot from the player
@@ -38,15 +39,20 @@ public class ShotEntity extends Entity {
 //
 //
 //	}
-	public ShotEntity(Game game, GameConfig gameConfig, String shotRef, boolean isShip, int x, int y) {
+	public ShotEntity(Game game, GameConfig gameConfig, String shotRef, boolean isShip, int x, int y, boolean isSkill) {
 		super(shotRef, x, y);
 		if (isShip) {
-			this.moveSpeed = gameConfig.getShipShotMoveSpeed();
+			if (isSkill) {
+				this.moveSpeed = gameConfig.getShipShotMoveSpeed() * 1.2;
+			} else {
+				this.moveSpeed = gameConfig.getShipShotMoveSpeed();
+			}
 			this.power = gameConfig.getShipPower();
 		} else {
 			this.moveSpeed = gameConfig.getAlienShotMoveSpeed();
 			this.power = gameConfig.getAlienPower();
 		}
+		this.isSkill = isSkill;
 		this.game = game;
 
 		dy = moveSpeed;
@@ -83,7 +89,9 @@ public class ShotEntity extends Entity {
 			return;
 		}
 		if (!(other instanceof ShotEntity)) {
-			game.removeEntity(this);
+			if (!isSkill) {
+				game.removeEntity(this);
+			}
 			used = true;
 		}
 	}

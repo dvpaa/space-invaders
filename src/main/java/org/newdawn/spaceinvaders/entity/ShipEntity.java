@@ -84,16 +84,16 @@ public class ShipEntity extends Entity {
 
 	@Override
 	public ShotEntity fire() {
-		return new ShotEntity(game, gameConfig, gameConfig.getShipShotRef(), true, this.getX() + 10, this.getY() - 30);
+		return new ShotEntity(game, gameConfig, gameConfig.getShipShotRef(), true, this.getX() + 10, this.getY() - 30, false);
 	}
 
 	@Override
-	public Entity skill1() {
-		return new ShotEntity(game, gameConfig, gameConfig.getShipFirstSkillRef(), true, this.getX(), this.getY()-70);
+	public Entity firstSkill() {
+		return new ShotEntity(game, gameConfig, gameConfig.getShipFirstSkillRef(), true, this.getX(), this.getY()-70, true);
 	}
 
 	@Override
-	public Entity skill2() {
-		return new ShotEntity(game, gameConfig, gameConfig.getShipFirstSkillRef(), true, this.getX(), this.getY()-70);
+	public Entity secondSkill() {
+		return new ShotEntity(game, gameConfig, gameConfig.getShipFirstSkillRef(), true, this.getX(), this.getY()-70, true);
 	}
 }

@@ -154,11 +154,11 @@ public abstract class Entity {
 		return null;
 	}
 
-	public Entity skill1() {
+	public Entity firstSkill() {
 		return null;
 	}
 
-	public Entity skill2() {
+	public Entity secondSkill() {
 		return null;
 	}
 }

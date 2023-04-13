@@ -138,6 +138,6 @@ public AlienEntity(Game game, GameConfig gameConfig, String alienRef, int x, int
 	@Override
 	public ShotEntity fire() {
 //		return new ShotEntity(game, "sprites/alienshot.png",this.getX()+25,this.getY()+30, this.power, -1);
-		return new ShotEntity(game, gameConfig, gameConfig.getAlienShotRef(), false, this.getX() + 25, this.getY() + 30);
+		return new ShotEntity(game, gameConfig, gameConfig.getAlienShotRef(), false, this.getX() + 25, this.getY() + 30, false);
 	}
 }

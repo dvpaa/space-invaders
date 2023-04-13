@@ -308,7 +308,7 @@ public class Game extends Canvas
 
 		// if we waited long enough, create the shot entity, and record the time.
 		lastShipSkill1 = System.currentTimeMillis();
-		Entity shot = ship.skill1();
+		Entity shot = ship.firstSkill();
 		entities.add(shot);
 	}
 
@@ -320,7 +320,7 @@ public class Game extends Canvas
 
 		// if we waited long enough, create the shot entity, and record the time.
 		lastShipSkill2 = System.currentTimeMillis();
-		Entity shot = ship.skill2();
+		Entity shot = ship.secondSkill();
 		entities.add(shot);
 	}
 
