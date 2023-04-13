@@ -11,6 +11,7 @@ import java.util.stream.Collectors;
 import javax.swing.*;
 
 import org.newdawn.spaceinvaders.configuration.GameConfig;
+import org.newdawn.spaceinvaders.configuration.ShipType;
 import org.newdawn.spaceinvaders.entity.AlienEntity;
 import org.newdawn.spaceinvaders.entity.Entity;
 import org.newdawn.spaceinvaders.entity.ShipEntity;
@@ -38,7 +39,7 @@ public class Game extends Canvas
 	/** True if the game is currently "running", i.e. the game loop is looping */
 	private boolean gameRunning = true;
 	/** The list of all the entities that exist in our game */
-	private ArrayList<Entity> entities = new ArrayList<>();
+	public ArrayList<Entity> entities = new ArrayList<>();
 	/** The list of entities that need to be removed from the game this loop */
 	private ArrayList removeList = new ArrayList();
 	/** The entity representing the player */
@@ -56,9 +57,9 @@ public class Game extends Canvas
 	/** The interval between our players shot (ms) */
 	private long firingInterval = 500;
 
-	private long skillInterval1 = 2000;
+	private long skillInterval1 = 4000;
 
-	private long skillInterval2 = 2000;
+	private long skillInterval2 = 4000;
 
 	/** The number of aliens left on the screen */
 	private int alienCount;
@@ -307,9 +308,13 @@ public class Game extends Canvas
 		}
 
 		// if we waited long enough, create the shot entity, and record the time.
-		lastShipSkill1 = System.currentTimeMillis();
-		Entity shot = ship.firstSkill();
-		entities.add(shot);
+		if (gameConfig.getShipType().equals(ShipType.DEFENCE_UP)) {
+			ship.defenceSkill();
+		} else {
+			lastShipSkill1 = System.currentTimeMillis();
+			Entity shot = ship.attackSkill();
+			entities.add(shot);
+		}
 	}
 
 	public void tryToSkill2(Entity ship) {
@@ -317,11 +322,9 @@ public class Game extends Canvas
 		if (System.currentTimeMillis() - lastShipSkill2 < skillInterval2) {
 			return;
 		}
-
-		// if we waited long enough, create the shot entity, and record the time.
-		lastShipSkill2 = System.currentTimeMillis();
-		Entity shot = ship.secondSkill();
-		entities.add(shot);
+		if (gameConfig.getShipType().equals(ShipType.SPEED_UP)) {
+			ship.defenceSkill();
+		}
 	}
 
 	public void attackFromAlien(Entity alien) {

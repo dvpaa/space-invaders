@@ -17,7 +17,8 @@ public class ShotEntity extends Entity {
 	private boolean used = false;
 
 	private int power;
-	private boolean isSkill;
+	public boolean isShip;
+	public boolean isSkill;
 
 	/**
 	 * Create a new shot from the player
@@ -52,6 +53,7 @@ public class ShotEntity extends Entity {
 			this.moveSpeed = gameConfig.getAlienShotMoveSpeed();
 			this.power = gameConfig.getAlienPower();
 		}
+		this.isShip = isShip;
 		this.isSkill = isSkill;
 		this.game = game;
 

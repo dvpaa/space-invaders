@@ -22,7 +22,10 @@ public class GameConfig {
     private String alienShotRef;
     private double alienShotMoveSpeed;
 
+    private String shipType;
+
     public GameConfig(String shipType, int stage) {
+        this.shipType = shipType;
 
         switch (stage) {
             case 1:
@@ -128,5 +131,9 @@ public class GameConfig {
 
     public int getAlienRow() {
         return alienRow;
+    }
+
+    public String getShipType() {
+        return shipType;
     }
 }

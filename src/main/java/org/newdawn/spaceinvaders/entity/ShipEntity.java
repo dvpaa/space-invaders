@@ -88,8 +88,19 @@ public class ShipEntity extends Entity {
 	}
 
 	@Override
-	public Entity firstSkill() {
+	public Entity attackSkill() {
 		return new ShotEntity(game, gameConfig, gameConfig.getShipFirstSkillRef(), true, this.getX(), this.getY()-70, true);
+	}
+
+	@Override
+	public void defenceSkill() {
+		for (Entity entity : game.entities) {
+			if (entity instanceof ShotEntity) {
+				if (!((ShotEntity) entity).isShip) {
+					game.removeEntity(entity);
+				}
+			}
+		}
 	}
 
 	@Override
