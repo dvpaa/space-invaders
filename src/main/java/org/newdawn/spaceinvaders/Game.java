@@ -13,7 +13,6 @@ import javax.swing.*;
 import org.newdawn.spaceinvaders.entity.AlienEntity;
 import org.newdawn.spaceinvaders.entity.Entity;
 import org.newdawn.spaceinvaders.entity.ShipEntity;
-import org.newdawn.spaceinvaders.frame.GameFrame;
 import org.newdawn.spaceinvaders.frame.MainFrame;
 
 /**
@@ -92,11 +91,13 @@ public class Game extends Canvas
 	private int score=0; // 점수 초기화
 	private JFrame mainPage;
 	private JFrame selectStagePage;
+	private MainFrame frame;
 
 	/**
 	 * Construct our game and set it running.
 	 */
-	public Game(GameConfig gameConfig) {
+	public Game(MainFrame frame, GameConfig gameConfig) {
+		this.frame = frame;
 		/** 원본 container ~~ **/
 		// create a frame to contain our game
 		container = new JFrame("Space Invaders 102");
@@ -170,7 +171,6 @@ public class Game extends Canvas
 		skilPressed2 = false;
 
 		gameTimer.startTimer(); // 게임시작시 타이머 시작 add GameTimer by Eungyu
-
 	}
 
 	/**
@@ -180,14 +180,13 @@ public class Game extends Canvas
 	private void initEntities() {
 		// create the player ship and place it roughly in the center of the screen
 		ship = new ShipEntity(this, "sprites/ship.gif",370,550, 1);
-//		ship = gameConfig.getSihpEntity();
 		entities.add(ship);
 
 		// create a block of aliens (5 rows, by 12 aliens, spaced evenly)
 		alienCount = 0;
-		for (int row=0;row<5;row++) {
-			for (int x=0;x<12;x++) {
-				Entity alien = new AlienEntity(this,100+(x*50),(50)+row*30);
+		for (int row = 0; row < 5; row++) {
+			for (int x = 0; x < 12; x++) {
+				Entity alien = new AlienEntity(this, 100 + (x * 50), (50) + row * 30);
 				entities.add(alien);
 				alienCount++;
 			}
@@ -230,8 +229,16 @@ public class Game extends Canvas
 	public void notifyWin() {
 		gameTimer.stopTimer();
 		// 종료시 message를 시간이랑 같이 초기화 add GameTimer by Eungyu
-		message = "Well done! You Win! \nYour time is " + gameTimer.getEndTime() + "\n Your score is " + gameTimer.setScore();
-		waitingForKeyPress = true;
+		message = "Well done! You Win! \nYour time is " + gameTimer.getEndTime() + "\n Your score is " + gameTimer.getScore();
+//		waitingForKeyPress = true;
+		try {
+			Thread.sleep(500);
+		} catch (InterruptedException ex) {
+			ex.printStackTrace();
+		}
+		this.container.setVisible(false);
+		this.frame.setVisible(true);
+//		new MainFrame();
 	}
 
 	/**
@@ -322,7 +329,10 @@ public class Game extends Canvas
 				break;
 			}
 		}
-		int randomInt = (int) (Math.random() * idx) ;
+		int randomInt = (int) (Math.random() * idx);
+		if (randomInt >= list.size()) {
+			return null;
+		}
 		return list.get(randomInt);
 	}
 
@@ -451,7 +461,10 @@ public class Game extends Canvas
 			}
 
 			if ((System.currentTimeMillis() / 100) % 2 == 0) {
-				attackFromAlien(selectAttackAlien(entities));
+				Entity entity = selectAttackAlien(entities);
+				if (entity != null) {
+					attackFromAlien(entity);
+				}
 			}
 
 

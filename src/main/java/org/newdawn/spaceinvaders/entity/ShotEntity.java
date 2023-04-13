@@ -65,7 +65,9 @@ public class ShotEntity extends Entity {
 		if (used) {
 			return;
 		}
-		game.removeEntity(this);
+		if (!(other instanceof ShotEntity)) {
+			game.removeEntity(this);
+		}
 		used = true;
 	}
 

@@ -10,11 +10,15 @@ import java.awt.event.MouseEvent;
 
 public class MainFrame extends JFrame {
 
+    private MainFrame frame = this;
+
     private JLabel background;
     private ImageIcon quickButtonBasic = new ImageIcon("src/main/resources/button/quickButtonBasic.png");
     private ImageIcon quickButtonEntered = new ImageIcon("src/main/resources/button/quickButtonEntered.png");
     private JButton startButton;
     private JButton quickButton;
+    private JButton shopButton;
+    private JButton rankingButton;
 
     private JButton firstStageButton;
     private JButton secondStageButton;
@@ -42,33 +46,43 @@ public class MainFrame extends JFrame {
         background = new JLabel(new ImageIcon("src/main/resources/background/introBackground.jpg"));
         setContentPane(background);
 
-        quickButton = new JButton(quickButtonBasic);
-        quickButton.setBounds(0, 100, 180, 50);
-        quickButton.setPreferredSize(new Dimension(180, 50));
+        rankingButton = new JButton("Ranking");
+        rankingButton.setBounds(230, 420, 100, 50);
+        rankingButton.setPreferredSize(new Dimension(100, 50));
+        add(rankingButton);
+
+        shopButton = new JButton("Shop");
+        shopButton.setBounds(350, 420, 100, 50);
+        shopButton.setPreferredSize(new Dimension(100, 50));
+        add(shopButton);
+
+        quickButton = new JButton("Exit");
+        quickButton.setBounds(470, 420, 100, 50);
+        quickButton.setPreferredSize(new Dimension(100, 50));
         add(quickButton);
 
         firstStageButton = new JButton("Stage 1");
-        firstStageButton.setBounds(100, 300, 100, 50);
-        firstStageButton.setPreferredSize(new Dimension(100, 50));
+        firstStageButton.setBounds(110, 350, 100, 50);
+        firstStageButton.setPreferredSize(new Dimension(110, 50));
         add(firstStageButton);
 
         secondStageButton = new JButton("Stage 2");
-        secondStageButton.setBounds(250, 300, 100, 50);
+        secondStageButton.setBounds(230, 350, 100, 50);
         secondStageButton.setPreferredSize(new Dimension(100, 50));
         add(secondStageButton);
 
         thirdStageButton = new JButton("Stage 3");
-        thirdStageButton.setBounds(400, 300, 100, 50);
+        thirdStageButton.setBounds(350, 350, 100, 50);
         thirdStageButton.setPreferredSize(new Dimension(100, 50));
         add(thirdStageButton);
 
         forthStageButton = new JButton("Stage 4");
-        forthStageButton.setBounds(550, 300, 100, 50);
+        forthStageButton.setBounds(470, 350, 100, 50);
         forthStageButton.setPreferredSize(new Dimension(100, 50));
         add(forthStageButton);
 
         fifthStageButton = new JButton("Stage 5");
-        fifthStageButton.setBounds(700, 300, 100, 50);
+        fifthStageButton.setBounds(590, 350, 100, 50);
         fifthStageButton.setPreferredSize(new Dimension(100, 50));
         add(fifthStageButton);
 
@@ -76,6 +90,13 @@ public class MainFrame extends JFrame {
     }
 
     private void listenerSetting() {
+
+        shopButton.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent e) {
+//                new ShopFrame();
+            }
+        });
 
         quickButton.addMouseListener(new MouseAdapter() {
             @Override
@@ -87,18 +108,6 @@ public class MainFrame extends JFrame {
                 }
                 System.exit(0);
             }
-
-            @Override
-            public void mouseEntered(MouseEvent e) {
-                quickButton.setIcon(quickButtonEntered);
-                quickButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
-            }
-
-            @Override
-            public void mouseExited(MouseEvent e) {
-                quickButton.setIcon(quickButtonBasic);
-                quickButton.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
-            }
         });
 
         firstStageButton.addMouseListener(new MouseAdapter() {
@@ -108,7 +117,7 @@ public class MainFrame extends JFrame {
                     @Override
                     public void run() {
                         setVisible(false);
-                        Game game = new Game(new GameConfig(1));
+                        Game game = new Game(frame, new GameConfig(1));
                         game.gameLoop();
                     }
                 });

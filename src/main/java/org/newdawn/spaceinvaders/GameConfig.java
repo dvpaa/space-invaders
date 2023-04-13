@@ -33,7 +33,6 @@ public class GameConfig {
 
                 this.alienShotRef = "sprites/alienshot.png";
                 this.shipShotMoveSpeed = 300;
-
         }
     }
 }
