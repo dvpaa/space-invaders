@@ -21,5 +21,11 @@
             <scope>system</scope>
             <systemPath>${project.basedir}/lib/gagetimer.jar</systemPath>
         </dependency>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>RELEASE</version>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
 </project>

@@ -1,6 +1,7 @@
 package org.newdawn.spaceinvaders.entity;
 
 import org.newdawn.spaceinvaders.Game;
+import org.newdawn.spaceinvaders.entity.item.ItemEntity;
 import org.newdawn.spaceinvaders.configuration.GameConfig;
 
 /**
@@ -80,6 +81,9 @@ public class ShipEntity extends Entity {
 				game.notifyDeath();
 			}
 		}
+		if (other instanceof ItemEntity) {
+			((ItemEntity) other).setShipEntity(this);
+		}
 	}
 
 	@Override
@@ -106,5 +110,12 @@ public class ShipEntity extends Entity {
 	@Override
 	public Entity secondSkill() {
 		return new ShotEntity(game, gameConfig, gameConfig.getShipFirstSkillRef(), true, this.getX(), this.getY()-70, true);
+	}
+
+	public int getPower() {
+		return power;
+	}
+	public void setPower(int power) {
+		this.power = power;
 	}
 }
