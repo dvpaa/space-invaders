@@ -87,6 +87,7 @@ public class ShotEntity extends Entity {
 	public void collidedWith(Entity other) {
 		// prevents double kills, if we've already hit something,
 		// don't collide
+		if(!(other instanceof AlienEntity)){ return; }
 		if (used) {
 			return;
 		}

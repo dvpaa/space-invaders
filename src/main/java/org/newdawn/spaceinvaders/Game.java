@@ -3,9 +3,9 @@ package org.newdawn.spaceinvaders;
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.image.BufferStrategy;
-import java.util.ArrayList;
-import java.util.Comparator;
+import java.util.*;
 import java.util.List;
+import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 import javax.swing.*;
@@ -15,7 +15,9 @@ import org.newdawn.spaceinvaders.configuration.ShipType;
 import org.newdawn.spaceinvaders.entity.AlienEntity;
 import org.newdawn.spaceinvaders.entity.Entity;
 import org.newdawn.spaceinvaders.entity.ShipEntity;
+import org.newdawn.spaceinvaders.entity.item.*;
 import org.newdawn.spaceinvaders.frame.MainFrame;
+
 
 /**
  * The main hook of our game. This class with both act as a manager
@@ -98,6 +100,11 @@ public class Game extends Canvas
 
 	private GameConfig gameConfig;
 
+	// attribute added by Eungyu
+	private ArrayList itemList = new ArrayList();
+	private ArrayList<Supplier<Entity>> randomItemList = new ArrayList();
+	private long lastItemGenerate = 0;
+	private long itemInterval = 10000; // 아이템 생성 텀
 	/**
 	 * Construct our game and set it running.
 	 */
@@ -211,6 +218,16 @@ public class Game extends Canvas
 				alienCount++;
 			}
 		}
+
+		// 생성 가능 아이템 리스트
+		Random random = new Random();
+		randomItemList.addAll(Arrays.asList(
+				() -> new PushItemEntity(this, random.nextInt(800),-35),
+				() -> new AttackItemEntity(this, random.nextInt(800),-35),
+				() -> new SpeedItemEntity(this, random.nextInt(800),-35),
+				() -> new SkillCooldownItem(this, random.nextInt(800),-35),
+				() -> new AilenSlowItemEntity(this, random.nextInt(800),-35)
+		));
 	}
 
 	/**
@@ -240,6 +257,12 @@ public class Game extends Canvas
 		// 종료시 message를 시간이랑 같이 초기화 add GameTimer by Eungyu
 		message = "Oh no! They got you, try again? \nYour time is " + gameTimer.getEndTime() + "\n Your score is " + score;
 		waitingForKeyPress = true;
+
+		// 게임 종료시 아이템 효과 초기화 및 아이템 제거 added by Eungyu
+		for(int i=0; i<itemList.size(); i++){
+			((ItemEntity)itemList.get(i)).resetItemEffect();
+		}
+		itemList.clear();
 	}
 
 	/**
@@ -248,9 +271,15 @@ public class Game extends Canvas
 	 */
 	public void notifyWin() {
 		gameTimer.stopTimer();
-		// 종료시 message를 시간이랑 같이 초기화 add GameTimer by Eungyu
-		message = "Well done! You Win! \nYour time is " + gameTimer.getEndTime() + "\n Your score is " + gameTimer.getScore();
+    message = "Well done! You Win! \nYour time is " + gameTimer.getEndTime() + "\n Your score is " + gameTimer.getScore();
 //		waitingForKeyPress = true;
+
+		// 게임 종료시 아이템 효과 초기화 및 아이템 제거 added by Eungyu
+		for(int i=0; i<itemList.size(); i++){
+			((ItemEntity)itemList.get(i)).resetItemEffect();
+		}
+		itemList.clear();
+	
 		try {
 			Thread.sleep(500);
 		} catch (InterruptedException ex) {
@@ -258,7 +287,6 @@ public class Game extends Canvas
 		}
 		this.container.setVisible(false);
 		this.frame.setVisible(true);
-//		new MainFrame();
 	}
 
 	/**
@@ -394,6 +422,14 @@ public class Game extends Canvas
 				fps = 0;
 			}
 
+//			 아이템 생성 added by Eungyu
+			if(System.currentTimeMillis() - lastItemGenerate > itemInterval) {
+				Random random = new Random();
+				lastItemGenerate = System.currentTimeMillis();
+				Entity item = randomItemList.get(random.nextInt(randomItemList.size())).get();
+				entities.add(item);
+			}
+
 			// Get hold of a graphics context for the accelerated
 			// surface and blank it out
 			Graphics2D g = (Graphics2D) strategy.getDrawGraphics();
@@ -438,9 +474,22 @@ public class Game extends Canvas
 			// if a game event has indicated that game logic should
 			// be resolved, cycle round every entity requesting that
 			// their personal logic should be considered.
+
+			// 아이템 로직 added by Eungyu
+			for(int i=0;i<itemList.size();i++){
+				Entity item = (Entity) itemList.get(i);
+				((ItemEntity) item).doItemLogic();
+			}
+
+
 			if (logicRequiredThisLoop) {
 				for (int i=0;i<entities.size();i++) {
 					Entity entity = (Entity) entities.get(i);
+
+					// 아이템 로직 실행 added by Eungyu
+					if(entity instanceof ItemEntity){
+						((ItemEntity) entity).doItemLogic();
+					}
 					entity.doLogic();
 				}
 
@@ -614,6 +663,46 @@ public class Game extends Canvas
 		}
 	}
 
+	// method added by Eungyu
+	public void addItem(Entity entity) {
+		itemList.add(entity);
+	}
+	public void removeItem(Entity entity) {
+		itemList.remove(entity);
+	}
+	public double getmoveSpeed() {
+		return moveSpeed;
+	}
+	public double setmoveSpeed(double moveSpeed) {
+		return this.moveSpeed = moveSpeed;
+	}
+	public long getlastShipSkill1(){
+		return lastShipSkill1;
+	}
+	public void setlastShipSkill1(long lastShipSkill1){
+		this.lastShipSkill1 = lastShipSkill1;
+	}
+	public long getlastShipSkill2(){
+		return lastShipSkill2;
+	}
+	public void setlastShipSkill2(long lastShipSkill2){
+		this.lastShipSkill2 = lastShipSkill2;
+	}
+	public long getSkillInterval1(){
+		return skillInterval1;
+	}
+	public long getSkillInterval2(){
+		return skillInterval2;
+	}
+	public ArrayList getAilen(){
+		ArrayList ailens = new ArrayList();
+		for(int i=0; i<entities.size(); i++){
+			if(entities.get(i) instanceof AlienEntity){
+				ailens.add(entities.get(i));
+			}
+		}
+		return ailens;
+	}
 	/**
 	 * The entry point into the game. We'll simply create an
 	 * instance of class which will start the display and game

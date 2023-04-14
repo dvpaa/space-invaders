@@ -30,6 +30,7 @@ public abstract class Entity {
 	protected double dx;
 	/** The current speed of this entity vertically (pixels/sec) */
 	protected double dy;
+	protected double moveSpeed;
 	/** The rectangle used for this entity during collisions  resolution */
 	private Rectangle me = new Rectangle();
 	/** The rectangle used for other entities during collision resolution */
@@ -129,6 +130,10 @@ public abstract class Entity {
 	public int getY() {
 		return (int) y;
 	}
+
+	public Sprite getSprite() {
+		return sprite;
+	}
 	
 	/**
 	 * Check if this entity collised with another.
@@ -163,5 +168,17 @@ public abstract class Entity {
 
 	public Entity secondSkill() {
 		return null;
+	}
+
+	// method added by Eungyu
+
+	public double getDx() {
+		return dx;
+	}
+	public void setDx(double dx) {
+		this.dx = dx;
+	}
+	public void setY(double y) {
+		this.y = y;
 	}
 }
