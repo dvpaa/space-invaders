@@ -57,9 +57,9 @@ public class Game extends Canvas
 	/** The interval between our players shot (ms) */
 	private long firingInterval = 500;
 
-	private long skillInterval1 = 4000;
+	private long skillInterval1 = 10000;
 
-	private long skillInterval2 = 4000;
+	private long skillInterval2 = 10000;
 
 	/** The number of aliens left on the screen */
 	private int alienCount;
@@ -200,13 +200,13 @@ public class Game extends Canvas
 //		ship = new ShipEntity(this, "sprites/ship.gif",370,550, 1);
 		ship = new ShipEntity(this, gameConfig, 370, 550);
 		entities.add(ship);
+		alienCount = 1;
 
 		// create a block of aliens (5 rows, by 12 aliens, spaced evenly)
-		alienCount = 0;
 		for (int row = 0; row < gameConfig.getAlienRow(); row++) {
 			for (int x = 0; x < 12; x++) {
 //				Entity alien = new AlienEntity(this, 100 + (x * 50), (50) + row * 30);
-				Entity alien = new AlienEntity(this, gameConfig, gameConfig.getAlienRef(), 100 + (x * 50), (50) + row * 30);
+				Entity alien = new AlienEntity(this, gameConfig, gameConfig.getAlienRef(), 100 + (x * 50), (50) + row * 30, false);
 				entities.add(alien);
 				alienCount++;
 			}
@@ -268,7 +268,7 @@ public class Game extends Canvas
 		// reduce the alient count, if there are none left, the player has won!
 		alienCount--;
 
-		if (alienCount == 0) {
+		if (alienCount == -1) {
 			notifyWin();
 		}
 
@@ -342,20 +342,23 @@ public class Game extends Canvas
 				.sorted(Comparator.comparing(Entity::getY).reversed())
 				.limit(12)
 				.collect(Collectors.toList());
-
-		int standardY = list.get(0).getY();
-		int idx = 11;
-		for (int i = 1; i < list.size(); i++) {
-			if (standardY != list.get(i).getY()) {
-				idx = i - 1;
-				break;
+		if (alienCount != 1) {
+			return list.get(0);
+		} else {
+			int standardY = list.get(0).getY();
+			int idx = 11;
+			for (int i = 1; i < list.size(); i++) {
+				if (standardY != list.get(i).getY()) {
+					idx = i - 1;
+					break;
+				}
 			}
+			int randomInt = (int) (Math.random() * idx);
+			if (randomInt >= list.size()) {
+				return null;
+			}
+			return list.get(randomInt);
 		}
-		int randomInt = (int) (Math.random() * idx);
-		if (randomInt >= list.size()) {
-			return null;
-		}
-		return list.get(randomInt);
 	}
 
 	/**
@@ -487,6 +490,11 @@ public class Game extends Canvas
 				if (entity != null) {
 					attackFromAlien(entity);
 				}
+			}
+			if (alienCount == 1) {
+				Entity alien = new AlienEntity(this, gameConfig, gameConfig.getBossAlienRef(), 100 + (6 * 50), (50) + 3 * 30, true);
+				entities.add(alien);
+				alienCount = 0;
 			}
 
 

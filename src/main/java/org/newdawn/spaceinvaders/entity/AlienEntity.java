@@ -16,7 +16,7 @@ public class AlienEntity extends Entity {
 	/** The game in which the entity exists */
 	private Game game;
 	/** The animation frames */
-	private Sprite[] frames = new Sprite[4];
+	private Sprite[] frames = new Sprite[5];
 	/** The time since the last frame change took place */
 	private long lastFrameChange;
 	/** The frame duration in milliseconds, i.e. how long any given frame of animation lasts */
@@ -28,33 +28,30 @@ public class AlienEntity extends Entity {
 
 	private int power;
 	private GameConfig gameConfig;
+	private boolean isBoss;
 
-//	public AlienEntity(Game game, int x, int y) {
-//		super("sprites/alien.gif", x, y);
-////		super(gameConfig.getAlienRef);
-//
-//		// setup the animatin frames
-//		frames[0] = sprite;
-//		frames[1] = SpriteStore.get().getSprite("sprites/alien2.gif");
-//		frames[2] = sprite;
-//		frames[3] = SpriteStore.get().getSprite("sprites/alien3.gif");
-//
-//		this.game = game;
-//		dx = -moveSpeed;
-//	}
-public AlienEntity(Game game, GameConfig gameConfig, String alienRef, int x, int y) {
+public AlienEntity(Game game, GameConfig gameConfig, String alienRef,  int x, int y, boolean isBoss) {
 	super(alienRef, x, y);
-//		super(gameConfig.getAlienRef);
-	this.gameConfig = gameConfig;
-
-	// setup the animatin frames
-	frames[0] = sprite;
-	frames[1] = SpriteStore.get().getSprite("sprites/alien2.gif");
-	frames[2] = sprite;
-	frames[3] = SpriteStore.get().getSprite("sprites/alien3.gif");
 
 	this.game = game;
-	dx = gameConfig.getAlienMoveSpeed();
+	this.gameConfig = gameConfig;
+	this.isBoss = isBoss;
+	if (isBoss) {
+		this.health = gameConfig.getBossAlienHealth();
+		this.power = gameConfig.getBossAlienPower();
+		dx = gameConfig.getBossAlienMoveSpeed();
+	} else {
+		this.health = gameConfig.getAlienHealth();
+		this.power = gameConfig.getAlienPower();
+		dx = gameConfig.getAlienMoveSpeed();
+	}
+
+	// setup the animatin frames
+	frames[0] = SpriteStore.get().getSprite("sprites/alien1.png");
+	frames[1] = SpriteStore.get().getSprite("sprites/alien2.png");
+	frames[2] = SpriteStore.get().getSprite("sprites/alien3.png");
+	frames[3] = SpriteStore.get().getSprite("sprites/alien4.png");
+	frames[4] = SpriteStore.get().getSprite("sprites/alien5.png");
 }
 
 	/**
@@ -66,21 +63,9 @@ public AlienEntity(Game game, GameConfig gameConfig, String alienRef, int x, int
 		// since the move tells us how much time has passed
 		// by we can use it to drive the animation, however
 		// its the not the prettiest solution
-		lastFrameChange += delta;
-		
-		// if we need to change the frame, update the frame number
-		// and flip over the sprite in use
-		if (lastFrameChange > frameDuration) {
-			// reset our frame change time counter
-			lastFrameChange = 0;
-			
-			// update the frame
-			frameNumber++;
-			if (frameNumber >= frames.length) {
-				frameNumber = 0;
-			}
-			
-			sprite = frames[frameNumber];
+
+		if (!this.isBoss) {
+			sprite = frames[this.health - 1];
 		}
 		
 		// if we have reached the left hand side of the screen and
@@ -104,8 +89,11 @@ public AlienEntity(Game game, GameConfig gameConfig, String alienRef, int x, int
 	public void doLogic() {
 		// swap over horizontal movement and move down the
 		// screen a bit
+
 		dx = -dx;
-		y += 10;
+		if (!isBoss) {
+			y += 10;
+		}
 		
 		// if we've reached the bottom of the screen then the player
 		// dies
