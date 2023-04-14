@@ -17,6 +17,7 @@ import org.newdawn.spaceinvaders.entity.Entity;
 import org.newdawn.spaceinvaders.entity.ShipEntity;
 import org.newdawn.spaceinvaders.entity.item.*;
 import org.newdawn.spaceinvaders.frame.MainFrame;
+import org.newdawn.spaceinvaders.frame.ScoreFrame;
 
 
 /**
@@ -271,7 +272,6 @@ public class Game extends Canvas
 	 */
 	public void notifyWin() {
 		gameTimer.stopTimer();
-    message = "Well done! You Win! \nYour time is " + gameTimer.getEndTime() + "\n Your score is " + gameTimer.getScore();
 //		waitingForKeyPress = true;
 
 		// 게임 종료시 아이템 효과 초기화 및 아이템 제거 added by Eungyu
@@ -279,14 +279,10 @@ public class Game extends Canvas
 			((ItemEntity)itemList.get(i)).resetItemEffect();
 		}
 		itemList.clear();
-	
-		try {
-			Thread.sleep(500);
-		} catch (InterruptedException ex) {
-			ex.printStackTrace();
-		}
+
 		this.container.setVisible(false);
 		this.frame.setVisible(true);
+		new ScoreFrame(gameTimer.getScore());
 	}
 
 	/**
