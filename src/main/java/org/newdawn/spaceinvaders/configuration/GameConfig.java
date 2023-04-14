@@ -49,11 +49,11 @@ public class GameConfig {
                 this.alienPower = 1;
                 this.alienRow = 3;
                 this.alienShotMoveSpeed = 300;
-                this.bossAlienRef = "sprites/alien2.png";
-                this.bossAlienHealth = 10;
+                this.bossAlienRef = "sprites/boss1.png";
+                this.bossAlienHealth = 50;
                 this.bossAlienPower = 2;
                 this.bossAlienMoveSpeed = -300;
-                this.bossAlienShotRef = "sprites/alienshot.png";
+                this.bossAlienShotRef = "sprites/boss2.png";
                 this.bossAlienShotMoveSpeed = 500;
                 break;
             case 2:
@@ -62,8 +62,8 @@ public class GameConfig {
                 this.alienPower = 1;
                 this.alienRow = 4;
                 this.alienShotMoveSpeed = 300;
-                this.bossAlienRef = "sprites/alien2.png";
-                this.bossAlienHealth = 10;
+                this.bossAlienRef = "sprites/boss2.png";
+                this.bossAlienHealth = 50;
                 this.bossAlienPower = 2;
                 this.bossAlienMoveSpeed = -300;
                 this.bossAlienShotRef = "sprites/alienshot.png";
@@ -74,39 +74,39 @@ public class GameConfig {
                 this.alienHealth = 4;
                 this.alienPower = 2;
                 this.alienRow = 4;
-                this.alienShotMoveSpeed = 500;
-                this.bossAlienRef = "sprites/alien2.png";
-                this.bossAlienHealth = 10;
+                this.alienShotMoveSpeed = 400;
+                this.bossAlienRef = "sprites/boss3.png";
+                this.bossAlienHealth = 50;
                 this.bossAlienPower = 2;
-                this.bossAlienMoveSpeed = -300;
+                this.bossAlienMoveSpeed = -400;
                 this.bossAlienShotRef = "sprites/alienshot.png";
-                this.bossAlienShotMoveSpeed = 500;
+                this.bossAlienShotMoveSpeed = 600;
                 break;
             case 4:
                 this.alienRef = "sprites/alien5.png";
                 this.alienHealth = 5;
                 this.alienPower = 2;
                 this.alienRow = 4;
-                this.alienShotMoveSpeed = 500;
-                this.bossAlienRef = "sprites/alien2.png";
-                this.bossAlienHealth = 10;
+                this.alienShotMoveSpeed = 400;
+                this.bossAlienRef = "sprites/boss4.png";
+                this.bossAlienHealth = 70;
                 this.bossAlienPower = 2;
-                this.bossAlienMoveSpeed = -300;
+                this.bossAlienMoveSpeed = -400;
                 this.bossAlienShotRef = "sprites/alienshot.png";
-                this.bossAlienShotMoveSpeed = 500;
+                this.bossAlienShotMoveSpeed = 600;
                 break;
             case 5:
                 this.alienRef = "sprites/alien5.png";
                 this.alienHealth = 5;
                 this.alienPower = 3;
                 this.alienRow = 4;
-                this.alienShotMoveSpeed = 500;
-                this.bossAlienRef = "sprites/alien2.png";
-                this.bossAlienHealth = 10;
-                this.bossAlienPower = 2;
-                this.bossAlienMoveSpeed = -300;
+                this.alienShotMoveSpeed = 400;
+                this.bossAlienRef = "sprites/boss5.png";
+                this.bossAlienHealth = 100;
+                this.bossAlienPower = 3;
+                this.bossAlienMoveSpeed = -500;
                 this.bossAlienShotRef = "sprites/alienshot.png";
-                this.bossAlienShotMoveSpeed = 500;
+                this.bossAlienShotMoveSpeed = 600;
                 break;
         }
 

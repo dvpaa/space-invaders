@@ -75,7 +75,7 @@ public AlienEntity(Game game, GameConfig gameConfig, String alienRef,  int x, in
 		}
 		// and vice vesa, if we have reached the right hand side of 
 		// the screen and are moving right, request a logic update
-		if ((dx > 0) && (x > 750)) {
+		if ((dx > 0) && (x > 800 - this.sprite.getWidth()-10)) {
 			game.updateLogic();
 		}
 		
@@ -126,6 +126,6 @@ public AlienEntity(Game game, GameConfig gameConfig, String alienRef,  int x, in
 	@Override
 	public ShotEntity fire() {
 //		return new ShotEntity(game, "sprites/alienshot.png",this.getX()+25,this.getY()+30, this.power, -1);
-		return new ShotEntity(game, gameConfig, gameConfig.getAlienShotRef(), false, this.getX() + 25, this.getY() + 30, false);
+		return new ShotEntity(game, gameConfig, gameConfig.getAlienShotRef(), false, this.getX() + this.sprite.getWidth() / 2, this.getY() + this.sprite.getHeight(), false);
 	}
 }

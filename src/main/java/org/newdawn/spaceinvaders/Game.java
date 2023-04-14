@@ -342,23 +342,22 @@ public class Game extends Canvas
 				.sorted(Comparator.comparing(Entity::getY).reversed())
 				.limit(12)
 				.collect(Collectors.toList());
-		if (alienCount != 1) {
-			return list.get(0);
-		} else {
-			int standardY = list.get(0).getY();
-			int idx = 11;
-			for (int i = 1; i < list.size(); i++) {
-				if (standardY != list.get(i).getY()) {
-					idx = i - 1;
-					break;
-				}
-			}
-			int randomInt = (int) (Math.random() * idx);
-			if (randomInt >= list.size()) {
-				return null;
-			}
-			return list.get(randomInt);
+		if (list.size() == 0) {
+			return null;
 		}
+		int standardY = list.get(0).getY();
+		int idx = 11;
+		for (int i = 1; i < list.size(); i++) {
+			if (standardY != list.get(i).getY()) {
+				idx = i - 1;
+				break;
+			}
+		}
+		int randomInt = (int) (Math.random() * idx);
+		if (randomInt >= list.size()) {
+			return null;
+		}
+		return list.get(randomInt);
 	}
 
 	/**
@@ -492,7 +491,7 @@ public class Game extends Canvas
 				}
 			}
 			if (alienCount == 1) {
-				Entity alien = new AlienEntity(this, gameConfig, gameConfig.getBossAlienRef(), 100 + (6 * 50), (50) + 3 * 30, true);
+				Entity alien = new AlienEntity(this, gameConfig, gameConfig.getBossAlienRef(), 100 + (6 * 50), (50) + 40, true);
 				entities.add(alien);
 				alienCount = 0;
 			}
