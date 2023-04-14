@@ -159,11 +159,14 @@ public abstract class Entity {
 		return null;
 	}
 
-	public Entity skill1() {
+	public Entity attackSkill() {
 		return null;
 	}
 
-	public Entity skill2() {
+	public void defenceSkill() {
+	}
+
+	public Entity secondSkill() {
 		return null;
 	}
 
