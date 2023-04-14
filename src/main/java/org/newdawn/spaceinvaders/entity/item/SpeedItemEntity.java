@@ -13,7 +13,7 @@ public class SpeedItemEntity extends ItemEntity{
     private long startTime = 0;
 
     public SpeedItemEntity(Game game, int x, int y) {
-        super(game, "sprites/speedItem.png", x, y);
+        super(game, "sprites/speedupItem.png", x, y);
         dx = 0;
         dy = moveSpeed * 0.5;
     }
@@ -44,16 +44,16 @@ public class SpeedItemEntity extends ItemEntity{
     public void doItemLogic() {
         if(used){
             if(!is_apply){
-                game.setmoveSpeed(game.getmoveSpeed()*2);
+                game.setmoveSpeed(game.getmoveSpeed()*1.5);
                 is_apply = true;
             }
             if(System.currentTimeMillis() - startTime > effectTime){
-                game.setmoveSpeed(game.getmoveSpeed()/2);
+                game.setmoveSpeed(game.getmoveSpeed()/1.5);
                 game.removeItem(this);
             }
         }
     }
     public void resetItemEffect(){
-        game.setmoveSpeed(game.getmoveSpeed()/2);
+        game.setmoveSpeed(game.getmoveSpeed()/1.5);
     }
 }
