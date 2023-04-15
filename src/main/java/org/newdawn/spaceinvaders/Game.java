@@ -11,6 +11,7 @@ import java.util.stream.Collectors;
 import javax.swing.*;
 
 import org.newdawn.spaceinvaders.configuration.GameConfig;
+import org.newdawn.spaceinvaders.configuration.GameMusicPlayer;
 import org.newdawn.spaceinvaders.configuration.ShipType;
 import org.newdawn.spaceinvaders.entity.AlienEntity;
 import org.newdawn.spaceinvaders.entity.Entity;
@@ -105,6 +106,8 @@ public class Game extends Canvas
 	private ArrayList<Supplier<Entity>> randomItemList = new ArrayList();
 	private long lastItemGenerate = 0;
 	private long itemInterval = 10000; // 아이템 생성 텀
+	// attribute for Bgm added by Eungyu
+	private GameMusicPlayer gameMusicPlayer = new GameMusicPlayer("MainBgm");
 	/**
 	 * Construct our game and set it running.
 	 */
@@ -263,6 +266,7 @@ public class Game extends Canvas
 			((ItemEntity)itemList.get(i)).resetItemEffect();
 		}
 		itemList.clear();
+		gameMusicPlayer.stop();
 	}
 
 	/**
@@ -404,6 +408,9 @@ public class Game extends Canvas
 
 		// keep looping round til the game ends
 		while (gameRunning) {
+			if(!gameMusicPlayer.isPlaying()){
+				gameMusicPlayer.changeBgm("BattleBgm");
+			}
 			// work out how long its been since the last update, this
 			// will be used to calculate how far the entities should
 			// move this loop
@@ -540,6 +547,7 @@ public class Game extends Canvas
 				}
 			}
 			if (alienCount == 1) {
+				gameMusicPlayer.changeBgm("BossBattleBgm");
 				Entity alien = new AlienEntity(this, gameConfig, gameConfig.getBossAlienRef(), 100 + (6 * 50), (50) + 40, true);
 				entities.add(alien);
 				alienCount = 0;
