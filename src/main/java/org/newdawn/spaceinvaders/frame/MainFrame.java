@@ -25,15 +25,35 @@ public class MainFrame extends JFrame {
     private JButton thirdStageButton;
     private JButton forthStageButton;
     private JButton fifthStageButton;
+    private JButton defaultShipButton;
     private JButton attackUpShipButton;
     private JButton speedUpShipButton;
     private JButton defenceUpShipButton;
-    private String shipType;
+    private boolean attackUpship = false;
+    private boolean speedUpShip = false;
+    private boolean defenceUpShip = false;
+
+    public void setAttackUpship(boolean attackUpship) {
+        this.attackUpship = attackUpship;
+    }
+
+    public void setSpeedUpShip(boolean speedUpShip) {
+        this.speedUpShip = speedUpShip;
+    }
+
+    public void setDefenceUpShip(boolean defenceUpShip) {
+        this.defenceUpShip = defenceUpShip;
+    }
+
     private int stage;
     private ArrayList<JButton> mainButtons = new ArrayList<>();
     private ArrayList<JButton> shipSelectButtons = new ArrayList<>();
 
     private int point = 0;
+
+    public int getPoint() {
+        return point;
+    }
 
     public MainFrame() {
         initSetting();
@@ -103,25 +123,32 @@ public class MainFrame extends JFrame {
         mainButtons.add(fifthStageButton);
         add(fifthStageButton);
 
+        defaultShipButton = new JButton("Default");
+        defaultShipButton.setBounds(350, 300, 100, 50);
+        defaultShipButton.setPreferredSize(new Dimension(100, 50));
+        add(defaultShipButton);
+
         attackUpShipButton = new JButton("Attack Up");
-        attackUpShipButton.setBounds(230, 300, 100, 50);
+        attackUpShipButton.setBounds(230, 400, 100, 50);
         attackUpShipButton.setPreferredSize(new Dimension(100, 50));
         add(attackUpShipButton);
 
         speedUpShipButton = new JButton("Speed Up");
-        speedUpShipButton.setBounds(350, 300, 100, 50);
+        speedUpShipButton.setBounds(350, 400, 100, 50);
         speedUpShipButton.setPreferredSize(new Dimension(100, 50));
         add(speedUpShipButton);
 
         defenceUpShipButton = new JButton("Defence Up");
-        defenceUpShipButton.setBounds(470, 300, 100, 50);
+        defenceUpShipButton.setBounds(470, 400, 100, 50);
         defenceUpShipButton.setPreferredSize(new Dimension(100, 50));
         add(defenceUpShipButton);
 
+        defaultShipButton.setVisible(false);
         attackUpShipButton.setVisible(false);
         speedUpShipButton.setVisible(false);
         defenceUpShipButton.setVisible(false);
 
+        shipSelectButtons.add(defaultShipButton);
         shipSelectButtons.add(attackUpShipButton);
         shipSelectButtons.add(speedUpShipButton);
         shipSelectButtons.add(defenceUpShipButton);
@@ -190,6 +217,14 @@ public class MainFrame extends JFrame {
             }
         });
 
+        defaultShipButton.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent e) {
+                setMainButtonsVisible();
+                gameThreadStart("DEFAULT", stage);
+            }
+        });
+
         attackUpShipButton.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
@@ -217,7 +252,7 @@ public class MainFrame extends JFrame {
         shopButton.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
-                new ShopFrame(mainFrame, point);
+                new ShopFrame(mainFrame);
                 setVisible(false);
             }
         });
@@ -239,8 +274,15 @@ public class MainFrame extends JFrame {
         for (JButton mainButton : mainButtons) {
             mainButton.setVisible(false);
         }
-        for (JButton shipSelectButton : shipSelectButtons) {
-            shipSelectButton.setVisible(true);
+        defaultShipButton.setVisible(true);
+        if (attackUpship) {
+            attackUpShipButton.setVisible(true);
+        }
+        if (speedUpShip) {
+            speedUpShipButton.setVisible(true);
+        }
+        if (defenceUpShip) {
+            defenceUpShipButton.setVisible(true);
         }
     }
 
@@ -255,5 +297,9 @@ public class MainFrame extends JFrame {
 
     public void increasePoint(int score) {
         this.point += score;
+    }
+
+    public void decreasePoint(int point) {
+        this.point -= point;
     }
 }
