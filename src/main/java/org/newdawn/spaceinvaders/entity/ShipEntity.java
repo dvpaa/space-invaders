@@ -75,6 +75,7 @@ public class ShipEntity extends Entity {
 		if (other instanceof ShotEntity) {
 			ShotEntity _other = (ShotEntity) other;
 			this.health -= _other.attack();
+			game.removeEntity(other);
 
 			// remove the affected entities
 			if (this.health <= 0) {
@@ -117,5 +118,8 @@ public class ShipEntity extends Entity {
 	}
 	public void setPower(int power) {
 		this.power = power;
+	}
+	public int getHealth() {
+		return health;
 	}
 }

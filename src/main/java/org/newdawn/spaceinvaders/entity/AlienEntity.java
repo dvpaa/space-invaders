@@ -30,7 +30,7 @@ public class AlienEntity extends Entity {
 	private GameConfig gameConfig;
 	private boolean isBoss;
 
-public AlienEntity(Game game, GameConfig gameConfig, String alienRef,  int x, int y, boolean isBoss) {
+	public AlienEntity(Game game, GameConfig gameConfig, String alienRef, int x, int y, boolean isBoss) {
 	super(alienRef, x, y);
 
 	this.game = game;
@@ -45,6 +45,8 @@ public AlienEntity(Game game, GameConfig gameConfig, String alienRef,  int x, in
 		this.power = gameConfig.getAlienPower();
 		dx = gameConfig.getAlienMoveSpeed();
 	}
+
+
 
 	// setup the animatin frames
 	frames[0] = SpriteStore.get().getSprite("sprites/alien1.png");
@@ -127,5 +129,9 @@ public AlienEntity(Game game, GameConfig gameConfig, String alienRef,  int x, in
 	public ShotEntity fire() {
 //		return new ShotEntity(game, "sprites/alienshot.png",this.getX()+25,this.getY()+30, this.power, -1);
 		return new ShotEntity(game, gameConfig, gameConfig.getAlienShotRef(), false, this.getX() + this.sprite.getWidth() / 2, this.getY() + this.sprite.getHeight(), false);
+	}
+
+	public int getHealth() {
+		return health;
 	}
 }

@@ -125,6 +125,7 @@ public class GameConfig {
                 this.shipShotMoveSpeed = shipShotMoveSpeed * 1.4;
                 break;
             default:
+                this.shipRef = "sprites/ship.gif";
                 break;
         }
     }
