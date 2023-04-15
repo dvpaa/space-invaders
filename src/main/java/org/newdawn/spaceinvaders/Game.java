@@ -761,15 +761,5 @@ public class Game extends Canvas
 	 */
 	public static void main(String argv[]) {
 		new MainFrame();
-
-//		Game g = new Game();
-//		g.mainPage();
-
-		// Start the main game loop, note: this method will not
-		// return until the game has finished running. Hence we are
-		// using the actual main thread to run the game.
-//		g.gameLoop();
-
-//		new MainFrame();
 	}
 }
