@@ -106,6 +106,14 @@ public class Game extends Canvas
 	private ArrayList<Supplier<Entity>> randomItemList = new ArrayList();
 	private long lastItemGenerate = 0;
 	private long itemInterval = 10000; // 아이템 생성 텀
+
+	private JLabel timerlabel;
+	private JLabel bossHealthLabel;
+	private JLabel shipHealthLabel;
+	private JLabel shipPowerLabel;
+	private JLabel shipMoveSpeedLabel;
+	private JPanel panel;
+	private Entity bossAlien;
 	/**
 	 * Construct our game and set it running.
 	 */
@@ -118,7 +126,7 @@ public class Game extends Canvas
 		container = new JFrame("Space Invaders 102");
 		// get hold the content of the frame and set up the resolution of the game
 		// 게임 프레임 & 해상도 설정
-		JPanel panel = (JPanel) container.getContentPane();
+		panel = (JPanel) container.getContentPane();
 		panel.setPreferredSize(new Dimension(800,600));
 		panel.setLayout(null);
 
@@ -134,12 +142,40 @@ public class Game extends Canvas
 		panel.add(mainButton);
 		mainButton.setVisible(true);
 
-		JLabel timerlabel = gameTimer.getTimerLabel(); // 타이머 라벨 추가 add GameTimer by Eungyu
+		timerlabel = gameTimer.getTimerLabel(); // 타이머 라벨 추가 add GameTimer by Eungyu
 		timerlabel.setBounds(740,0, 60, 25); // 타이머 크기, 위치 지정 add GameTimer by Eungyu
 		timerlabel.setOpaque(true); // 라벨 배경 색깔 적용 add GameTimer by Eungyu
 		timerlabel.setBackground(Color.black); // 뒷배경 검은색 설정 add GameTimer by Eungyu
 		timerlabel.setForeground(Color.white); // 글씨 하얀색 설정 add GameTimer by Eungyu
 		panel.add(timerlabel); // 패널에 타이머 라벨 추가 add GameTimer by Eungyu
+
+		bossHealthLabel = new JLabel();
+		bossHealthLabel.setBounds(350,0, 100, 25);
+		bossHealthLabel.setOpaque(true);
+		bossHealthLabel.setBackground(Color.black);
+		bossHealthLabel.setForeground(Color.white);
+		this.panel.add(bossHealthLabel);
+
+		shipHealthLabel = new JLabel();
+		shipHealthLabel.setBounds(10,500, 100, 25);
+		shipHealthLabel.setOpaque(true);
+		shipHealthLabel.setBackground(Color.black);
+		shipHealthLabel.setForeground(Color.white);
+		this.panel.add(shipHealthLabel);
+
+		shipPowerLabel = new JLabel();
+		shipPowerLabel.setBounds(10,525, 100, 25);
+		shipPowerLabel.setOpaque(true);
+		shipPowerLabel.setBackground(Color.black);
+		shipPowerLabel.setForeground(Color.white);
+		this.panel.add(shipPowerLabel);
+
+		shipMoveSpeedLabel = new JLabel();
+		shipMoveSpeedLabel.setBounds(10,550, 100, 25);
+		shipMoveSpeedLabel.setOpaque(true);
+		shipMoveSpeedLabel.setBackground(Color.black);
+		shipMoveSpeedLabel.setForeground(Color.white);
+		this.panel.add(shipMoveSpeedLabel);
 
 		// setup our canvas size and put it into the content of the frame
 		setBounds(0,0,800,600);
@@ -282,6 +318,7 @@ public class Game extends Canvas
 
 		this.container.setVisible(false);
 		this.frame.setVisible(true);
+		((MainFrame) this.frame).increasePoint((int)gameTimer.getScore());
 		new ScoreFrame(gameTimer.getScore());
 	}
 
@@ -536,11 +573,16 @@ public class Game extends Canvas
 				}
 			}
 			if (alienCount == 1) {
-				Entity alien = new AlienEntity(this, gameConfig, gameConfig.getBossAlienRef(), 100 + (6 * 50), (50) + 40, true);
-				entities.add(alien);
+				bossAlien = new AlienEntity(this, gameConfig, gameConfig.getBossAlienRef(), 100 + (6 * 50), (50) + 40, true);
+				entities.add(bossAlien);
 				alienCount = 0;
 			}
-
+			if (alienCount == 0) {
+				bossHealthLabel.setText("Boss HP: " + ((AlienEntity) bossAlien).getHealth());
+			}
+			shipHealthLabel.setText("Health: " + ((ShipEntity) ship).getHealth());
+			shipPowerLabel.setText("Power: " + ((ShipEntity) ship).getPower());
+			shipMoveSpeedLabel.setText("Speed: " + ((ShipEntity) ship).getDx());
 
 			// we want each frame to take 10 milliseconds, to do this
 			// we've recorded when we started the frame. We add 10 milliseconds

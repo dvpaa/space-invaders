@@ -12,11 +12,10 @@ import java.util.ArrayList;
 
 public class MainFrame extends JFrame {
 
-    private JFrame frame = this;
+    private JFrame mainFrame = this;
 
     private JLabel background;
-    private ImageIcon quickButtonBasic = new ImageIcon("src/main/resources/button/quickButtonBasic.png");
-    private ImageIcon quickButtonEntered = new ImageIcon("src/main/resources/button/quickButtonEntered.png");
+    private JLabel introBackgroundLabel = new JLabel(new ImageIcon("src/main/resources/background/introBackground.jpg"));
     private JButton quickButton;
     private JButton shopButton;
     private JButton rankingButton;
@@ -33,6 +32,8 @@ public class MainFrame extends JFrame {
     private int stage;
     private ArrayList<JButton> mainButtons = new ArrayList<>();
     private ArrayList<JButton> shipSelectButtons = new ArrayList<>();
+
+    private int point = 0;
 
     public MainFrame() {
         initSetting();
@@ -51,7 +52,7 @@ public class MainFrame extends JFrame {
     }
 
     private void objectSetting() {
-        background = new JLabel(new ImageIcon("src/main/resources/background/introBackground.jpg"));
+        background = introBackgroundLabel;
         setContentPane(background);
 
         rankingButton = new JButton("Ranking");
@@ -212,6 +213,14 @@ public class MainFrame extends JFrame {
                 gameThreadStart(ShipType.DEFENCE_UP, stage);
             }
         });
+
+        shopButton.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent e) {
+                new ShopFrame(mainFrame, point);
+                setVisible(false);
+            }
+        });
     }
 
     private void gameThreadStart(String shipType, int stage) {
@@ -219,7 +228,7 @@ public class MainFrame extends JFrame {
             @Override
             public void run() {
                 setVisible(false);
-                Game game = new Game(frame, new GameConfig(shipType, stage));
+                Game game = new Game(mainFrame, new GameConfig(shipType, stage));
                 game.gameLoop();
             }
         });
@@ -244,4 +253,7 @@ public class MainFrame extends JFrame {
         }
     }
 
+    public void increasePoint(int score) {
+        this.point += score;
+    }
 }
