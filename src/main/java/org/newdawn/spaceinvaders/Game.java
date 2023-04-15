@@ -11,6 +11,7 @@ import java.util.stream.Collectors;
 import javax.swing.*;
 
 import org.newdawn.spaceinvaders.configuration.GameConfig;
+import org.newdawn.spaceinvaders.configuration.GameMusicPlayer;
 import org.newdawn.spaceinvaders.configuration.ShipType;
 import org.newdawn.spaceinvaders.entity.AlienEntity;
 import org.newdawn.spaceinvaders.entity.Entity;
@@ -114,6 +115,9 @@ public class Game extends Canvas
 	private JLabel shipMoveSpeedLabel;
 	private JPanel panel;
 	private Entity bossAlien;
+
+	// attribute for Bgm added by Eungyu
+
 	/**
 	 * Construct our game and set it running.
 	 */

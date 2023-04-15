@@ -2,6 +2,7 @@ package org.newdawn.spaceinvaders.frame;
 
 import org.newdawn.spaceinvaders.Game;
 import org.newdawn.spaceinvaders.configuration.GameConfig;
+import org.newdawn.spaceinvaders.configuration.GameMusicPlayer;
 import org.newdawn.spaceinvaders.configuration.ShipType;
 
 import javax.swing.*;
@@ -54,8 +55,10 @@ public class MainFrame extends JFrame {
     public int getPoint() {
         return point;
     }
+    private GameMusicPlayer gameMusicPlayer = new GameMusicPlayer("MainBgm");
 
     public MainFrame() {
+        gameMusicPlayer.play();
         initSetting();
         objectSetting();
         listenerSetting();
@@ -154,7 +157,7 @@ public class MainFrame extends JFrame {
         shipSelectButtons.add(defenceUpShipButton);
 
         setVisible(true);
-    }
+    } // 화면 구성
 
     private void listenerSetting() {
 
@@ -165,7 +168,7 @@ public class MainFrame extends JFrame {
             }
         });
 
-        quickButton.addMouseListener(new MouseAdapter() {
+        quickButton.addMouseListener(new MouseAdapter() { // 종료버튼
             @Override
             public void mousePressed(MouseEvent e) {
                 try {
