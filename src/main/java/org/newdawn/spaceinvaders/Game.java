@@ -11,6 +11,7 @@ import java.util.stream.Collectors;
 import javax.swing.*;
 
 import org.newdawn.spaceinvaders.configuration.GameConfig;
+import org.newdawn.spaceinvaders.configuration.GameMusicPlayer;
 import org.newdawn.spaceinvaders.configuration.ShipType;
 import org.newdawn.spaceinvaders.entity.AlienEntity;
 import org.newdawn.spaceinvaders.entity.Entity;
@@ -106,6 +107,7 @@ public class Game extends Canvas
 	private ArrayList<Supplier<Entity>> randomItemList = new ArrayList();
 	private long lastItemGenerate = 0;
 	private long itemInterval = 10000; // 아이템 생성 텀
+	// attribute for Bgm added by Eungyu
 	/**
 	 * Construct our game and set it running.
 	 */
