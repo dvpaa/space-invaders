@@ -33,6 +33,11 @@ public class MainFrame extends JFrame {
     private boolean attackUpship = false;
     private boolean speedUpShip = false;
     private boolean defenceUpShip = false;
+    private int stage;
+    private ArrayList<JButton> mainButtons = new ArrayList<>();
+    private ArrayList<JButton> shipSelectButtons = new ArrayList<>();
+
+    private int point = 0;
 
     public void setAttackUpship(boolean attackUpship) {
         this.attackUpship = attackUpship;
@@ -45,12 +50,6 @@ public class MainFrame extends JFrame {
     public void setDefenceUpShip(boolean defenceUpShip) {
         this.defenceUpShip = defenceUpShip;
     }
-
-    private int stage;
-    private ArrayList<JButton> mainButtons = new ArrayList<>();
-    private ArrayList<JButton> shipSelectButtons = new ArrayList<>();
-
-    private int point = 0;
 
     public int getPoint() {
         return point;

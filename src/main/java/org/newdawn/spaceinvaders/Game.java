@@ -367,6 +367,9 @@ public class Game extends Canvas
 	}
 
 	public void tryToSkill1(Entity ship) {
+		if (gameConfig.getShipType().equals("DEFAULT")) {
+			return;
+		}
 		// check that we have waiting long enough to fire
 		if (System.currentTimeMillis() - lastShipSkill1 < skillInterval1) {
 			return;
@@ -376,19 +379,23 @@ public class Game extends Canvas
 		if (gameConfig.getShipType().equals(ShipType.DEFENCE_UP)) {
 			ship.defenceSkill();
 		} else {
-			lastShipSkill1 = System.currentTimeMillis();
 			Entity shot = ship.attackSkill();
 			entities.add(shot);
 		}
+		lastShipSkill1 = System.currentTimeMillis();
 	}
 
 	public void tryToSkill2(Entity ship) {
+		if (gameConfig.getShipType().equals("DEFAULT")) {
+			return;
+		}
 		// check that we have waiting long enough to fire
 		if (System.currentTimeMillis() - lastShipSkill2 < skillInterval2) {
 			return;
 		}
 		if (gameConfig.getShipType().equals(ShipType.SPEED_UP)) {
 			ship.defenceSkill();
+			lastShipSkill2 = System.currentTimeMillis();
 		}
 	}
 

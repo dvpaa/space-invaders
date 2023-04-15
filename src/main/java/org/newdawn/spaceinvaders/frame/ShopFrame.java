@@ -97,7 +97,7 @@ public class ShopFrame extends JFrame {
             public void mousePressed(MouseEvent e) {
                 switch (shipType) {
                     case ShipType.ATTACK_UP:
-                        if (((MainFrame) prevFrame).getPoint() > ShipType.ATTACK_UP_PRICE) {
+                        if (((MainFrame) prevFrame).getPoint() >= ShipType.ATTACK_UP_PRICE) {
                             ((MainFrame) prevFrame).decreasePoint(ShipType.ATTACK_UP_PRICE);
                             ((MainFrame) prevFrame).setAttackUpship(true);
                             state = true;
@@ -106,7 +106,7 @@ public class ShopFrame extends JFrame {
                         }
                         break;
                     case ShipType.SPEED_UP:
-                        if (((MainFrame) prevFrame).getPoint() > ShipType.SPEED_UP_PRICE) {
+                        if (((MainFrame) prevFrame).getPoint() >= ShipType.SPEED_UP_PRICE) {
                             ((MainFrame) prevFrame).decreasePoint(ShipType.SPEED_UP_PRICE);
                             ((MainFrame) prevFrame).setSpeedUpShip(true);
                             state = true;
@@ -115,7 +115,7 @@ public class ShopFrame extends JFrame {
                         }
                         break;
                     case ShipType.DEFENCE_UP:
-                        if (((MainFrame) prevFrame).getPoint() > ShipType.DEFENCE_UP_PRICE) {
+                        if (((MainFrame) prevFrame).getPoint() >= ShipType.DEFENCE_UP_PRICE) {
                             ((MainFrame) prevFrame).decreasePoint(ShipType.DEFENCE_UP_PRICE);
                             ((MainFrame) prevFrame).setDefenceUpShip(true);
                             state = true;
