@@ -312,6 +312,9 @@ public class Game extends Canvas
 	 */
 	public void notifyWin() {
 		gameTimer.stopTimer();
+		int bestScore = Math.max(((MainFrame) this.frame).bestScore[gameConfig.getStage() - 1], (int) gameTimer.getScore());
+		((MainFrame) this.frame).bestScore[gameConfig.getStage() - 1] = bestScore;
+		((MainFrame) this.frame).setMainButtonsVisible();
 //		waitingForKeyPress = true;
 
 		// 게임 종료시 아이템 효과 초기화 및 아이템 제거 added by Eungyu

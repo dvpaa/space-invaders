@@ -1,6 +1,7 @@
 package org.newdawn.spaceinvaders.frame;
 
 import org.newdawn.spaceinvaders.Game;
+import org.newdawn.spaceinvaders.ImageUtil;
 import org.newdawn.spaceinvaders.configuration.GameConfig;
 import org.newdawn.spaceinvaders.configuration.GameMusicPlayer;
 import org.newdawn.spaceinvaders.configuration.ShipType;
@@ -16,7 +17,9 @@ public class MainFrame extends JFrame {
     private JFrame mainFrame = this;
 
     private JLabel background;
-    private JLabel introBackgroundLabel = new JLabel(new ImageIcon("src/main/resources/background/introBackground.jpg"));
+//    private JLabel introBackgroundLabel = new JLabel(new ImageIcon("src/main/resources/background/introBackground.jpg"));
+    private JLabel introBackgroundLabel;
+
     private JButton quickButton;
     private JButton shopButton;
     private JButton rankingButton;
@@ -34,8 +37,10 @@ public class MainFrame extends JFrame {
     private boolean speedUpShip = false;
     private boolean defenceUpShip = false;
     private int stage;
+    public int[] bestScore = new int[5];
     private ArrayList<JButton> mainButtons = new ArrayList<>();
     private ArrayList<JButton> shipSelectButtons = new ArrayList<>();
+    private JButton[] stageButtons = new JButton[5];
 
     private int point = 0;
 
@@ -74,6 +79,7 @@ public class MainFrame extends JFrame {
     }
 
     private void objectSetting() {
+        introBackgroundLabel = new JLabel(new ImageIcon(ImageUtil.getImage(this.getClass(), "background/introBackground.jpg")));
         background = introBackgroundLabel;
         setContentPane(background);
 
@@ -95,34 +101,34 @@ public class MainFrame extends JFrame {
         mainButtons.add(quickButton);
         add(quickButton);
 
-        firstStageButton = new JButton("Stage 1");
-        firstStageButton.setBounds(110, 350, 100, 50);
-        firstStageButton.setPreferredSize(new Dimension(110, 50));
-        mainButtons.add(firstStageButton);
+        firstStageButton = new JButton("<html>Stage 1" + "<br>Best Score: " + bestScore[0] + "</html>");
+        firstStageButton.setBounds(30, 350, 140, 50);
+        firstStageButton.setPreferredSize(new Dimension(140, 50));
+        stageButtons[0] = firstStageButton;
         add(firstStageButton);
 
-        secondStageButton = new JButton("Stage 2");
-        secondStageButton.setBounds(230, 350, 100, 50);
-        secondStageButton.setPreferredSize(new Dimension(100, 50));
-        mainButtons.add(secondStageButton);
+        secondStageButton = new JButton("<html>Stage 2" + "<br>Best Score: " + bestScore[1] + "</html>");
+        secondStageButton.setBounds(180, 350, 140, 50);
+        secondStageButton.setPreferredSize(new Dimension(140, 50));
+        stageButtons[1] = secondStageButton;
         add(secondStageButton);
 
-        thirdStageButton = new JButton("Stage 3");
-        thirdStageButton.setBounds(350, 350, 100, 50);
-        thirdStageButton.setPreferredSize(new Dimension(100, 50));
-        mainButtons.add(thirdStageButton);
+        thirdStageButton = new JButton("<html>Stage 3" + "<br>Best Score: " + bestScore[2] + "</html>");
+        thirdStageButton.setBounds(330, 350, 140, 50);
+        thirdStageButton.setPreferredSize(new Dimension(140, 50));
+        stageButtons[2] = thirdStageButton;
         add(thirdStageButton);
 
-        forthStageButton = new JButton("Stage 4");
-        forthStageButton.setBounds(470, 350, 100, 50);
-        forthStageButton.setPreferredSize(new Dimension(100, 50));
-        mainButtons.add(forthStageButton);
+        forthStageButton = new JButton("<html>Stage 4" + "<br>Best Score: " + bestScore[3] + "</html>");
+        forthStageButton.setBounds(480, 350, 140, 50);
+        forthStageButton.setPreferredSize(new Dimension(140, 50));
+        stageButtons[3] = forthStageButton;
         add(forthStageButton);
 
-        fifthStageButton = new JButton("Stage 5");
-        fifthStageButton.setBounds(590, 350, 100, 50);
-        fifthStageButton.setPreferredSize(new Dimension(100, 50));
-        mainButtons.add(fifthStageButton);
+        fifthStageButton = new JButton("<html>Stage 5" + "<br>Best Score: " + bestScore[4] + "</html>");
+        fifthStageButton.setBounds(630, 350, 140, 50);
+        fifthStageButton.setPreferredSize(new Dimension(140, 50));
+        stageButtons[4] = fifthStageButton;
         add(fifthStageButton);
 
         defaultShipButton = new JButton("Default");
@@ -222,7 +228,6 @@ public class MainFrame extends JFrame {
         defaultShipButton.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
-                setMainButtonsVisible();
                 gameThreadStart("DEFAULT", stage);
             }
         });
@@ -230,7 +235,6 @@ public class MainFrame extends JFrame {
         attackUpShipButton.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
-                setMainButtonsVisible();
                 gameThreadStart(ShipType.ATTACK_UP, stage);
             }
         });
@@ -238,7 +242,6 @@ public class MainFrame extends JFrame {
         speedUpShipButton.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
-                setMainButtonsVisible();
                 gameThreadStart(ShipType.SPEED_UP, stage);
             }
         });
@@ -246,7 +249,6 @@ public class MainFrame extends JFrame {
         defenceUpShipButton.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
-                setMainButtonsVisible();
                 gameThreadStart(ShipType.DEFENCE_UP, stage);
             }
         });
@@ -276,6 +278,9 @@ public class MainFrame extends JFrame {
         for (JButton mainButton : mainButtons) {
             mainButton.setVisible(false);
         }
+        for (JButton stageButton : stageButtons) {
+            stageButton.setVisible(false);
+        }
         defaultShipButton.setVisible(true);
         if (attackUpship) {
             attackUpShipButton.setVisible(true);
@@ -288,9 +293,13 @@ public class MainFrame extends JFrame {
         }
     }
 
-    private void setMainButtonsVisible() {
+    public void setMainButtonsVisible() {
         for (JButton mainButton : mainButtons) {
             mainButton.setVisible(true);
+        }
+        for (int i = 0; i < stageButtons.length; i++) {
+            stageButtons[i].setVisible(true);
+            stageButtons[i].setText("<html>Stage " + (i+1) + "<br>Best Score: " + bestScore[i] + "</html>");
         }
         for (JButton shipSelectButton : shipSelectButtons) {
             shipSelectButton.setVisible(false);

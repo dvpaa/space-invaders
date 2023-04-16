@@ -29,8 +29,10 @@ public class GameConfig {
     private int bossAlienMoveSpeed;
     private String bossAlienShotRef;
     private int bossAlienShotMoveSpeed;
+    private int stage;
 
     public GameConfig(String shipType, int stage) {
+        this.stage = stage;
         this.shipType = shipType;
         this.shipPower = 1;
         this.shipMagicPoint = 5;
@@ -220,5 +222,9 @@ public class GameConfig {
 
     public int getBossAlienPower() {
         return bossAlienPower;
+    }
+
+    public int getStage() {
+        return stage;
     }
 }
