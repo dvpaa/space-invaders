@@ -1,22 +1,25 @@
 package org.newdawn.spaceinvaders;
 
 import java.awt.*;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
+import java.awt.event.*;
 import java.awt.image.BufferStrategy;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Comparator;
+import java.util.*;
 import java.util.List;
+import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 import javax.swing.*;
 
+import org.newdawn.spaceinvaders.configuration.GameConfig;
+import org.newdawn.spaceinvaders.configuration.GameMusicPlayer;
+import org.newdawn.spaceinvaders.configuration.ShipType;
 import org.newdawn.spaceinvaders.entity.AlienEntity;
 import org.newdawn.spaceinvaders.entity.Entity;
 import org.newdawn.spaceinvaders.entity.ShipEntity;
+import org.newdawn.spaceinvaders.entity.item.*;
+import org.newdawn.spaceinvaders.frame.MainFrame;
+import org.newdawn.spaceinvaders.frame.ScoreFrame;
+
 
 /**
  * The main hook of our game. This class with both act as a manager
@@ -40,22 +43,30 @@ public class Game extends Canvas
 	/** True if the game is currently "running", i.e. the game loop is looping */
 	private boolean gameRunning = true;
 	/** The list of all the entities that exist in our game */
-	private ArrayList<Entity> entities = new ArrayList<>();
+	public ArrayList<Entity> entities = new ArrayList<>();
 	/** The list of entities that need to be removed from the game this loop */
 	private ArrayList removeList = new ArrayList();
 	/** The entity representing the player */
 	private Entity ship;
 	/** The speed at which the player's ship should move (pixels/sec) */
-	private double moveSpeed = 300;
+	private double moveSpeed;
 	/** The time at which last fired a shot */
 	private long lastShipFire = 0;
+
+	private long lastShipSkill1 = 0;
+
+	private long lastShipSkill2 = 0;
 
 	private long lastAlienFire = 0;
 	/** The interval between our players shot (ms) */
 	private long firingInterval = 500;
+
+	private long skillInterval1 = 10000;
+
+	private long skillInterval2 = 10000;
+
 	/** The number of aliens left on the screen */
 	private int alienCount;
-
 	/** The message to display which waiting for a key press */
 	private String message = "";
 	/** True if we're holding up game play until a key has been pressed */
@@ -66,6 +77,11 @@ public class Game extends Canvas
 	private boolean rightPressed = false;
 	/** True if we are firing */
 	private boolean firePressed = false;
+
+	private boolean skilPressed1 = false;
+
+	private boolean skilPressed2 = false;
+
 	/** True if game logic needs to be applied this loop, normally as a result of a game event */
 	private boolean logicRequiredThisLoop = false;
 	/** The last time at which we recorded the frame rate */
@@ -77,105 +93,104 @@ public class Game extends Canvas
 	/** The game window that we'll update with the frame count */
 	private JFrame container;
 
-	private JFrame MainPage;
-	private JFrame SelectStagePage;
+	private GameTimer gameTimer = new GameTimer(); // add GameTimer by Eungyu
+	private int score = 0; // 점수 초기화
+	private JFrame mainPage;
+	private JFrame selectStagePage;
+	private JFrame frame;
+	private JButton mainButton;
+
+	private GameConfig gameConfig;
+
+	// attribute added by Eungyu
+	private ArrayList itemList = new ArrayList();
+	private ArrayList<Supplier<Entity>> randomItemList = new ArrayList();
+	private long lastItemGenerate = 0;
+	private long itemInterval = 10000; // 아이템 생성 텀
+
+	private JLabel timerlabel;
+	private JLabel bossHealthLabel;
+	private JLabel shipHealthLabel;
+	private JLabel shipPowerLabel;
+	private JLabel shipMoveSpeedLabel;
+	private JPanel panel;
+	private Entity bossAlien;
+
+	// attribute for Bgm added by Eungyu
 
 	/**
 	 * Construct our game and set it running.
 	 */
-	public Game() {
-
-			// 게임 실행을 누르자마자 나오는 메인 페이지
-			MainPage = new JFrame("Space Invaders Main Page");
-			// frame 크기 800x600으로 설정
-			MainPage.setPreferredSize(new Dimension(800, 600));
-
-			// content pane 가져오기
-			Container MainPageContainPane = MainPage.getContentPane();
-
-			// 화면에 게임 이름 이미지로 넣기(수정)
-			JLabel showGameName = new JLabel("Space Invaders");
-//		showGameName.setBounds(100, 100, 100, 20);
-			MainPage.add(showGameName);
-
-			// 버튼 생성 & 위치 설정
-			JButton GameStartButton = new JButton("GameStart");
-			GameStartButton.setBounds(100, 300, 600, 60);
-			JButton GoStoreButton = new JButton("Store");
-			GoStoreButton.setBounds(100, 380, 600, 60);
-			JButton GoRankingButton = new JButton("Ranking");
-			GoRankingButton.setBounds(100, 460, 600, 60);
-
-			// 화면에 버튼 보이도록 contain pane에 버튼 붙이기
-			MainPageContainPane.add(GameStartButton);
-			MainPageContainPane.add(GoStoreButton);
-			MainPageContainPane.add(GoRankingButton);
-
-			//panel의 레이아웃 매니저를 null로 설정 : 컴포넌트들의 위치와 크기를 수동으로 설정 가능 하도록
-			// setLayout(null)으로 설정하면 각 구성 요소의 위치와 크기를 직접 지정해야 함
-			MainPage.setLayout(null);
-			MainPage.pack();
-			MainPage.setVisible(true);
-
-			MainPage.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
-
-			// stage 선택 페이지
-			SelectStagePage = new JFrame("SelectStagePage"); // frame 생성
-
-			// frame 크기 800x600으로 설정
-			SelectStagePage.setPreferredSize(new Dimension(800,600));
-
-			// content pane 가져오기
-			Container SelectStageContainPane = SelectStagePage.getContentPane();
-
-			// 어떤 페이지인지 알 수 있도록 "STAGE"써있는 이미지 넣기
-			JLabel stageShowGameName = new JLabel("STAGE");
-			stageShowGameName.setBounds(0, 0, 800, 100); // x, y, width, height
-			SelectStagePage.add(stageShowGameName);
-
-			// 버튼 생성 & 위치 설정
-			JButton[] stageButton = new JButton[5];
-			for(int i=0;i<5;i++){
-				stageButton[i] = new JButton("STAGE " + (i+1));
-				int y = 130 + 70*i;
-				stageButton[i].setBounds(100, y, 500, 60);
-			}
-
-			for(int i=0; i<5 ; i++){
-				SelectStageContainPane.add(stageButton[i]);
-			}
-
-			SelectStagePage.setLayout(null);
-			SelectStagePage.pack();
-			SelectStagePage.setVisible(true);
-
-			SelectStagePage.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-			// ~~ stage 선택 페이지
-
-
-
+	public Game(JFrame frame, GameConfig gameConfig) {
+		this.frame = frame;
+		this.gameConfig = gameConfig;
+		this.moveSpeed = gameConfig.getShipMoveSpeed();
 		/** 원본 container ~~ **/
 		// create a frame to contain our game
-		// container는 fisrtPage game start -> stage1 을 눌러야 화면이 나오도록
 		container = new JFrame("Space Invaders 102");
-
 		// get hold the content of the frame and set up the resolution of the game
 		// 게임 프레임 & 해상도 설정
-		JPanel panel = (JPanel) container.getContentPane();
+		panel = (JPanel) container.getContentPane();
 		panel.setPreferredSize(new Dimension(800,600));
 		panel.setLayout(null);
+
+		mainButton = new JButton("M");
+		mainButton.setBounds(750 , 550, 30, 30);
+		mainButton.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mousePressed(MouseEvent e) {
+				container.setVisible(false);
+				frame.setVisible(true);
+			}
+		});
+		panel.add(mainButton);
+		mainButton.setVisible(true);
+
+		timerlabel = gameTimer.getTimerLabel(); // 타이머 라벨 추가 add GameTimer by Eungyu
+		timerlabel.setBounds(740,0, 60, 25); // 타이머 크기, 위치 지정 add GameTimer by Eungyu
+		timerlabel.setOpaque(true); // 라벨 배경 색깔 적용 add GameTimer by Eungyu
+		timerlabel.setBackground(Color.black); // 뒷배경 검은색 설정 add GameTimer by Eungyu
+		timerlabel.setForeground(Color.white); // 글씨 하얀색 설정 add GameTimer by Eungyu
+		panel.add(timerlabel); // 패널에 타이머 라벨 추가 add GameTimer by Eungyu
+
+		bossHealthLabel = new JLabel();
+		bossHealthLabel.setBounds(350,0, 100, 25);
+		bossHealthLabel.setOpaque(true);
+		bossHealthLabel.setBackground(Color.black);
+		bossHealthLabel.setForeground(Color.white);
+		this.panel.add(bossHealthLabel);
+
+		shipHealthLabel = new JLabel();
+		shipHealthLabel.setBounds(10,500, 100, 25);
+		shipHealthLabel.setOpaque(true);
+		shipHealthLabel.setBackground(Color.black);
+		shipHealthLabel.setForeground(Color.white);
+		this.panel.add(shipHealthLabel);
+
+		shipPowerLabel = new JLabel();
+		shipPowerLabel.setBounds(10,525, 100, 25);
+		shipPowerLabel.setOpaque(true);
+		shipPowerLabel.setBackground(Color.black);
+		shipPowerLabel.setForeground(Color.white);
+		this.panel.add(shipPowerLabel);
+
+		shipMoveSpeedLabel = new JLabel();
+		shipMoveSpeedLabel.setBounds(10,550, 100, 25);
+		shipMoveSpeedLabel.setOpaque(true);
+		shipMoveSpeedLabel.setBackground(Color.black);
+		shipMoveSpeedLabel.setForeground(Color.white);
+		this.panel.add(shipMoveSpeedLabel);
 
 		// setup our canvas size and put it into the content of the frame
 		setBounds(0,0,800,600);
 		panel.add(this);
-
 		// Tell AWT not to bother repainting our canvas since we're
 		// going to do that our self in accelerated mode
 		setIgnoreRepaint(true);
 
-		// finally make the window visible 
+		// finally make the window visible
 		container.pack();
+		container.setLocationRelativeTo(null);
 		container.setResizable(false);
 		container.setVisible(true);
 
@@ -186,7 +201,6 @@ public class Game extends Canvas
 				System.exit(0);
 			}
 		});
-
 		/** ~~ 원본 container **/
 
 		// add a key input system (defined below) to our canvas
@@ -203,6 +217,7 @@ public class Game extends Canvas
 
 		// initialise the entities in our game so there's something
 		// to see at startup
+
 		initEntities();
 	}
 
@@ -214,11 +229,14 @@ public class Game extends Canvas
 		// clear out any existing entities and intialise a new set
 		entities.clear();
 		initEntities();
-
 		// blank out any keyboard settings we might currently have
 		leftPressed = false;
 		rightPressed = false;
 		firePressed = false;
+    	skilPressed1 = false;
+		skilPressed2 = false;
+
+		gameTimer.startTimer(); // 게임시작시 타이머 시작 add GameTimer by Eungyu
 	}
 
 	/**
@@ -227,18 +245,30 @@ public class Game extends Canvas
 	 */
 	private void initEntities() {
 		// create the player ship and place it roughly in the center of the screen
-		ship = new ShipEntity(this, "sprites/ship.gif",370,550, 1);
+//		ship = new ShipEntity(this, "sprites/ship.gif",370,550, 1);
+		ship = new ShipEntity(this, gameConfig, 370, 550);
 		entities.add(ship);
+		alienCount = 1;
 
 		// create a block of aliens (5 rows, by 12 aliens, spaced evenly)
-		alienCount = 0;
-		for (int row=0;row<5;row++) {
-			for (int x=0;x<12;x++) {
-				Entity alien = new AlienEntity(this,100+(x*50),(50)+row*30);
+		for (int row = 0; row < gameConfig.getAlienRow(); row++) {
+			for (int x = 0; x < 12; x++) {
+//				Entity alien = new AlienEntity(this, 100 + (x * 50), (50) + row * 30);
+				Entity alien = new AlienEntity(this, gameConfig, gameConfig.getAlienRef(), 100 + (x * 50), (50) + row * 30, false);
 				entities.add(alien);
 				alienCount++;
 			}
 		}
+
+		// 생성 가능 아이템 리스트
+		Random random = new Random();
+		randomItemList.addAll(Arrays.asList(
+				() -> new PushItemEntity(this, random.nextInt(800),-35),
+				() -> new AttackItemEntity(this, random.nextInt(800),-35),
+				() -> new SpeedItemEntity(this, random.nextInt(800),-35),
+				() -> new SkillCooldownItem(this, random.nextInt(800),-35),
+				() -> new AilenSlowItemEntity(this, random.nextInt(800),-35)
+		));
 	}
 
 	/**
@@ -264,8 +294,16 @@ public class Game extends Canvas
 	 * Notification that the player has died.
 	 */
 	public void notifyDeath() {
-		message = "Oh no! They got you, try again?";
+		gameTimer.stopTimer(); // 게임 종료시 타이머 종료 add GameTimer by Eungyu
+		// 종료시 message를 시간이랑 같이 초기화 add GameTimer by Eungyu
+		message = "Oh no! They got you, try again? \nYour time is " + gameTimer.getEndTime() + "\n Your score is " + score;
 		waitingForKeyPress = true;
+
+		// 게임 종료시 아이템 효과 초기화 및 아이템 제거 added by Eungyu
+		for(int i=0; i<itemList.size(); i++){
+			((ItemEntity)itemList.get(i)).resetItemEffect();
+		}
+		itemList.clear();
 	}
 
 	/**
@@ -273,8 +311,22 @@ public class Game extends Canvas
 	 * are dead.
 	 */
 	public void notifyWin() {
-		message = "Well done! You Win!";
-		waitingForKeyPress = true;
+		gameTimer.stopTimer();
+		int bestScore = Math.max(((MainFrame) this.frame).bestScore[gameConfig.getStage() - 1], (int) gameTimer.getScore());
+		((MainFrame) this.frame).bestScore[gameConfig.getStage() - 1] = bestScore;
+		((MainFrame) this.frame).setMainButtonsVisible();
+//		waitingForKeyPress = true;
+
+		// 게임 종료시 아이템 효과 초기화 및 아이템 제거 added by Eungyu
+		for(int i=0; i<itemList.size(); i++){
+			((ItemEntity)itemList.get(i)).resetItemEffect();
+		}
+		itemList.clear();
+
+		this.container.setVisible(false);
+		this.frame.setVisible(true);
+		((MainFrame) this.frame).increasePoint((int)gameTimer.getScore());
+		new ScoreFrame(gameTimer.getScore());
 	}
 
 	/**
@@ -284,7 +336,7 @@ public class Game extends Canvas
 		// reduce the alient count, if there are none left, the player has won!
 		alienCount--;
 
-		if (alienCount == 0) {
+		if (alienCount == -1) {
 			notifyWin();
 		}
 
@@ -317,6 +369,38 @@ public class Game extends Canvas
 		entities.add(shot);
 	}
 
+	public void tryToSkill1(Entity ship) {
+		if (gameConfig.getShipType().equals("DEFAULT")) {
+			return;
+		}
+		// check that we have waiting long enough to fire
+		if (System.currentTimeMillis() - lastShipSkill1 < skillInterval1) {
+			return;
+		}
+
+		// if we waited long enough, create the shot entity, and record the time.
+		if (gameConfig.getShipType().equals(ShipType.DEFENCE_UP)) {
+			ship.defenceSkill();
+		} else {
+			Entity shot = ship.attackSkill();
+			entities.add(shot);
+		}
+		lastShipSkill1 = System.currentTimeMillis();
+	}
+
+	public void tryToSkill2(Entity ship) {
+		if (gameConfig.getShipType().equals("DEFAULT")) {
+			return;
+		}
+		// check that we have waiting long enough to fire
+		if (System.currentTimeMillis() - lastShipSkill2 < skillInterval2) {
+			return;
+		}
+		if (gameConfig.getShipType().equals(ShipType.SPEED_UP)) {
+			ship.defenceSkill();
+			lastShipSkill2 = System.currentTimeMillis();
+		}
+	}
 
 	public void attackFromAlien(Entity alien) {
 		if (System.currentTimeMillis() - lastAlienFire < firingInterval) {
@@ -333,7 +417,9 @@ public class Game extends Canvas
 				.sorted(Comparator.comparing(Entity::getY).reversed())
 				.limit(12)
 				.collect(Collectors.toList());
-
+		if (list.size() == 0) {
+			return null;
+		}
 		int standardY = list.get(0).getY();
 		int idx = 11;
 		for (int i = 1; i < list.size(); i++) {
@@ -342,9 +428,10 @@ public class Game extends Canvas
 				break;
 			}
 		}
-		int max = idx;
-		int min = 0;
-		int randomInt = (int) (Math.random() * (max - min + 1) + min);
+		int randomInt = (int) (Math.random() * idx);
+		if (randomInt >= list.size()) {
+			return null;
+		}
 		return list.get(randomInt);
 	}
 
@@ -382,7 +469,15 @@ public class Game extends Canvas
 				fps = 0;
 			}
 
-			// Get hold of a graphics context for the accelerated 
+//			 아이템 생성 added by Eungyu
+			if(System.currentTimeMillis() - lastItemGenerate > itemInterval) {
+				Random random = new Random();
+				lastItemGenerate = System.currentTimeMillis();
+				Entity item = randomItemList.get(random.nextInt(randomItemList.size())).get();
+				entities.add(item);
+			}
+
+			// Get hold of a graphics context for the accelerated
 			// surface and blank it out
 			Graphics2D g = (Graphics2D) strategy.getDrawGraphics();
 			g.setColor(Color.black);
@@ -405,7 +500,7 @@ public class Game extends Canvas
 			}
 
 			// brute force collisions, compare every entity against
-			// every other entity. If any of them collide notify 
+			// every other entity. If any of them collide notify
 			// both entities that the collision has occured
 			for (int p=0;p<entities.size();p++) {
 				for (int s=p+1;s<entities.size();s++) {
@@ -426,17 +521,30 @@ public class Game extends Canvas
 			// if a game event has indicated that game logic should
 			// be resolved, cycle round every entity requesting that
 			// their personal logic should be considered.
+
+			// 아이템 로직 added by Eungyu
+			for(int i=0;i<itemList.size();i++){
+				Entity item = (Entity) itemList.get(i);
+				((ItemEntity) item).doItemLogic();
+			}
+
+
 			if (logicRequiredThisLoop) {
 				for (int i=0;i<entities.size();i++) {
 					Entity entity = (Entity) entities.get(i);
+
+					// 아이템 로직 실행 added by Eungyu
+					if(entity instanceof ItemEntity){
+						((ItemEntity) entity).doItemLogic();
+					}
 					entity.doLogic();
 				}
 
 				logicRequiredThisLoop = false;
 			}
 
-			// if we're waiting for an "any key" press then draw the 
-			// current message 
+			// if we're waiting for an "any key" press then draw the
+			// current message
 			if (waitingForKeyPress) {
 				g.setColor(Color.white);
 				g.drawString(message,(800-g.getFontMetrics().stringWidth(message))/2,250);
@@ -448,7 +556,7 @@ public class Game extends Canvas
 			g.dispose();
 			strategy.show();
 
-			// resolve the movement of the ship. First assume the ship 
+			// resolve the movement of the ship. First assume the ship
 			// isn't moving. If either cursor key is pressed then
 			// update the movement appropraitely
 			ship.setHorizontalMovement(0);
@@ -464,14 +572,35 @@ public class Game extends Canvas
 				tryToFire(ship);
 			}
 
-			if ((System.currentTimeMillis() / 100) % 2 == 0) {
-				attackFromAlien(selectAttackAlien(entities));
+			if (skilPressed1) {
+				tryToSkill1(ship);
 			}
 
+			if (skilPressed2) {
+				tryToSkill2(ship);
+			}
+
+			if ((System.currentTimeMillis() / 100) % 2 == 0) {
+				Entity entity = selectAttackAlien(entities);
+				if (entity != null) {
+					attackFromAlien(entity);
+				}
+			}
+			if (alienCount == 1) {
+				bossAlien = new AlienEntity(this, gameConfig, gameConfig.getBossAlienRef(), 100 + (6 * 50), (50) + 40, true);
+				entities.add(bossAlien);
+				alienCount = 0;
+			}
+			if (alienCount == 0) {
+				bossHealthLabel.setText("Boss HP: " + ((AlienEntity) bossAlien).getHealth());
+			}
+			shipHealthLabel.setText("Health: " + ((ShipEntity) ship).getHealth());
+			shipPowerLabel.setText("Power: " + ((ShipEntity) ship).getPower());
+			shipMoveSpeedLabel.setText("Speed: " + ((ShipEntity) ship).getDx());
 
 			// we want each frame to take 10 milliseconds, to do this
 			// we've recorded when we started the frame. We add 10 milliseconds
-			// to this and then factor in the current time to give 
+			// to this and then factor in the current time to give
 			// us our final value to wait for
 			SystemTimer.sleep(lastLoopTime+10-SystemTimer.getTime());
 		}
@@ -501,7 +630,7 @@ public class Game extends Canvas
 		 * @param e The details of the key that was pressed
 		 */
 		public void keyPressed(KeyEvent e) {
-			// if we're waiting for an "any key" typed then we don't 
+			// if we're waiting for an "any key" typed then we don't
 			// want to do anything with just a "press"
 			if (waitingForKeyPress) {
 				return;
@@ -517,6 +646,12 @@ public class Game extends Canvas
 			if (e.getKeyCode() == KeyEvent.VK_SPACE) {
 				firePressed = true;
 			}
+			if (e.getKeyCode() == KeyEvent.VK_Z) {
+				skilPressed1 = true;
+			}
+			if (e.getKeyCode() == KeyEvent.VK_X) {
+				skilPressed2 = true;
+			}
 		}
 
 		/**
@@ -525,7 +660,7 @@ public class Game extends Canvas
 		 * @param e The details of the key that was released
 		 */
 		public void keyReleased(KeyEvent e) {
-			// if we're waiting for an "any key" typed then we don't 
+			// if we're waiting for an "any key" typed then we don't
 			// want to do anything with just a "released"
 			if (waitingForKeyPress) {
 				return;
@@ -539,6 +674,12 @@ public class Game extends Canvas
 			}
 			if (e.getKeyCode() == KeyEvent.VK_SPACE) {
 				firePressed = false;
+			}
+			if (e.getKeyCode() == KeyEvent.VK_Z) {
+				skilPressed1 = false;
+			}
+			if (e.getKeyCode() == KeyEvent.VK_X) {
+				skilPressed2 = false;
 			}
 		}
 
@@ -557,7 +698,7 @@ public class Game extends Canvas
 			if (waitingForKeyPress) {
 				if (pressCount == 1) {
 					// since we've now recieved our key typed
-					// event we can mark it as such and start 
+					// event we can mark it as such and start
 					// our new game
 					waitingForKeyPress = false;
 					startGame();
@@ -574,6 +715,46 @@ public class Game extends Canvas
 		}
 	}
 
+	// method added by Eungyu
+	public void addItem(Entity entity) {
+		itemList.add(entity);
+	}
+	public void removeItem(Entity entity) {
+		itemList.remove(entity);
+	}
+	public double getmoveSpeed() {
+		return moveSpeed;
+	}
+	public double setmoveSpeed(double moveSpeed) {
+		return this.moveSpeed = moveSpeed;
+	}
+	public long getlastShipSkill1(){
+		return lastShipSkill1;
+	}
+	public void setlastShipSkill1(long lastShipSkill1){
+		this.lastShipSkill1 = lastShipSkill1;
+	}
+	public long getlastShipSkill2(){
+		return lastShipSkill2;
+	}
+	public void setlastShipSkill2(long lastShipSkill2){
+		this.lastShipSkill2 = lastShipSkill2;
+	}
+	public long getSkillInterval1(){
+		return skillInterval1;
+	}
+	public long getSkillInterval2(){
+		return skillInterval2;
+	}
+	public ArrayList getAilen(){
+		ArrayList ailens = new ArrayList();
+		for(int i=0; i<entities.size(); i++){
+			if(entities.get(i) instanceof AlienEntity){
+				ailens.add(entities.get(i));
+			}
+		}
+		return ailens;
+	}
 	/**
 	 * The entry point into the game. We'll simply create an
 	 * instance of class which will start the display and game
@@ -582,11 +763,6 @@ public class Game extends Canvas
 	 * @param argv The arguments that are passed into our game
 	 */
 	public static void main(String argv[]) {
-		Game g = new Game();
-
-		// Start the main game loop, note: this method will not
-		// return until the game has finished running. Hence we are
-		// using the actual main thread to run the game.
-		g.gameLoop();
+		new MainFrame();
 	}
 }

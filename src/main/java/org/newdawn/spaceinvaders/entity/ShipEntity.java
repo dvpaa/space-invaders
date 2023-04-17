@@ -1,6 +1,8 @@
 package org.newdawn.spaceinvaders.entity;
 
 import org.newdawn.spaceinvaders.Game;
+import org.newdawn.spaceinvaders.entity.item.ItemEntity;
+import org.newdawn.spaceinvaders.configuration.GameConfig;
 
 /**
  * The entity that represents the players ship
@@ -13,20 +15,28 @@ public class ShipEntity extends Entity {
 
 	private int power;
 
-	/**
-	 * Create a new entity to represent the players ship
-	 *
-	 * @param game The game in which the ship is being created
-	 * @param ref  The reference to the sprite to show for the ship
-	 * @param x    The initial x location of the player's ship
-	 * @param y    The initial y location of the player's ship
-	 */
-	public ShipEntity(Game game, String ref, int x, int y, int power) {
+	private int health;
 
-		super(ref, x, y);
+	private int magicPoint;
+	private GameConfig gameConfig;
+
+
+//	public ShipEntity(Game game, String ref, int x, int y, int power) {
+//
+//		super(ref, x, y);
+//
+//		this.game = game;
+//		this.power = power;
+//	}
+	public ShipEntity(Game game, GameConfig gameConfig, int x, int y) {
+
+		super(gameConfig.getShipRef(), x, y);
 
 		this.game = game;
-		this.power = power;
+		this.gameConfig = gameConfig;
+		this.power = gameConfig.getShipPower();
+		this.health = gameConfig.getShipHealth();
+		this.magicPoint = gameConfig.getShipMagicPoint();
 	}
 	
 	/**
@@ -61,10 +71,55 @@ public class ShipEntity extends Entity {
 		if (other instanceof AlienEntity) {
 			game.notifyDeath();
 		}
+
+		if (other instanceof ShotEntity) {
+			ShotEntity _other = (ShotEntity) other;
+			this.health -= _other.attack();
+			game.removeEntity(other);
+
+			// remove the affected entities
+			if (this.health <= 0) {
+				game.notifyDeath();
+			}
+		}
+		if (other instanceof ItemEntity) {
+			((ItemEntity) other).setShipEntity(this);
+		}
 	}
 
 	@Override
 	public ShotEntity fire() {
-		return new ShotEntity(game, "sprites/shot.gif",this.getX()+10,this.getY()-30, this.power, 1);
+		return new ShotEntity(game, gameConfig, gameConfig.getShipShotRef(), true, this.getX() + 10, this.getY() - 30, false);
+	}
+
+	@Override
+	public Entity attackSkill() {
+		return new ShotEntity(game, gameConfig, gameConfig.getShipFirstSkillRef(), true, this.getX(), this.getY()-70, true);
+	}
+
+	@Override
+	public void defenceSkill() {
+		for (Entity entity : game.entities) {
+			if (entity instanceof ShotEntity) {
+				if (!((ShotEntity) entity).isShip) {
+					game.removeEntity(entity);
+				}
+			}
+		}
+	}
+
+	@Override
+	public Entity secondSkill() {
+		return new ShotEntity(game, gameConfig, gameConfig.getShipFirstSkillRef(), true, this.getX(), this.getY()-70, true);
+	}
+
+	public int getPower() {
+		return power;
+	}
+	public void setPower(int power) {
+		this.power = power;
+	}
+	public int getHealth() {
+		return health;
 	}
 }
