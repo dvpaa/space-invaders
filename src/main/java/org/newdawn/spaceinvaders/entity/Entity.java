@@ -171,13 +171,6 @@ public abstract class Entity {
 	}
 
 	// method added by Eungyu
-
-	public double getDx() {
-		return dx;
-	}
-	public void setDx(double dx) {
-		this.dx = dx;
-	}
 	public void setY(double y) {
 		this.y = y;
 	}

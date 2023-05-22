@@ -7,8 +7,6 @@ import org.newdawn.spaceinvaders.entity.ShipEntity;
 import java.awt.*;
 
 public class AttackItemEntity extends ItemEntity{
-    private Rectangle me = new Rectangle();
-    private Rectangle him = new Rectangle();
     private long effectTime = 3000;
     private long startTime = 0;
 
@@ -20,13 +18,6 @@ public class AttackItemEntity extends ItemEntity{
         dy = moveSpeed * 0.5;
     }
     @Override
-    public boolean collidesWith(Entity other) {
-        me.setBounds((int) x, (int) y, sprite.getWidth(), sprite.getHeight());
-        him.setBounds(other.getX(), other.getY(), other.getSprite().getWidth(), other.getSprite().getHeight());
-
-        return me.intersects(him);
-    }
-
     public void collidedWith(Entity other) {
         if(other instanceof ShipEntity){
             if(used){return;}

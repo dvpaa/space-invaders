@@ -7,8 +7,6 @@ import org.newdawn.spaceinvaders.entity.ShipEntity;
 import java.awt.*;
 
 public class SkillCooldownItem extends ItemEntity{
-    private Rectangle me = new Rectangle();
-    private Rectangle him = new Rectangle();
 
     public SkillCooldownItem(Game game, int x, int y) {
         super(game, "sprites/skillCooldownItem.png", x, y);
@@ -16,13 +14,6 @@ public class SkillCooldownItem extends ItemEntity{
         dy = moveSpeed * 0.5;
     }
     @Override
-    public boolean collidesWith(Entity other) {
-        me.setBounds((int) x, (int) y, sprite.getWidth(), sprite.getHeight());
-        him.setBounds(other.getX(), other.getY(), other.getSprite().getWidth(), other.getSprite().getHeight());
-
-        return me.intersects(him);
-    }
-
     public void collidedWith(Entity other) {
         if(other instanceof ShipEntity){
             if(used){return;}
