@@ -596,7 +596,7 @@ public class Game extends Canvas
 			}
 			shipHealthLabel.setText("Health: " + ((ShipEntity) ship).getHealth());
 			shipPowerLabel.setText("Power: " + ((ShipEntity) ship).getPower());
-			shipMoveSpeedLabel.setText("Speed: " + ((ShipEntity) ship).getDx());
+			shipMoveSpeedLabel.setText("Speed: " + ((ShipEntity) ship).getHorizontalMovement());
 
 			// we want each frame to take 10 milliseconds, to do this
 			// we've recorded when we started the frame. We add 10 milliseconds
