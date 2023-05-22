@@ -532,11 +532,6 @@ public class Game extends Canvas
 			if (logicRequiredThisLoop) {
 				for (int i=0;i<entities.size();i++) {
 					Entity entity = (Entity) entities.get(i);
-
-					// 아이템 로직 실행 added by Eungyu
-					if(entity instanceof ItemEntity){
-						((ItemEntity) entity).doItemLogic();
-					}
 					entity.doLogic();
 				}
 

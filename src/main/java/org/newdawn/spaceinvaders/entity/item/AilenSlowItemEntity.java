@@ -8,8 +8,6 @@ import java.awt.*;
 import java.util.ArrayList;
 
 public class AilenSlowItemEntity extends ItemEntity{
-    private Rectangle me = new Rectangle();
-    private Rectangle him = new Rectangle();
     private long effectTime = 5000;
     private long startTime = 0;
     private ArrayList ailen = new ArrayList();
@@ -22,13 +20,6 @@ public class AilenSlowItemEntity extends ItemEntity{
         dy = moveSpeed * 0.5;
     }
     @Override
-    public boolean collidesWith(Entity other) {
-        me.setBounds((int) x, (int) y, sprite.getWidth(), sprite.getHeight());
-        him.setBounds(other.getX(), other.getY(), other.getSprite().getWidth(), other.getSprite().getHeight());
-
-        return me.intersects(him);
-    }
-
     public void collidedWith(Entity other) {
         if(other instanceof ShipEntity){
             if(used){return;}
