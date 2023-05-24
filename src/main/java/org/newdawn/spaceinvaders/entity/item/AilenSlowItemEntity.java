@@ -9,7 +9,7 @@ import java.util.ArrayList;
 public class AilenSlowItemEntity extends ItemEntity{
     private long effectTime = 5000;
     private long startTime = 0;
-    private ArrayList ailen = new ArrayList();
+    private ArrayList<Entity> ailen = new ArrayList<>();
 
     public AilenSlowItemEntity(Game game, int x, int y) {
         super(game, "sprites/AilenSlowItem.png", x, y);
@@ -40,14 +40,14 @@ public class AilenSlowItemEntity extends ItemEntity{
             if (!is_apply) {
                 ailen = game.getAilen();
                 for (int i = 0; i < ailen.size(); i++) {
-                    ((Entity)ailen.get(i)).setHorizontalMovement(((Entity)ailen.get(i)).getHorizontalMovement() / 10);
+                    (ailen.get(i)).setHorizontalMovement((ailen.get(i)).getHorizontalMovement() / 10);
                 }
                 is_apply = true;
             }
             if (System.currentTimeMillis() - startTime > effectTime) {
                 ailen = game.getAilen();
                 for (int i = 0; i < ailen.size(); i++) {
-                    ((Entity)ailen.get(i)).setHorizontalMovement(((Entity)ailen.get(i)).getHorizontalMovement() * 10);
+                    (ailen.get(i)).setHorizontalMovement((ailen.get(i)).getHorizontalMovement() * 10);
                 }
                 game.removeItem(this);
             }
@@ -56,7 +56,7 @@ public class AilenSlowItemEntity extends ItemEntity{
 
     public void resetItemEffect() {
         for (int i = 0; i < ailen.size(); i++) {
-            ((Entity)ailen.get(i)).setHorizontalMovement(((Entity)ailen.get(i)).getHorizontalMovement() * 2);
+            (ailen.get(i)).setHorizontalMovement((ailen.get(i)).getHorizontalMovement() * 2);
         }
     }
 }
