@@ -172,10 +172,10 @@ public class Game {
 		Random random = new Random();
 		randomItemList.addAll(Arrays.asList(
 				() -> new PushItemEntity(this, random.nextInt(800), -35),
-				() -> new AttackItemEntity(this, random.nextInt(800), -35),
 				() -> new SpeedItemEntity(this, random.nextInt(800), -35),
 				() -> new SkillCooldownItem(this, random.nextInt(800), -35),
-				() -> new AilenSlowItemEntity(this, random.nextInt(800), -35)
+				() -> new AilenSlowItemEntity(this, random.nextInt(800), -35),
+				() -> new AttackItemEntity(this, random.nextInt(800), -35)
 		));
 	}
 
