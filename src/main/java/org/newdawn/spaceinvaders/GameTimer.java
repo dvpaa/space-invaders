@@ -38,7 +38,8 @@ public class GameTimer {
                 LocalTime now = LocalTime.now();
                 Duration duration = Duration.between(startTime, now);
                 timerLabel.setText(
-                        String.format("%02d:%02d:%02d", duration.toHours(), duration.toMinutes() % 60, duration.getSeconds() % 60)
+                    String.format("%02d:%02d:%02d", duration.toHours(), duration.toMinutes() % 60,
+                        duration.getSeconds() % 60)
                 );
                 hours = duration.toHours();
                 minutes = duration.toMinutes() % 60;

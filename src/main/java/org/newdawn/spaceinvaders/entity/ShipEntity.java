@@ -12,22 +12,11 @@ import org.newdawn.spaceinvaders.configuration.GameConfig;
 public class ShipEntity extends Entity {
 	/** The game in which the ship exists */
 	private Game game;
-
 	private int power;
-
 	private int health;
-
 	private int magicPoint;
 	private GameConfig gameConfig;
 
-
-//	public ShipEntity(Game game, String ref, int x, int y, int power) {
-//
-//		super(ref, x, y);
-//
-//		this.game = game;
-//		this.power = power;
-//	}
 	public ShipEntity(Game game, GameConfig gameConfig, int x, int y) {
 
 		super(gameConfig.getShipRef(), x, y);
@@ -89,12 +78,14 @@ public class ShipEntity extends Entity {
 
 	@Override
 	public ShotEntity fire() {
-		return new ShotEntity(game, gameConfig, gameConfig.getShipShotRef(), true, this.getX() + 10, this.getY() - 30, false);
+		return new ShotEntity(game, gameConfig, gameConfig.getShipShotRef(), true, this.getX() + 10,
+			this.getY() - 30, false);
 	}
 
 	@Override
 	public Entity attackSkill() {
-		return new ShotEntity(game, gameConfig, gameConfig.getShipFirstSkillRef(), true, this.getX(), this.getY()-70, true);
+		return new ShotEntity(game, gameConfig, gameConfig.getShipFirstSkillRef(), true, this.getX(),
+			this.getY()-70, true);
 	}
 
 	@Override
@@ -110,7 +101,8 @@ public class ShipEntity extends Entity {
 
 	@Override
 	public Entity secondSkill() {
-		return new ShotEntity(game, gameConfig, gameConfig.getShipFirstSkillRef(), true, this.getX(), this.getY()-70, true);
+		return new ShotEntity(game, gameConfig, gameConfig.getShipFirstSkillRef(), true, this.getX(),
+			this.getY()-70, true);
 	}
 
 	public int getPower() {
