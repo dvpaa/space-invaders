@@ -4,7 +4,6 @@ import org.newdawn.spaceinvaders.Game;
 import org.newdawn.spaceinvaders.entity.Entity;
 import org.newdawn.spaceinvaders.entity.ShipEntity;
 
-import java.awt.*;
 
 public class SkillCooldownItem extends ItemEntity{
 
@@ -15,8 +14,10 @@ public class SkillCooldownItem extends ItemEntity{
     }
     @Override
     public void collidedWith(Entity other) {
-        if(other instanceof ShipEntity){
-            if(used){return;}
+        if (other instanceof ShipEntity) {
+            if (used) {
+                return;
+            }
             game.removeEntity(this);
             game.addItem(this);
             used = true;
@@ -30,17 +31,17 @@ public class SkillCooldownItem extends ItemEntity{
 
     @Override
     public void doItemLogic() {
-        if(used){
-            if(!is_apply){
-                game.setlastShipSkill1((long) (game.getlastShipSkill1()-game.getSkillInterval1()));
-                game.setlastShipSkill2((long) (game.getlastShipSkill2()-game.getSkillInterval2()));
+        if (used) {
+            if (!is_apply) {
+                game.setlastShipSkill1((long)(game.getlastShipSkill1() - game.getSkillInterval1()));
+                game.setlastShipSkill2((long)(game.getlastShipSkill2() - game.getSkillInterval2()));
                 is_apply = true;
-            }
-            else{
+            } else {
                 game.removeItem(this);
             }
         }
     }
-    public void resetItemEffect(){
+
+    public void resetItemEffect() {
     }
 }

@@ -18,10 +18,8 @@ public class GameConfig {
     private int alienPower;
     private int alienRow;
     private double alienMoveSpeed;
-
     private String alienShotRef;
     private double alienShotMoveSpeed;
-
     private String shipType;
     private String bossAlienRef;
     private int bossAlienHealth;

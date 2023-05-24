@@ -15,7 +15,6 @@ public class ShotEntity extends Entity {
 	private Game game;
 	/** True if this shot has been "used", i.e. its hit something */
 	private boolean used = false;
-
 	private int power;
 	public boolean isShip;
 	public boolean isSkill;
@@ -28,18 +27,7 @@ public class ShotEntity extends Entity {
 	 * @param x      The initial x location of the shot
 	 * @param y      The initial y location of the shot
 	 */
-//	public ShotEntity(Game game, String sprite, int x, int y, int power, double direction) {
-//
-//		super(sprite, x, y);
-//
-//		this.game = game;
-//
-//		dy = moveSpeed * direction;
-//
-//		this.power = power;
-//
-//
-//	}
+
 	public ShotEntity(Game game, GameConfig gameConfig, String shotRef, boolean isShip, int x, int y, boolean isSkill) {
 		super(shotRef, x, y);
 		if (isShip) {
@@ -58,8 +46,6 @@ public class ShotEntity extends Entity {
 		this.game = game;
 
 		dy = moveSpeed;
-
-
 
 	}
 
@@ -87,7 +73,9 @@ public class ShotEntity extends Entity {
 	public void collidedWith(Entity other) {
 		// prevents double kills, if we've already hit something,
 		// don't collide
-		if(!(other instanceof AlienEntity)){ return; }
+		if(!(other instanceof AlienEntity)) {
+			return;
+		}
 		if (used) {
 			return;
 		}

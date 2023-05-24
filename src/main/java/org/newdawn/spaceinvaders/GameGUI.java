@@ -34,7 +34,6 @@ public class GameGUI extends Canvas {
     private JPanel panel;
     private GameTimer gameTimer = GameTimer.getInstance();
     private GameConfig gameConfig;
-
     private Graphics2D g;
 
     public GameGUI(JFrame frame, GameConfig gameConfig) {
@@ -44,7 +43,7 @@ public class GameGUI extends Canvas {
         // create a frame to contain our game
         container = new JFrame("Space Invaders 102");
         panel = (JPanel) container.getContentPane();
-        panel.setPreferredSize(new Dimension(800,600));
+        panel.setPreferredSize(new Dimension(800, 600));
         panel.setLayout(null);
 
         mainButton = new JButton("M");
@@ -60,42 +59,42 @@ public class GameGUI extends Canvas {
         mainButton.setVisible(true);
 
         timerlabel = gameTimer.getTimerLabel(); // 타이머 라벨 추가 add GameTimer by Eungyu
-        timerlabel.setBounds(740,0, 60, 25); // 타이머 크기, 위치 지정 add GameTimer by Eungyu
+        timerlabel.setBounds(740, 0, 60, 25); // 타이머 크기, 위치 지정 add GameTimer by Eungyu
         timerlabel.setOpaque(true); // 라벨 배경 색깔 적용 add GameTimer by Eungyu
         timerlabel.setBackground(Color.black); // 뒷배경 검은색 설정 add GameTimer by Eungyu
         timerlabel.setForeground(Color.white); // 글씨 하얀색 설정 add GameTimer by Eungyu
         panel.add(timerlabel); // 패널에 타이머 라벨 추가 add GameTimer by Eungyu
 
         bossHealthLabel = new JLabel();
-        bossHealthLabel.setBounds(350,0, 100, 25);
+        bossHealthLabel.setBounds(350, 0, 100, 25);
         bossHealthLabel.setOpaque(true);
         bossHealthLabel.setBackground(Color.black);
         bossHealthLabel.setForeground(Color.white);
         this.panel.add(bossHealthLabel);
 
         shipHealthLabel = new JLabel();
-        shipHealthLabel.setBounds(10,500, 100, 25);
+        shipHealthLabel.setBounds(10, 500, 100, 25);
         shipHealthLabel.setOpaque(true);
         shipHealthLabel.setBackground(Color.black);
         shipHealthLabel.setForeground(Color.white);
         this.panel.add(shipHealthLabel);
 
         shipPowerLabel = new JLabel();
-        shipPowerLabel.setBounds(10,525, 100, 25);
+        shipPowerLabel.setBounds(10, 525, 100, 25);
         shipPowerLabel.setOpaque(true);
         shipPowerLabel.setBackground(Color.black);
         shipPowerLabel.setForeground(Color.white);
         this.panel.add(shipPowerLabel);
 
         shipMoveSpeedLabel = new JLabel();
-        shipMoveSpeedLabel.setBounds(10,550, 100, 25);
+        shipMoveSpeedLabel.setBounds(10, 550, 100, 25);
         shipMoveSpeedLabel.setOpaque(true);
         shipMoveSpeedLabel.setBackground(Color.black);
         shipMoveSpeedLabel.setForeground(Color.white);
         this.panel.add(shipMoveSpeedLabel);
 
         // setup our canvas size and put it into the content of the frame
-        setBounds(0,0,800,600);
+        setBounds(0, 0, 800, 600);
         panel.add(this);
         // Tell AWT not to bother repainting our canvas since we're
         // going to do that our self in accelerated mode
@@ -122,13 +121,14 @@ public class GameGUI extends Canvas {
     }
 
     public void win() {
-        int bestScore = Math.max(((MainFrame) this.frame).bestScore[gameConfig.getStage() - 1], (int) gameTimer.getScore());
-        ((MainFrame) this.frame).bestScore[gameConfig.getStage() - 1] = bestScore;
-        ((MainFrame) this.frame).setMainButtonsVisible();
+        int bestScore = Math.max(((MainFrame)this.frame).bestScore[gameConfig.getStage() - 1],
+            (int)gameTimer.getScore());
+        ((MainFrame)this.frame).bestScore[gameConfig.getStage() - 1] = bestScore;
+        ((MainFrame)this.frame).setMainButtonsVisible();
 
         this.container.setVisible(false);
         this.frame.setVisible(true);
-        ((MainFrame) this.frame).increasePoint((int) gameTimer.getScore());
+        ((MainFrame)this.frame).increasePoint((int)gameTimer.getScore());
         new ScoreFrame(gameTimer.getScore());
     }
 
@@ -145,7 +145,6 @@ public class GameGUI extends Canvas {
     public void drawEntity(ArrayList<Entity> entities) {
         for (int i = 0; i < entities.size(); i++) {
             Entity entity = (Entity) entities.get(i);
-
             entity.draw(g);
         }
     }
@@ -162,13 +161,12 @@ public class GameGUI extends Canvas {
     }
 
     public void setBossHealthText(Entity bossAlien) {
-        bossHealthLabel.setText("Boss HP: " + ((AlienEntity) bossAlien).getHealth());
+        bossHealthLabel.setText("Boss HP: " + ((AlienEntity)bossAlien).getHealth());
     }
 
     public void setShipInfoText(Entity ship) {
-        shipHealthLabel.setText("Health: " + ((ShipEntity) ship).getHealth());
-        shipPowerLabel.setText("Power: " + ((ShipEntity) ship).getPower());
-        shipMoveSpeedLabel.setText("Speed: " + ((ShipEntity) ship).getHorizontalMovement());
+        shipHealthLabel.setText("Health: " + ((ShipEntity)ship).getHealth());
+        shipPowerLabel.setText("Power: " + ((ShipEntity)ship).getPower());
+        shipMoveSpeedLabel.setText("Speed: " + ((ShipEntity)ship).getHorizontalMovement());
     }
-
 }
