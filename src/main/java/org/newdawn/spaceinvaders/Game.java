@@ -231,7 +231,7 @@ public class Game {
 		// if there are still some aliens left then they all need to get faster, so
 		// speed up all the existing aliens
 		for (int i = 0; i < entities.size(); i++) {
-			Entity entity = (Entity)entities.get(i);
+			Entity entity = entities.get(i);
 			if (entity instanceof AlienEntity) {
 				// speed up by 2%
 				entity.setHorizontalMovement(entity.getHorizontalMovement() * 1.02);
