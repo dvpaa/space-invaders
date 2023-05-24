@@ -368,7 +368,7 @@ public class Game {
 			// cycle round asking each entity to move itself
 			if (!waitingForKeyPress) {
 				for (int i = 0; i < entities.size(); i++) {
-					Entity entity = (Entity)entities.get(i);
+					Entity entity = entities.get(i);
 					entity.move(delta);
 				}
 			}
@@ -381,8 +381,8 @@ public class Game {
 			// both entities that the collision has occured
 			for (int p = 0; p < entities.size(); p++) {
 				for (int s = p + 1; s < entities.size(); s++) {
-					Entity me = (Entity)entities.get(p);
-					Entity him = (Entity)entities.get(s);
+					Entity me = entities.get(p);
+					Entity him = entities.get(s);
 
 					if (me.collidesWith(him)) {
 						me.collidedWith(him);
@@ -627,8 +627,8 @@ public class Game {
 		return skillInterval2;
 	}
 
-	public ArrayList getAilen() {
-		ArrayList ailens = new ArrayList();
+	public ArrayList<Entity> getAilen() {
+		ArrayList<Entity> ailens = new ArrayList<>();
 		for (int i = 0; i < entities.size(); i++) {
 			if (entities.get(i) instanceof AlienEntity) {
 				ailens.add(entities.get(i));
