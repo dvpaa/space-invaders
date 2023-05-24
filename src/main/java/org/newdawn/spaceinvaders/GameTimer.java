@@ -6,8 +6,8 @@ import java.time.LocalTime;
 import java.util.Timer;
 import java.util.TimerTask;
 
-
 public class GameTimer {
+    private static GameTimer instance; // 인스턴스 변수
     private Timer timer;
     private LocalTime startTime;
     private JLabel timerLabel;
@@ -15,59 +15,56 @@ public class GameTimer {
     private long minutes;
     private long seconds;
     private float scoreTimer;
-    private float score; // ??
+    private float score;
     private float totalTimeInSec;
 
-    public GameTimer(){
+    private GameTimer() {
         timer = new Timer();
         timerLabel = new JLabel();
     }
 
-    public void startTimer(){
-        startTime = LocalTime.now(); // 타이머 시작시 시간 설정
+    public static GameTimer getInstance() {
+        if (instance == null) {
+            instance = new GameTimer();
+        }
+        return instance;
+    }
+
+    public void startTimer() {
+        startTime = LocalTime.now();
         timer.scheduleAtFixedRate(new TimerTask() {
             @Override
             public void run() {
-                LocalTime now = LocalTime.now(); // 현재 시간 설정
-                Duration duration = Duration.between(startTime, now); // 현재 시간 - 시작 시간 = 경과 시간
+                LocalTime now = LocalTime.now();
+                Duration duration = Duration.between(startTime, now);
                 timerLabel.setText(
-                        String.format("%02d:%02d:%02d", duration.toHours(), duration.toMinutes()%60, duration.getSeconds()%60)
-                ); // 경과 시간을 레이블에 표시
+                        String.format("%02d:%02d:%02d", duration.toHours(), duration.toMinutes() % 60, duration.getSeconds() % 60)
+                );
                 hours = duration.toHours();
-                minutes = duration.toMinutes()%60;
-                seconds = duration.getSeconds()%60; // 경과 시간을 변수에 저장
+                minutes = duration.toMinutes() % 60;
+                seconds = duration.getSeconds() % 60;
             }
-        }, 0, 1000); // 1초마다 실행
+        }, 0, 1000);
     }
 
-    public void stopTimer(){
-        timer.cancel(); // 타이머 종료
-        timer = new Timer(); // 타이머 초기화
+    public void stopTimer() {
+        timer.cancel();
+        timer = new Timer();
     }
 
-    public JLabel getTimerLabel(){
+    public JLabel getTimerLabel() {
         return timerLabel;
-    } // 타이머 레이블 반환
+    }
 
-    public String getEndTime(){
+    public String getEndTime() {
         return String.format("%02d:%02d:%02d", hours, minutes, seconds);
-    } // 경과 시간 반환
+    }
 
     public float getScore() {
-        totalTimeInSec = 360 * hours + 60 * minutes + seconds; // 시간 초로 바꿔서 기준정하기
+        totalTimeInSec = 360 * hours + 60 * minutes + seconds;
         if (totalTimeInSec >= 300) {
             return 10;
         }
         return 300 - totalTimeInSec;
-//
-//        if (totalTimeInSec <= 30) { // 30초안에 끝내면 최고점수 100점 부여
-//            score = 100;
-//        } else if (totalTimeInSec > 30 && totalTimeInSec < 60) {
-//            int minus = (int) (totalTimeInSec - 60) / 2;
-//            score = 100 - 3 * minus;
-//        } else {
-//            score = 10;
-//        }
-//        return score;
     }
 }
