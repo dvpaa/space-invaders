@@ -45,7 +45,7 @@ public class Game {
 	/**
 	 * The list of entities that need to be removed from the game this loop
 	 */
-	private ArrayList removeList = new ArrayList();
+	private ArrayList<Entity> removeList = new ArrayList<>();
 	/**
 	 * The entity representing the player
 	 */
@@ -113,7 +113,7 @@ public class Game {
 	private GameConfig gameConfig;
 
 	// attribute added by Eungyu
-	private ArrayList itemList = new ArrayList();
+	private ArrayList<ItemEntity> itemList = new ArrayList<>();
 	private ArrayList<Supplier<Entity>> randomItemList = new ArrayList();
 	private long lastItemGenerate = 0;
 	private long itemInterval = 10000; // 아이템 생성 텀
@@ -211,7 +211,7 @@ public class Game {
 
 		// 게임 종료시 아이템 효과 초기화 및 아이템 제거 added by Eungyu
 		for (int i = 0; i < itemList.size(); i++) {
-			((ItemEntity) itemList.get(i)).resetItemEffect();
+			(itemList.get(i)).resetItemEffect();
 		}
 		itemList.clear();
 	}
@@ -225,7 +225,7 @@ public class Game {
 
 		// 게임 종료시 아이템 효과 초기화 및 아이템 제거 added by Eungyu
 		for (int i = 0; i < itemList.size(); i++) {
-			((ItemEntity) itemList.get(i)).resetItemEffect();
+			(itemList.get(i)).resetItemEffect();
 		}
 		itemList.clear();
 
@@ -424,8 +424,8 @@ public class Game {
 
 			// 아이템 로직 added by Eungyu
 			for (int i = 0; i < itemList.size(); i++) {
-				Entity item = (Entity) itemList.get(i);
-				((ItemEntity) item).doItemLogic();
+				ItemEntity item = itemList.get(i);
+				item.doItemLogic();
 			}
 
 
@@ -612,8 +612,8 @@ public class Game {
 
 
 	// method added by Eungyu
-	public void addItem(Entity entity) {
-		itemList.add(entity);
+	public void addItem(ItemEntity itemEntity) {
+		itemList.add(itemEntity);
 	}
 
 	public void removeItem(Entity entity) {
