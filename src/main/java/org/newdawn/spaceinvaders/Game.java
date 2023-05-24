@@ -11,7 +11,6 @@ import java.util.stream.Collectors;
 import javax.swing.*;
 
 import org.newdawn.spaceinvaders.configuration.GameConfig;
-import org.newdawn.spaceinvaders.configuration.GameMusicPlayer;
 import org.newdawn.spaceinvaders.configuration.ShipType;
 import org.newdawn.spaceinvaders.entity.AlienEntity;
 import org.newdawn.spaceinvaders.entity.Entity;
@@ -93,7 +92,7 @@ public class Game extends Canvas
 	/** The game window that we'll update with the frame count */
 	private JFrame container;
 
-	private GameTimer gameTimer = new GameTimer(); // add GameTimer by Eungyu
+	private GameTimer gameTimer = GameTimer.getInstance(); // add GameTimer by Eungyu
 	private int score = 0; // 점수 초기화
 	private JFrame mainPage;
 	private JFrame selectStagePage;
