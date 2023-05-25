@@ -4,7 +4,8 @@ import org.newdawn.spaceinvaders.Game;
 import org.newdawn.spaceinvaders.entity.Entity;
 import org.newdawn.spaceinvaders.entity.ShipEntity;
 
-public class SpeedItemEntity extends ItemEntity{
+
+public class SpeedItemEntity extends ItemEntity {
     private long effectTime = 10000;
     private long startTime = 0;
 
@@ -13,10 +14,13 @@ public class SpeedItemEntity extends ItemEntity{
         dx = 0;
         dy = moveSpeed * 0.5;
     }
+
     @Override
     public void collidedWith(Entity other) {
-        if(other instanceof ShipEntity){
-            if(used){return;}
+        if (other instanceof ShipEntity) {
+            if (used) {
+                return;
+            }
             game.removeEntity(this);
             game.addItem(this);
             used = true;
@@ -42,6 +46,7 @@ public class SpeedItemEntity extends ItemEntity{
             }
         }
     }
+
     public void resetItemEffect(){
         shipEntity.setMoveSpeed(shipEntity.getMoveSpeed()/1.5);
     }

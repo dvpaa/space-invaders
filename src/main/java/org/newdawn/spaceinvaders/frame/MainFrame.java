@@ -15,15 +15,11 @@ import java.util.ArrayList;
 public class MainFrame extends JFrame {
 
     private JFrame mainFrame = this;
-
     private JLabel background;
-//    private JLabel introBackgroundLabel = new JLabel(new ImageIcon("src/main/resources/background/introBackground.jpg"));
     private JLabel introBackgroundLabel;
-
     private JButton quickButton;
     private JButton shopButton;
     private JButton rankingButton;
-
     private JButton firstStageButton;
     private JButton secondStageButton;
     private JButton thirdStageButton;
@@ -41,8 +37,8 @@ public class MainFrame extends JFrame {
     private ArrayList<JButton> mainButtons = new ArrayList<>();
     private ArrayList<JButton> shipSelectButtons = new ArrayList<>();
     private JButton[] stageButtons = new JButton[5];
-
     private int point = 0;
+    private GameMusicPlayer gameMusicPlayer = new GameMusicPlayer("MainBgm");
 
     public void setAttackUpship(boolean attackUpship) {
         this.attackUpship = attackUpship;
@@ -59,7 +55,6 @@ public class MainFrame extends JFrame {
     public int getPoint() {
         return point;
     }
-    private GameMusicPlayer gameMusicPlayer = new GameMusicPlayer("MainBgm");
 
     public MainFrame() {
         gameMusicPlayer.play();
@@ -79,7 +74,8 @@ public class MainFrame extends JFrame {
     }
 
     private void objectSetting() {
-        introBackgroundLabel = new JLabel(new ImageIcon(ImageUtil.getImage(this.getClass(), "background/introBackground.jpg")));
+        introBackgroundLabel = new JLabel(
+            new ImageIcon(ImageUtil.getImage(this.getClass(), "background/introBackground.jpg")));
         background = introBackgroundLabel;
         setContentPane(background);
 
@@ -162,10 +158,9 @@ public class MainFrame extends JFrame {
         shipSelectButtons.add(defenceUpShipButton);
 
         setVisible(true);
-    } // 화면 구성
+    }
 
     private void listenerSetting() {
-
         shopButton.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
@@ -173,7 +168,7 @@ public class MainFrame extends JFrame {
             }
         });
 
-        quickButton.addMouseListener(new MouseAdapter() { // 종료버튼
+        quickButton.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
                 try {

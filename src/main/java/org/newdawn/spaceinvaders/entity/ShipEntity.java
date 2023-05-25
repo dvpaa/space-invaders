@@ -12,11 +12,8 @@ import org.newdawn.spaceinvaders.configuration.GameConfig;
 public class ShipEntity extends Entity {
 	/** The game in which the ship exists */
 	private Game game;
-
 	private int power;
-
 	private int health;
-
 	private int magicPoint;
 	private GameConfig gameConfig;
 	private double moveSpeed;
@@ -26,14 +23,6 @@ public class ShipEntity extends Entity {
 	private String shotRef;
 	private String skillRef;
 
-
-//	public ShipEntity(Game game, String ref, int x, int y, int power) {
-//
-//		super(ref, x, y);
-//
-//		this.game = game;
-//		this.power = power;
-//	}
 	public ShipEntity(Game game, GameConfig gameConfig, int x, int y) {
 
 		super(gameConfig.getShipRef(), x, y);

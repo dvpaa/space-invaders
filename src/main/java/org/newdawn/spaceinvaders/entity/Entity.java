@@ -35,15 +35,15 @@ public abstract class Entity {
 	private Rectangle me = new Rectangle();
 	/** The rectangle used for other entities during collision resolution */
 	private Rectangle him = new Rectangle();
-	
+
 	/**
 	 * Construct a entity based on a sprite image and a location.
-	 * 
+	 *
 	 * @param ref The reference to the image to be displayed for this entity
- 	 * @param x The initial x location of this entity
+	 * @param x The initial x location of this entity
 	 * @param y The initial y location of this entity
 	 */
-	public Entity(String ref,int x,int y) {
+	public Entity(String ref, int x, int y) {
 		this.sprite = SpriteStore.get().getSprite(ref);
 		this.x = x;
 		this.y = y;
@@ -103,7 +103,7 @@ public abstract class Entity {
 	 * @param g The graphics context on which to draw
 	 */
 	public void draw(Graphics g) {
-		sprite.draw(g,(int) x,(int) y);
+		sprite.draw(g, (int)x, (int)y);
 	}
 	
 	/**
@@ -119,7 +119,7 @@ public abstract class Entity {
 	 * @return The x location of this entity
 	 */
 	public int getX() {
-		return (int) x;
+		return (int)x;
 	}
 
 	/**
@@ -128,7 +128,7 @@ public abstract class Entity {
 	 * @return The y location of this entity
 	 */
 	public int getY() {
-		return (int) y;
+		return (int)y;
 	}
 
 	public Sprite getSprite() {
@@ -142,8 +142,8 @@ public abstract class Entity {
 	 * @return True if the entities collide with each other
 	 */
 	public boolean collidesWith(Entity other) {
-		me.setBounds((int) x,(int) y,sprite.getWidth(),sprite.getHeight());
-		him.setBounds((int) other.x,(int) other.y,other.sprite.getWidth(),other.sprite.getHeight());
+		me.setBounds((int)x, (int)y, sprite.getWidth(), sprite.getHeight());
+		him.setBounds((int)other.x, (int)other.y, other.sprite.getWidth(), other.sprite.getHeight());
 
 		return me.intersects(him);
 	}

@@ -17,21 +17,6 @@ import org.newdawn.spaceinvaders.entity.item.*;
 import org.newdawn.spaceinvaders.frame.MainFrame;
 
 
-/**
- * The main hook of our game. This class with both act as a manager
- * for the display and central mediator for the game logic.
- * <p>
- * Display management will consist of a loop that cycles round all
- * entities in the game asking them to move and then drawing them
- * in the appropriate place. With the help of an inner class it
- * will also allow the player to control the main ship.
- * <p>
- * As a mediator it will be informed when entities within our game
- * detect events (e.g. alient killed, played died) and will take
- * appropriate game actions.
- *
- * @author Kevin Glass
- */
 public class Game {
 
 	/**
@@ -45,7 +30,7 @@ public class Game {
 	/**
 	 * The list of entities that need to be removed from the game this loop
 	 */
-	private ArrayList removeList = new ArrayList();
+	private ArrayList<Entity> removeList = new ArrayList<>();
 	/**
 	 * The entity representing the player
 	 */
@@ -112,7 +97,7 @@ public class Game {
 	private GameConfig gameConfig;
 
 	// attribute added by Eungyu
-	private ArrayList itemList = new ArrayList();
+	private ArrayList<ItemEntity> itemList = new ArrayList<>();
 	private ArrayList<Supplier<Entity>> randomItemList = new ArrayList();
 	private long lastItemGenerate = 0;
 	private long itemInterval = 10000; // 아이템 생성 텀
@@ -162,24 +147,14 @@ public class Game {
 		// create a block of aliens (5 rows, by 12 aliens, spaced evenly)
 		for (int row = 0; row < gameConfig.getAlienRow(); row++) {
 			for (int x = 0; x < 12; x++) {
-				Entity alien = new AlienEntity(this, gameConfig, gameConfig.getAlienRef(), 100 + (x * 50), (50) + row * 30, false);
+				Entity alien = new AlienEntity(this, gameConfig, gameConfig.getAlienRef(), 100 + (x * 50),
+					(50) + row * 30, false);
 				entities.add(alien);
 				alienCount++;
 			}
 		}
 		itemManager.initItem();
-		// 생성 가능 아이템 리스트
-//		Random random = new Random();
-//		randomItemList.addAll(Arrays.asList(
-//				() -> new PushItemEntity(this, random.nextInt(800), -35),
-//				() -> new SpeedItemEntity(this, random.nextInt(800), -35),
-//				() -> new SkillCooldownItem(this, random.nextInt(800), -35),
-//				() -> new AilenSlowItemEntity(this, random.nextInt(800), -35),
-//				() -> new AttackItemEntity(this, random.nextInt(800), -35)
-//		));
 	}
-
-
 
 	/**
 	 * Notification from a game entity that the logic of the game
@@ -206,12 +181,13 @@ public class Game {
 	public void notifyDeath() {
 		gameTimer.stopTimer(); // 게임 종료시 타이머 종료 add GameTimer by Eungyu
 		// 종료시 message를 시간이랑 같이 초기화 add GameTimer by Eungyu
-		message = "Oh no! They got you, try again? \nYour time is " + gameTimer.getEndTime() + "\n Your score is " + score;
+		message =
+			"Oh no! They got you, try again? \nYour time is " + gameTimer.getEndTime() + "\n Your score is " + score;
 		waitingForKeyPress = true;
 
 		// 게임 종료시 아이템 효과 초기화 및 아이템 제거 added by Eungyu
 		for (int i = 0; i < itemList.size(); i++) {
-			((ItemEntity) itemList.get(i)).resetItemEffect();
+			(itemList.get(i)).resetItemEffect();
 		}
 		itemList.clear();
 	}
@@ -225,7 +201,7 @@ public class Game {
 
 		// 게임 종료시 아이템 효과 초기화 및 아이템 제거 added by Eungyu
 		for (int i = 0; i < itemList.size(); i++) {
-			((ItemEntity) itemList.get(i)).resetItemEffect();
+			(itemList.get(i)).resetItemEffect();
 		}
 		itemList.clear();
 
@@ -246,8 +222,7 @@ public class Game {
 		// if there are still some aliens left then they all need to get faster, so
 		// speed up all the existing aliens
 		for (int i = 0; i < entities.size(); i++) {
-			Entity entity = (Entity) entities.get(i);
-
+			Entity entity = entities.get(i);
 			if (entity instanceof AlienEntity) {
 				// speed up by 2%
 				entity.setHorizontalMovement(entity.getHorizontalMovement() * 1.02);
@@ -316,10 +291,10 @@ public class Game {
 
 	public Entity selectAttackAlien(ArrayList<Entity> entities) {
 		List<Entity> list = entities.stream()
-				.filter(entity -> entity instanceof AlienEntity)
-				.sorted(Comparator.comparing(Entity::getY).reversed())
-				.limit(12)
-				.collect(Collectors.toList());
+			.filter(entity -> entity instanceof AlienEntity)
+			.sorted(Comparator.comparing(Entity::getY).reversed())
+			.limit(12)
+			.collect(Collectors.toList());
 		if (list.size() == 0) {
 			return null;
 		}
@@ -331,7 +306,7 @@ public class Game {
 				break;
 			}
 		}
-		int randomInt = (int) (Math.random() * idx);
+		int randomInt = (int)(Math.random() * idx);
 		if (randomInt >= list.size()) {
 			return null;
 		}
@@ -372,13 +347,7 @@ public class Game {
 				fps = 0;
 			}
 
-//			 아이템 생성 added by Eungyu
-//			if (System.currentTimeMillis() - lastItemGenerate > itemInterval) {
-//				Random random = new Random();
-//				lastItemGenerate = System.currentTimeMillis();
-//				Entity item = randomItemList.get(random.nextInt(randomItemList.size())).get();
-//				entities.add(item);
-//			}
+
 			Entity item = itemManager.generateItem();
 			if(item!=null){
 				entities.add(item);
@@ -386,15 +355,10 @@ public class Game {
 
 			gameGUI.makeGraphics();
 
-			// Get hold of a graphics context for the accelerated
-			// surface and blank it out
-
-
 			// cycle round asking each entity to move itself
 			if (!waitingForKeyPress) {
 				for (int i = 0; i < entities.size(); i++) {
-					Entity entity = (Entity) entities.get(i);
-
+					Entity entity = entities.get(i);
 					entity.move(delta);
 				}
 			}
@@ -402,14 +366,13 @@ public class Game {
 			// cycle round drawing all the entities we have in the game
 			gameGUI.drawEntity(entities);
 
-
 			// brute force collisions, compare every entity against
 			// every other entity. If any of them collide notify
 			// both entities that the collision has occured
 			for (int p = 0; p < entities.size(); p++) {
 				for (int s = p + 1; s < entities.size(); s++) {
-					Entity me = (Entity) entities.get(p);
-					Entity him = (Entity) entities.get(s);
+					Entity me = entities.get(p);
+					Entity him = entities.get(s);
 
 					if (me.collidesWith(him)) {
 						me.collidedWith(him);
@@ -428,15 +391,12 @@ public class Game {
 
 			// 아이템 로직 added by Eungyu
 			for (int i = 0; i < itemList.size(); i++) {
-//				Entity item = (Entity) itemList.get(i);
-//				((ItemEntity) item).doItemLogic();
-				((ItemEntity) itemList.get(i)).doItemLogic();
+			  ((ItemEntity) itemList.get(i)).doItemLogic();
 			}
-
 
 			if (logicRequiredThisLoop) {
 				for (int i = 0; i < entities.size(); i++) {
-					Entity entity = (Entity) entities.get(i);
+					Entity entity = (Entity)entities.get(i);
 					entity.doLogic();
 				}
 
@@ -484,7 +444,8 @@ public class Game {
 				}
 			}
 			if (alienCount == 1) {
-				bossAlien = new AlienEntity(this, gameConfig, gameConfig.getBossAlienRef(), 100 + (6 * 50), (50) + 40, true);
+				bossAlien = new AlienEntity(this, gameConfig, gameConfig.getBossAlienRef(), 100 + (6 * 50),
+					(50) + 40, true);
 				entities.add(bossAlien);
 				alienCount = 0;
 			}
@@ -492,7 +453,6 @@ public class Game {
 				gameGUI.setBossHealthText(bossAlien);
 			}
 			gameGUI.setShipInfoText(ship);
-
 
 			// we want each frame to take 10 milliseconds, to do this
 			// we've recorded when we started the frame. We add 10 milliseconds
@@ -522,7 +482,6 @@ public class Game {
 			if (waitingForKeyPress) {
 				return;
 			}
-
 
 			if (e.getKeyCode() == KeyEvent.VK_LEFT) {
 				leftPressed = true;
@@ -617,8 +576,8 @@ public class Game {
 
 
 	// method added by Eungyu
-	public void addItem(Entity entity) {
-		itemList.add(entity);
+	public void addItem(ItemEntity itemEntity) {
+		itemList.add(itemEntity);
 	}
 
 	public void removeItem(Entity entity) {
@@ -649,8 +608,8 @@ public class Game {
 		return skillInterval2;
 	}
 
-	public ArrayList getAilen() {
-		ArrayList ailens = new ArrayList();
+	public ArrayList<Entity> getAilen() {
+		ArrayList<Entity> ailens = new ArrayList<>();
 		for (int i = 0; i < entities.size(); i++) {
 			if (entities.get(i) instanceof AlienEntity) {
 				ailens.add(entities.get(i));
@@ -669,7 +628,7 @@ public class Game {
 	 *
 	 * @param argv The arguments that are passed into our game
 	 */
-	public static void main(String argv[]) {
+	public static void main(String[] argv) {
 		new MainFrame();
 	}
 }
