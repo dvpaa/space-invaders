@@ -4,8 +4,6 @@ import org.newdawn.spaceinvaders.Game;
 import org.newdawn.spaceinvaders.entity.Entity;
 import org.newdawn.spaceinvaders.entity.ShipEntity;
 
-import java.awt.*;
-
 public class SpeedItemEntity extends ItemEntity{
     private long effectTime = 10000;
     private long startTime = 0;

@@ -118,6 +118,7 @@ public class Game {
 	private long itemInterval = 10000; // 아이템 생성 텀
 	private Entity bossAlien;
 	private GameGUI gameGUI;
+	private ItemManager itemManager;
 
 	// attribute for Bgm added by Eungyu
 
@@ -129,6 +130,7 @@ public class Game {
 		gameGUI.addKeyListener(new KeyInputHandler());
 		gameGUI.requestFocus();
 		this.gameConfig = gameConfig;
+		itemManager = new ItemManager(this);
 
 		initEntities();
 	}
@@ -165,16 +167,16 @@ public class Game {
 				alienCount++;
 			}
 		}
-
+		itemManager.initItem();
 		// 생성 가능 아이템 리스트
-		Random random = new Random();
-		randomItemList.addAll(Arrays.asList(
-				() -> new PushItemEntity(this, random.nextInt(800), -35),
-				() -> new SpeedItemEntity(this, random.nextInt(800), -35),
-				() -> new SkillCooldownItem(this, random.nextInt(800), -35),
-				() -> new AilenSlowItemEntity(this, random.nextInt(800), -35),
-				() -> new AttackItemEntity(this, random.nextInt(800), -35)
-		));
+//		Random random = new Random();
+//		randomItemList.addAll(Arrays.asList(
+//				() -> new PushItemEntity(this, random.nextInt(800), -35),
+//				() -> new SpeedItemEntity(this, random.nextInt(800), -35),
+//				() -> new SkillCooldownItem(this, random.nextInt(800), -35),
+//				() -> new AilenSlowItemEntity(this, random.nextInt(800), -35),
+//				() -> new AttackItemEntity(this, random.nextInt(800), -35)
+//		));
 	}
 
 
@@ -371,10 +373,14 @@ public class Game {
 			}
 
 //			 아이템 생성 added by Eungyu
-			if (System.currentTimeMillis() - lastItemGenerate > itemInterval) {
-				Random random = new Random();
-				lastItemGenerate = System.currentTimeMillis();
-				Entity item = randomItemList.get(random.nextInt(randomItemList.size())).get();
+//			if (System.currentTimeMillis() - lastItemGenerate > itemInterval) {
+//				Random random = new Random();
+//				lastItemGenerate = System.currentTimeMillis();
+//				Entity item = randomItemList.get(random.nextInt(randomItemList.size())).get();
+//				entities.add(item);
+//			}
+			Entity item = itemManager.generateItem();
+			if(item!=null){
 				entities.add(item);
 			}
 
@@ -422,8 +428,9 @@ public class Game {
 
 			// 아이템 로직 added by Eungyu
 			for (int i = 0; i < itemList.size(); i++) {
-				Entity item = (Entity) itemList.get(i);
-				((ItemEntity) item).doItemLogic();
+//				Entity item = (Entity) itemList.get(i);
+//				((ItemEntity) item).doItemLogic();
+				((ItemEntity) itemList.get(i)).doItemLogic();
 			}
 
 
@@ -651,6 +658,9 @@ public class Game {
 		}
 		return ailens;
 	}
+//	public ArrayList<Entity> getEntities(){
+//		return entities;
+//	}
 
 	/**
 	 * The entry point into the game. We'll simply create an
