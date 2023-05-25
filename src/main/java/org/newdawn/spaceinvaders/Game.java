@@ -53,7 +53,6 @@ public class Game {
 	/**
 	 * The speed at which the player's ship should move (pixels/sec)
 	 */
-	private double moveSpeed;
 	/**
 	 * The time at which last fired a shot
 	 */
@@ -130,7 +129,6 @@ public class Game {
 		gameGUI.addKeyListener(new KeyInputHandler());
 		gameGUI.requestFocus();
 		this.gameConfig = gameConfig;
-		this.moveSpeed = gameConfig.getShipMoveSpeed();
 
 		initEntities();
 	}
@@ -454,9 +452,9 @@ public class Game {
 			ship.setHorizontalMovement(0);
 
 			if ((leftPressed) && (!rightPressed)) {
-				ship.setHorizontalMovement(-moveSpeed);
+				ship.setHorizontalMovement(-1);
 			} else if ((rightPressed) && (!leftPressed)) {
-				ship.setHorizontalMovement(moveSpeed);
+				ship.setHorizontalMovement(1);
 			}
 
 			// if we're pressing fire, attempt to fire
@@ -618,14 +616,6 @@ public class Game {
 
 	public void removeItem(Entity entity) {
 		itemList.remove(entity);
-	}
-
-	public double getmoveSpeed() {
-		return moveSpeed;
-	}
-
-	public double setmoveSpeed(double moveSpeed) {
-		return this.moveSpeed = moveSpeed;
 	}
 
 	public long getlastShipSkill1() {

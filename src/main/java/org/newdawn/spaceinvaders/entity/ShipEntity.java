@@ -19,6 +19,7 @@ public class ShipEntity extends Entity {
 
 	private int magicPoint;
 	private GameConfig gameConfig;
+	private double moveSpeed;
 
 	// gameConfig에서 가져올 정보
 	private double shotMoveSpeed;
@@ -43,6 +44,8 @@ public class ShipEntity extends Entity {
 		this.health = gameConfig.getShipHealth();
 		this.magicPoint = gameConfig.getShipMagicPoint();
 
+		this.moveSpeed = gameConfig.getShipMoveSpeed();
+
 		this.shotMoveSpeed = gameConfig.getShipShotMoveSpeed();
 		this.shotRef = gameConfig.getShipShotRef();
 		this.skillRef = gameConfig.getShipFirstSkillRef();
@@ -66,7 +69,7 @@ public class ShipEntity extends Entity {
 			return;
 		}
 		
-		super.move(delta);
+		super.move(delta * (long) moveSpeed);
 	}
 	
 	/**
@@ -130,6 +133,12 @@ public class ShipEntity extends Entity {
 	}
 	public void setPower(int power) {
 		this.power = power;
+	}
+	public double getMoveSpeed(){
+		return moveSpeed;
+	}
+	public void setMoveSpeed(double moveSpeed){
+		this.moveSpeed = moveSpeed;
 	}
 	public int getHealth() {
 		return health;

@@ -35,16 +35,16 @@ public class SpeedItemEntity extends ItemEntity{
     public void doItemLogic() {
         if(used){
             if(!is_apply){
-                game.setmoveSpeed(game.getmoveSpeed()*1.5);
+                shipEntity.setMoveSpeed(shipEntity.getMoveSpeed()*1.5);
                 is_apply = true;
             }
             if(System.currentTimeMillis() - startTime > effectTime){
-                game.setmoveSpeed(game.getmoveSpeed()/1.5);
+                shipEntity.setMoveSpeed(shipEntity.getMoveSpeed()/1.5);
                 game.removeItem(this);
             }
         }
     }
     public void resetItemEffect(){
-        game.setmoveSpeed(game.getmoveSpeed()/1.5);
+        shipEntity.setMoveSpeed(shipEntity.getMoveSpeed()/1.5);
     }
 }
