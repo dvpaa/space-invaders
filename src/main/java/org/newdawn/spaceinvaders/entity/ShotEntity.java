@@ -28,19 +28,17 @@ public class ShotEntity extends Entity {
 	 * @param y      The initial y location of the shot
 	 */
 
-	public ShotEntity(Game game, GameConfig gameConfig, String shotRef, boolean isShip, int x, int y, boolean isSkill) {
+	public ShotEntity(Game game, int power, double shotMoveSpeed, String shotRef, boolean isShip, int x, int y, boolean isSkill) {
+
 		super(shotRef, x, y);
-		if (isShip) {
-			if (isSkill) {
-				this.moveSpeed = gameConfig.getShipShotMoveSpeed() * 1.2;
-			} else {
-				this.moveSpeed = gameConfig.getShipShotMoveSpeed();
-			}
-			this.power = gameConfig.getShipPower();
-		} else {
-			this.moveSpeed = gameConfig.getAlienShotMoveSpeed();
-			this.power = gameConfig.getAlienPower();
+
+		if(isSkill){
+			this.moveSpeed = shotMoveSpeed * 1.2;
 		}
+		else{
+			this.moveSpeed = shotMoveSpeed;
+		}
+		this.power = power;
 		this.isShip = isShip;
 		this.isSkill = isSkill;
 		this.game = game;
