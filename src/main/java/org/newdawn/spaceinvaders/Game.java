@@ -3,7 +3,6 @@ package org.newdawn.spaceinvaders;
 import java.awt.event.*;
 import java.util.*;
 import java.util.List;
-import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 import javax.swing.*;
@@ -601,9 +600,6 @@ public class Game {
 		}
 		return ailens;
 	}
-//	public ArrayList<Entity> getEntities(){
-//		return entities;
-//	}
 
 	/**
 	 * The entry point into the game. We'll simply create an
