@@ -49,12 +49,10 @@ public class GameGUI extends Canvas {
 
         mainButton = new JButton("M");
         mainButton.setBounds(750 , 550, 30, 30);
-        mainButton.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mousePressed(MouseEvent e) {
-                container.setVisible(false);
-                frame.setVisible(true);
-            }
+
+        mainButton.addActionListener((e)->{
+            container.setVisible(false);
+            frame.setVisible(true);
         });
         panel.add(mainButton);
         mainButton.setVisible(true);

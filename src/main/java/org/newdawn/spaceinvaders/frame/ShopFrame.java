@@ -71,63 +71,52 @@ public class ShopFrame extends JFrame {
     }
 
     private void listenerSetting() {
-        attackUpSpace.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mousePressed(MouseEvent e) {
-                shipType = ShipType.ATTACK_UP;
-            }
+
+        attackUpSpace.addActionListener((e)->{
+            shipType = ShipType.ATTACK_UP;
         });
 
-        speedUpSpace.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mousePressed(MouseEvent e) {
-                shipType = ShipType.SPEED_UP;
-            }
+        speedUpSpace.addActionListener((e)->{
+            shipType = ShipType.SPEED_UP;
         });
 
-        defenceUpSpace.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mousePressed(MouseEvent e) {
-                shipType = ShipType.DEFENCE_UP;
-            }
+        defenceUpSpace.addActionListener((e)->{
+            shipType = ShipType.DEFENCE_UP;
         });
 
-        buyButton.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mousePressed(MouseEvent e) {
-                switch (shipType) {
-                    case ShipType.ATTACK_UP:
-                        if (((MainFrame) prevFrame).getPoint() >= ShipType.ATTACK_UP_PRICE) {
-                            ((MainFrame) prevFrame).decreasePoint(ShipType.ATTACK_UP_PRICE);
-                            ((MainFrame) prevFrame).setAttackUpship(true);
-                            state = true;
-                        } else {
-                            state = false;
-                        }
-                        break;
-                    case ShipType.SPEED_UP:
-                        if (((MainFrame) prevFrame).getPoint() >= ShipType.SPEED_UP_PRICE) {
-                            ((MainFrame) prevFrame).decreasePoint(ShipType.SPEED_UP_PRICE);
-                            ((MainFrame) prevFrame).setSpeedUpShip(true);
-                            state = true;
-                        } else {
-                            state = false;
-                        }
-                        break;
-                    case ShipType.DEFENCE_UP:
-                        if (((MainFrame) prevFrame).getPoint() >= ShipType.DEFENCE_UP_PRICE) {
-                            ((MainFrame) prevFrame).decreasePoint(ShipType.DEFENCE_UP_PRICE);
-                            ((MainFrame) prevFrame).setDefenceUpShip(true);
-                            state = true;
-                        } else {
-                            state = false;
-                        }
-                        break;
-                }
-                currentFrame.setVisible(false);
-                prevFrame.setVisible(true);
-                new BuyFrame(state);
+        buyButton.addActionListener((e)->{
+            switch (shipType) {
+                case ShipType.ATTACK_UP:
+                    if (((MainFrame) prevFrame).getPoint() >= ShipType.ATTACK_UP_PRICE) {
+                        ((MainFrame) prevFrame).decreasePoint(ShipType.ATTACK_UP_PRICE);
+                        ((MainFrame) prevFrame).setAttackUpship(true);
+                        state = true;
+                    } else {
+                        state = false;
+                    }
+                    break;
+                case ShipType.SPEED_UP:
+                    if (((MainFrame) prevFrame).getPoint() >= ShipType.SPEED_UP_PRICE) {
+                        ((MainFrame) prevFrame).decreasePoint(ShipType.SPEED_UP_PRICE);
+                        ((MainFrame) prevFrame).setSpeedUpShip(true);
+                        state = true;
+                    } else {
+                        state = false;
+                    }
+                    break;
+                case ShipType.DEFENCE_UP:
+                    if (((MainFrame) prevFrame).getPoint() >= ShipType.DEFENCE_UP_PRICE) {
+                        ((MainFrame) prevFrame).decreasePoint(ShipType.DEFENCE_UP_PRICE);
+                        ((MainFrame) prevFrame).setDefenceUpShip(true);
+                        state = true;
+                    } else {
+                        state = false;
+                    }
+                    break;
             }
+            currentFrame.setVisible(false);
+            prevFrame.setVisible(true);
+            new BuyFrame(state);
         });
     }
 }
