@@ -610,7 +610,4 @@ public class Game {
 	 *
 	 * @param argv The arguments that are passed into our game
 	 */
-	public static void main(String[] argv) {
-		new MainFrame();
-	}
 }
