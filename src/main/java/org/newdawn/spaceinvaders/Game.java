@@ -35,12 +35,6 @@ public class Game {
 	 * The entity representing the player
 	 */
 	private Entity ship;
-	/**
-	 * The speed at which the player's ship should move (pixels/sec)
-	 */
-	/**
-	 * The time at which last fired a shot
-	 */
 	private long lastShipFire = 0;
 	private long lastShipSkill1 = 0;
 	private long lastShipSkill2 = 0;
@@ -89,23 +83,13 @@ public class Game {
 	 * The current number of frames recorded
 	 */
 	private int fps;
-
-
 	private GameTimer gameTimer = GameTimer.getInstance(); // add GameTimer by Eungyu
 	private int score = 0; // 점수 초기화
-
 	private GameConfig gameConfig;
-
-	// attribute added by Eungyu
 	private ArrayList<ItemEntity> itemList = new ArrayList<>();
-	private ArrayList<Supplier<Entity>> randomItemList = new ArrayList();
-	private long lastItemGenerate = 0;
-	private long itemInterval = 10000; // 아이템 생성 텀
 	private Entity bossAlien;
 	private GameGUI gameGUI;
 	private ItemManager itemManager;
-
-	// attribute for Bgm added by Eungyu
 
 	/**
 	 * Construct our game and set it running.
