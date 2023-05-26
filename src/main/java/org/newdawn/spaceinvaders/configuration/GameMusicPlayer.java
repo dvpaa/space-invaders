@@ -15,21 +15,18 @@ public class GameMusicPlayer {
     }
 
     public void play() {
-        new Thread() {
-            @Override
-            public void run() {
-                while (true) {
-                    try {
-                        FileInputStream fileInputStream = new FileInputStream(filePath + bgmName + ".mp3");
-                        BufferedInputStream bufferedInputStream = new BufferedInputStream(fileInputStream);
-                        Mp3Player = new Player(bufferedInputStream);
-                        Mp3Player.play();
-                    } catch (Exception e) {
-                        System.out.println(e.getMessage());
-                    }
+        new Thread(() -> {
+            while (true) {
+                try {
+                    FileInputStream fileInputStream = new FileInputStream(filePath + bgmName + ".mp3");
+                    BufferedInputStream bufferedInputStream = new BufferedInputStream(fileInputStream);
+                    Player mp3Player = new Player(bufferedInputStream);
+                    mp3Player.play();
+                } catch (Exception e) {
+                    System.out.println(e.getMessage());
                 }
             }
-        }.start();
+        }).start();
     }
 
     public void stop() {

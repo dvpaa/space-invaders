@@ -161,99 +161,65 @@ public class MainFrame extends JFrame {
     }
 
     private void listenerSetting() {
-        shopButton.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mousePressed(MouseEvent e) {
-//                new ShopFrame();
-            }
+
+        shopButton.addActionListener((e)->{
+
         });
 
-        quickButton.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mousePressed(MouseEvent e) {
-                try {
-                    Thread.sleep(1000);
-                } catch (InterruptedException ex) {
-                    ex.printStackTrace();
-                }
-                System.exit(0);
+        quickButton.addActionListener((e)->{
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException ex) {
+                ex.printStackTrace();
             }
+            System.exit(0);
         });
 
-        firstStageButton.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mousePressed(MouseEvent e) {
-                setMainButtonsInvisible();
-                stage = 1;
-            }
+
+        firstStageButton.addActionListener((e)->{
+            setMainButtonsInvisible();
+            stage = 1;
         });
 
-        secondStageButton.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mousePressed(MouseEvent e) {
-                setMainButtonsInvisible();
-                stage = 2;
-            }
+        secondStageButton.addActionListener((e)->{
+            setMainButtonsInvisible();
+            stage = 2;
         });
 
-        thirdStageButton.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mousePressed(MouseEvent e) {
-                setMainButtonsInvisible();
-                stage = 3;
-            }
+        thirdStageButton.addActionListener((e)->{
+            setMainButtonsInvisible();
+            stage = 3;
         });
 
-        forthStageButton.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mousePressed(MouseEvent e) {
-                setMainButtonsInvisible();
-                stage = 4;
-            }
+        forthStageButton.addActionListener((e)->{
+            setMainButtonsInvisible();
+            stage = 4;
         });
 
-        fifthStageButton.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mousePressed(MouseEvent e) {
-                setMainButtonsInvisible();
-                stage = 5;
-            }
+        fifthStageButton.addActionListener((e)->{
+            setMainButtonsInvisible();
+            stage = 5;
         });
 
-        defaultShipButton.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mousePressed(MouseEvent e) {
-                gameThreadStart("DEFAULT", stage);
-            }
+        defaultShipButton.addActionListener((e)->{
+            gameThreadStart("DEFAULT", stage);
         });
 
-        attackUpShipButton.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mousePressed(MouseEvent e) {
-                gameThreadStart(ShipType.ATTACK_UP, stage);
-            }
+        attackUpShipButton.addActionListener((e)->{
+            gameThreadStart("ATTACK_UP", stage);
         });
 
-        speedUpShipButton.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mousePressed(MouseEvent e) {
-                gameThreadStart(ShipType.SPEED_UP, stage);
-            }
+        speedUpShipButton.addActionListener((e)->{
+            gameThreadStart("SPEED_UP", stage);
         });
 
-        defenceUpShipButton.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mousePressed(MouseEvent e) {
-                gameThreadStart(ShipType.DEFENCE_UP, stage);
-            }
+        defenceUpShipButton.addActionListener((e)->{
+            gameThreadStart("DEFENCE_UP", stage);
         });
 
-        shopButton.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mousePressed(MouseEvent e) {
-                new ShopFrame(mainFrame);
-                setVisible(false);
-            }
+        shopButton.addActionListener((e)->{
+            new ShopFrame(mainFrame);
+            setVisible(false);
         });
     }
 
