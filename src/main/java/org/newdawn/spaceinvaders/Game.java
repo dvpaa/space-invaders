@@ -14,7 +14,6 @@ import org.newdawn.spaceinvaders.entity.AlienEntity;
 import org.newdawn.spaceinvaders.entity.Entity;
 import org.newdawn.spaceinvaders.entity.ShipEntity;
 import org.newdawn.spaceinvaders.entity.item.*;
-import org.newdawn.spaceinvaders.frame.MainFrame;
 
 
 public class Game {
