@@ -8,6 +8,7 @@ import java.util.stream.Collectors;
 import javax.swing.*;
 
 import org.newdawn.spaceinvaders.configuration.GameConfig;
+import org.newdawn.spaceinvaders.configuration.MagicNumber;
 import org.newdawn.spaceinvaders.configuration.ShipType;
 import org.newdawn.spaceinvaders.entity.AlienEntity;
 import org.newdawn.spaceinvaders.entity.Entity;
@@ -123,15 +124,16 @@ public class Game {
 
 	private void initEntities() {
 		// create the player ship and place it roughly in the center of the screen
-		ship = new ShipEntity(this, gameConfig, 370, 550);
+		ship = new ShipEntity(this, gameConfig, MagicNumber.INITIAL_SHIP_X, MagicNumber.INITIAL_SHIP_Y);
 		entities.add(ship);
 		alienCount = 1;
 
 		// create a block of aliens (5 rows, by 12 aliens, spaced evenly)
 		for (int row = 0; row < gameConfig.getAlienRow(); row++) {
 			for (int x = 0; x < 12; x++) {
-				Entity alien = new AlienEntity(this, gameConfig, gameConfig.getAlienRef(), 100 + (x * 50),
-					(50) + row * 30, false);
+				int xPos = 100 + x * 50;
+				int yPos = 50 + row * 30;
+				Entity alien = new AlienEntity(this, gameConfig, gameConfig.getAlienRef(), xPos, yPos, false);
 				entities.add(alien);
 				alienCount++;
 			}
@@ -379,7 +381,7 @@ public class Game {
 
 			if (logicRequiredThisLoop) {
 				for (int i = 0; i < entities.size(); i++) {
-					Entity entity = (Entity)entities.get(i);
+					Entity entity = entities.get(i);
 					entity.doLogic();
 				}
 
@@ -427,8 +429,8 @@ public class Game {
 				}
 			}
 			if (alienCount == 1) {
-				bossAlien = new AlienEntity(this, gameConfig, gameConfig.getBossAlienRef(), 100 + (6 * 50),
-					(50) + 40, true);
+				bossAlien = new AlienEntity(this, gameConfig, gameConfig.getBossAlienRef(), MagicNumber.INITIAL_BOSS_X,
+					MagicNumber.INITIAL_BOSS_Y, true);
 				entities.add(bossAlien);
 				alienCount = 0;
 			}
@@ -538,7 +540,7 @@ public class Game {
 			}
 
 			// if we hit escape, then quit the game
-			if (e.getKeyChar() == 27) {
+			if (e.getKeyChar() == KeyEvent.VK_ESCAPE) {
 				System.exit(0);
 			}
 		}
