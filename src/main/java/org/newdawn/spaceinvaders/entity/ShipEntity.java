@@ -27,20 +27,22 @@ public class ShipEntity extends Entity {
 	private String shotRef;
 	private String skillRef;
 
- public ShipEntity(Game game, GameConfig gameConfig, int x, int y) {
-		super(gameConfig.getShipRef(), x, y);
+// public ShipEntity(Game game, GameConfig gameConfig, int x, int y) {
+	 public ShipEntity(Game game, StageConfig stageConfig, int x, int y) {
+
+		super(stageConfig.getShipRef(), x, y);
 
 		this.game = game;
-		this.gameConfig = gameConfig;
-		this.power = gameConfig.getShipPower();
-		this.health = gameConfig.getShipHealth();
-		this.magicPoint = gameConfig.getShipMagicPoint();
+		this.stageConfig = stageConfig;
+		this.power = stageConfig.getShipPower();
+		this.health = stageConfig.getShipHealth();
+		this.magicPoint = stageConfig.getShipMagicPoint();
 
-		this.moveSpeed = gameConfig.getShipMoveSpeed();
+		this.moveSpeed = stageConfig.getShipMoveSpeed();
 
-		this.shotMoveSpeed = gameConfig.getShipShotMoveSpeed();
-		this.shotRef = gameConfig.getShipShotRef();
-		this.skillRef = gameConfig.getShipFirstSkillRef();
+		this.shotMoveSpeed = stageConfig.getShipShotMoveSpeed();
+		this.shotRef = stageConfig.getShipShotRef();
+		this.skillRef = stageConfig.getShipFirstSkillRef();
 	}
 	
 	/**

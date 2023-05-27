@@ -95,6 +95,7 @@ public class Game {
 	/**
 	 * Construct our game and set it running.
 	 */
+//	public Game(JFrame frame, GameConfig gameConfig) {
 	public Game(JFrame frame, GameConfig gameConfig) {
 		this.gameGUI = new GameGUI(frame, gameConfig);
 		gameGUI.addKeyListener(new KeyInputHandler());
@@ -125,7 +126,7 @@ public class Game {
 
 	private void initEntities() {
 		// create the player ship and place it roughly in the center of the screen
-		ship = new ShipEntity(this, gameConfig, MagicNumber.INITIAL_SHIP_X, MagicNumber.INITIAL_SHIP_Y);
+		ship = new ShipEntity(this, stageConfig, MagicNumber.INITIAL_SHIP_X, MagicNumber.INITIAL_SHIP_Y);
 		entities.add(ship);
 		alienCount = 1;
 
@@ -235,7 +236,7 @@ public class Game {
 	}
 
 	public void tryToSkill1(Entity ship) {
-		if (gameConfig.getShipType().equals("DEFAULT")) {
+		if (stageConfig.getShipType().equals("DEFAULT")) {
 			return;
 		}
 		// check that we have waiting long enough to fire
@@ -244,7 +245,7 @@ public class Game {
 		}
 
 		// if we waited long enough, create the shot entity, and record the time.
-		if (gameConfig.getShipType().equals(ShipType.DEFENCE_UP)) {
+		if (stageConfig.getShipType().equals(ShipType.DEFENCE_UP)) {
 			ship.defenceSkill();
 		} else {
 			Entity shot = ship.attackSkill();
@@ -254,14 +255,14 @@ public class Game {
 	}
 
 	public void tryToSkill2(Entity ship) {
-		if (gameConfig.getShipType().equals("DEFAULT")) {
+		if (stageConfig.getShipType().equals("DEFAULT")) {
 			return;
 		}
 		// check that we have waiting long enough to fire
 		if (System.currentTimeMillis() - lastShipSkill2 < skillInterval2) {
 			return;
 		}
-		if (gameConfig.getShipType().equals(ShipType.SPEED_UP)) {
+		if (stageConfig.getShipType().equals(ShipType.SPEED_UP)) {
 			ship.defenceSkill();
 			lastShipSkill2 = System.currentTimeMillis();
 		}

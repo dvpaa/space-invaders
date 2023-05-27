@@ -2,6 +2,7 @@ package org.newdawn.spaceinvaders;
 
 import org.newdawn.spaceinvaders.configuration.GameConfig;
 import org.newdawn.spaceinvaders.configuration.MagicNumber;
+import org.newdawn.spaceinvaders.configuration.StageConfig;
 import org.newdawn.spaceinvaders.entity.AlienEntity;
 import org.newdawn.spaceinvaders.entity.Entity;
 import org.newdawn.spaceinvaders.entity.ShipEntity;
@@ -35,6 +36,7 @@ public class GameGUI extends Canvas {
     private JPanel panel;
     private GameTimer gameTimer = GameTimer.getInstance();
     private GameConfig gameConfig;
+    private StageConfig stageConfig;
     private Graphics2D g;
 
     public GameGUI(JFrame frame, GameConfig gameConfig) {
@@ -120,9 +122,9 @@ public class GameGUI extends Canvas {
     }
 
     public void win() {
-        int bestScore = Math.max(((MainFrame)this.frame).bestScore[gameConfig.getStage() - 1],
+        int bestScore = Math.max(((MainFrame)this.frame).bestScore[stageConfig.getStage() - 1],
             (int)gameTimer.getScore());
-        ((MainFrame)this.frame).bestScore[gameConfig.getStage() - 1] = bestScore;
+        ((MainFrame)this.frame).bestScore[stageConfig.getStage() - 1] = bestScore;
         ((MainFrame)this.frame).setMainButtonsVisible();
 
         this.container.setVisible(false);
