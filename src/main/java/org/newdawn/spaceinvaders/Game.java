@@ -125,6 +125,11 @@ public class Game {
 		// create the player ship and place it roughly in the center of the screen
 		ship = new ShipEntity(this, gameConfig, MagicNumber.INITIAL_SHIP_X, MagicNumber.INITIAL_SHIP_Y);
 		entities.add(ship);
+		initAlien();
+		itemManager.initItem();
+	}
+
+	private void initAlien() {
 		alienCount = 1;
 
 		// create a block of aliens (5 rows, by 12 aliens, spaced evenly)
@@ -137,7 +142,6 @@ public class Game {
 				alienCount++;
 			}
 		}
-		itemManager.initItem();
 	}
 
 	/**
@@ -185,7 +189,7 @@ public class Game {
 
 		// 게임 종료시 아이템 효과 초기화 및 아이템 제거 added by Eungyu
 		for (int i = 0; i < itemList.size(); i++) {
-			(itemList.get(i)).resetItemEffect();
+			itemList.get(i).resetItemEffect();
 		}
 		itemList.clear();
 
@@ -203,6 +207,10 @@ public class Game {
 			notifyWin();
 		}
 
+		updateAlienSpeed();
+	}
+
+	private void updateAlienSpeed() {
 		// if there are still some aliens left then they all need to get faster, so
 		// speed up all the existing aliens
 		for (int i = 0; i < entities.size(); i++) {
@@ -221,14 +229,17 @@ public class Game {
 	 */
 	public void tryToFire(Entity ship) {
 		// check that we have waiting long enough to fire
-		if (System.currentTimeMillis() - lastShipFire < firingInterval) {
+		if (!isPossibleInterval(lastShipFire, firingInterval)) {
 			return;
 		}
 
-		// if we waited long enough, create the shot entity, and record the time.
 		lastShipFire = System.currentTimeMillis();
 		Entity shot = ship.fire();
 		entities.add(shot);
+	}
+
+	private boolean isPossibleInterval(long lastTime, long interval) {
+		return System.currentTimeMillis() - lastTime >= interval;
 	}
 
 	public void tryToSkill1(Entity ship) {
@@ -236,7 +247,7 @@ public class Game {
 			return;
 		}
 		// check that we have waiting long enough to fire
-		if (System.currentTimeMillis() - lastShipSkill1 < skillInterval1) {
+		if (!isPossibleInterval(lastShipSkill1, skillInterval1)) {
 			return;
 		}
 
@@ -255,9 +266,10 @@ public class Game {
 			return;
 		}
 		// check that we have waiting long enough to fire
-		if (System.currentTimeMillis() - lastShipSkill2 < skillInterval2) {
+		if (!isPossibleInterval(lastShipSkill2, skillInterval2)) {
 			return;
 		}
+
 		if (gameConfig.getShipType().equals(ShipType.SPEED_UP)) {
 			ship.defenceSkill();
 			lastShipSkill2 = System.currentTimeMillis();
@@ -265,9 +277,10 @@ public class Game {
 	}
 
 	public void attackFromAlien(Entity alien) {
-		if (System.currentTimeMillis() - lastAlienFire < firingInterval) {
+		if (!isPossibleInterval(lastAlienFire, firingInterval)) {
 			return;
 		}
+
 		lastAlienFire = System.currentTimeMillis();
 		Entity shot = alien.fire();
 		entities.add(shot);
@@ -279,9 +292,11 @@ public class Game {
 			.sorted(Comparator.comparing(Entity::getY).reversed())
 			.limit(12)
 			.collect(Collectors.toList());
+
 		if (list.size() == 0) {
 			return null;
 		}
+
 		int standardY = list.get(0).getY();
 		int idx = 11;
 		for (int i = 1; i < list.size(); i++) {
