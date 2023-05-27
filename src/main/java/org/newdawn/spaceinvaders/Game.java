@@ -10,6 +10,7 @@ import javax.swing.*;
 import org.newdawn.spaceinvaders.configuration.GameConfig;
 import org.newdawn.spaceinvaders.configuration.MagicNumber;
 import org.newdawn.spaceinvaders.configuration.ShipType;
+import org.newdawn.spaceinvaders.configuration.StageConfig;
 import org.newdawn.spaceinvaders.entity.AlienEntity;
 import org.newdawn.spaceinvaders.entity.Entity;
 import org.newdawn.spaceinvaders.entity.ShipEntity;
@@ -85,6 +86,7 @@ public class Game {
 	private GameTimer gameTimer = GameTimer.getInstance(); // add GameTimer by Eungyu
 	private int score = 0; // 점수 초기화
 	private GameConfig gameConfig;
+	private StageConfig stageConfig;
 	private ArrayList<ItemEntity> itemList = new ArrayList<>();
 	private Entity bossAlien;
 	private GameGUI gameGUI;
@@ -128,11 +130,12 @@ public class Game {
 		alienCount = 1;
 
 		// create a block of aliens (5 rows, by 12 aliens, spaced evenly)
-		for (int row = 0; row < gameConfig.getAlienRow(); row++) {
+		for (int row = 0; row < stageConfig.getAlienRow(); row++) {
 			for (int x = 0; x < 12; x++) {
 				int xPos = 100 + x * 50;
 				int yPos = 50 + row * 30;
-				Entity alien = new AlienEntity(this, gameConfig, gameConfig.getAlienRef(), xPos, yPos, false);
+//				Entity alien = new AlienEntity(this, gameConfig, stageConfig.getAlienRef(), xPos, yPos, false);
+				Entity alien = new AlienEntity(this, stageConfig, stageConfig.getAlienRef(), xPos, yPos, false);
 				entities.add(alien);
 				alienCount++;
 			}
@@ -428,7 +431,8 @@ public class Game {
 				}
 			}
 			if (alienCount == 1) {
-				bossAlien = new AlienEntity(this, gameConfig, gameConfig.getBossAlienRef(), MagicNumber.INITIAL_BOSS_X,
+//				bossAlien = new AlienEntity(this, gameConfig, gameConfig.getBossAlienRef(), MagicNumber.INITIAL_BOSS_X,
+				bossAlien = new AlienEntity(this, stageConfig, stageConfig.getBossAlienRef(), MagicNumber.INITIAL_BOSS_X,
 					MagicNumber.INITIAL_BOSS_Y, true);
 				entities.add(bossAlien);
 				alienCount = 0;

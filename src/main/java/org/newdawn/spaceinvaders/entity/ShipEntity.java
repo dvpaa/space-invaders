@@ -1,8 +1,11 @@
 package org.newdawn.spaceinvaders.entity;
 
 import org.newdawn.spaceinvaders.Game;
+import org.newdawn.spaceinvaders.configuration.StageConfig;
 import org.newdawn.spaceinvaders.entity.item.ItemEntity;
 import org.newdawn.spaceinvaders.configuration.GameConfig;
+
+import java.lang.invoke.StringConcatException;
 
 /**
  * The entity that represents the players ship
@@ -16,6 +19,7 @@ public class ShipEntity extends Entity {
 	private int health;
 	private int magicPoint;
 	private GameConfig gameConfig;
+	private StageConfig stageConfig;
 	private double moveSpeed;
 
 	// gameConfig에서 가져올 정보
@@ -23,8 +27,7 @@ public class ShipEntity extends Entity {
 	private String shotRef;
 	private String skillRef;
 
-	public ShipEntity(Game game, GameConfig gameConfig, int x, int y) {
-
+ public ShipEntity(Game game, GameConfig gameConfig, int x, int y) {
 		super(gameConfig.getShipRef(), x, y);
 
 		this.game = game;

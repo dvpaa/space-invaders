@@ -4,6 +4,7 @@ import org.newdawn.spaceinvaders.Game;
 import org.newdawn.spaceinvaders.Sprite;
 import org.newdawn.spaceinvaders.SpriteStore;
 import org.newdawn.spaceinvaders.configuration.GameConfig;
+import org.newdawn.spaceinvaders.configuration.StageConfig;
 
 /**
  * An entity which represents one of our space invader aliens.
@@ -28,29 +29,31 @@ public class AlienEntity extends Entity {
 
 	private int power;
 	private GameConfig gameConfig;
+	private StageConfig stageConfig;
 	private boolean isBoss;
 
 	private double shotMoveSpeed;
 	private String shotRef;
 
-	public AlienEntity(Game game, GameConfig gameConfig, String alienRef, int x, int y, boolean isBoss) {
+//	public AlienEntity(Game game, GameConfig gameConfig, String alienRef, int x, int y, boolean isBoss) {
+	public AlienEntity(Game game, StageConfig stageConfig, String alienRef, int x, int y, boolean isBoss) {
 
 	super(alienRef, x, y);
 
 	this.game = game;
-	this.gameConfig = gameConfig;
+	this.stageConfig = stageConfig;
 	this.isBoss = isBoss;
 
-	this.shotMoveSpeed = gameConfig.getAlienShotMoveSpeed();
-	this.shotRef = gameConfig.getAlienShotRef();
+	this.shotMoveSpeed = stageConfig.getAlienShotMoveSpeed();
+	this.shotRef = stageConfig.getBossAlienShotRef();
 	if (isBoss) {
-		this.health = gameConfig.getBossAlienHealth();
-		this.power = gameConfig.getBossAlienPower();
-		dx = gameConfig.getBossAlienMoveSpeed();
+		this.health = stageConfig.getBossAlienHealth();
+		this.power = stageConfig.getBossAlienPower();
+		dx = stageConfig.getBossAlienMoveSpeed();
 	} else {
-		this.health = gameConfig.getAlienHealth();
-		this.power = gameConfig.getAlienPower();
-		dx = gameConfig.getAlienMoveSpeed();
+		this.health = stageConfig.getAlienHealth();
+		this.power = stageConfig.getAlienPower();
+		dx = stageConfig.getAlienMoveSpeed();
 	}
 
 		// setup the animatin frames
