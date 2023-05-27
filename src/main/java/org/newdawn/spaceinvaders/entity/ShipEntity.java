@@ -22,7 +22,7 @@ public class ShipEntity extends Entity {
 	private StageConfig stageConfig;
 	private double moveSpeed;
 
-	// gameConfig에서 가져올 정보
+
 	private double shotMoveSpeed;
 	private String shotRef;
 	private String skillRef;
@@ -31,6 +31,7 @@ public class ShipEntity extends Entity {
 	 public ShipEntity(Game game, StageConfig stageConfig, int x, int y) {
 
 		super(stageConfig.getShipRef(), x, y);
+//		super((stageConfig != null) ? stageConfig.getShipRef() : null, x, y);
 
 		this.game = game;
 		this.stageConfig = stageConfig;

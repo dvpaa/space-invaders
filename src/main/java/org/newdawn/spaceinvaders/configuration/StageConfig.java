@@ -131,7 +131,7 @@ public class StageConfig {
         return bossAlienShotMoveSpeed;
     }
 
-    public String getShipRef() {
+    public String getShipRef(){
         return shipRef;
     }
 
