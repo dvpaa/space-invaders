@@ -36,6 +36,7 @@ public class GameGUI extends Canvas {
     private GameConfig gameConfig;
     private Graphics2D g;
     private JLabel skillLabel;
+    private JLabel magicPointLabel;
 
     public GameGUI(JFrame frame, GameConfig gameConfig) {
         this.frame = frame;
@@ -72,25 +73,34 @@ public class GameGUI extends Canvas {
         this.panel.add(bossHealthLabel);
 
         shipHealthLabel = new JLabel();
-        shipHealthLabel.setBounds(10, 500, GameConfig.LABEL_WIDTH, GameConfig.LABEL_HEIGHT);
+        shipHealthLabel.setBounds(10, 475, GameConfig.LABEL_WIDTH, GameConfig.LABEL_HEIGHT);
         shipHealthLabel.setOpaque(true);
         shipHealthLabel.setBackground(Color.black);
         shipHealthLabel.setForeground(Color.white);
         this.panel.add(shipHealthLabel);
 
         shipPowerLabel = new JLabel();
-        shipPowerLabel.setBounds(10, 525, GameConfig.LABEL_WIDTH, GameConfig.LABEL_HEIGHT);
+        shipPowerLabel.setBounds(10, 500, GameConfig.LABEL_WIDTH, GameConfig.LABEL_HEIGHT);
         shipPowerLabel.setOpaque(true);
         shipPowerLabel.setBackground(Color.black);
         shipPowerLabel.setForeground(Color.white);
         this.panel.add(shipPowerLabel);
 
         shipMoveSpeedLabel = new JLabel();
-        shipMoveSpeedLabel.setBounds(10, 550, GameConfig.LABEL_WIDTH, GameConfig.LABEL_HEIGHT);
+        shipMoveSpeedLabel.setBounds(10, 525, GameConfig.LABEL_WIDTH, GameConfig.LABEL_HEIGHT);
         shipMoveSpeedLabel.setOpaque(true);
         shipMoveSpeedLabel.setBackground(Color.black);
         shipMoveSpeedLabel.setForeground(Color.white);
         this.panel.add(shipMoveSpeedLabel);
+
+        if(gameConfig.getShipType()!="DEFAULT"){
+            magicPointLabel = new JLabel();
+            magicPointLabel.setBounds(10, 550, GameConfig.LABEL_WIDTH, GameConfig.LABEL_HEIGHT);
+            magicPointLabel.setOpaque(true);
+            magicPointLabel.setBackground(Color.black);
+            magicPointLabel.setForeground(Color.white);
+            this.panel.add(magicPointLabel);
+        }
 
         skillLabel = new JLabel();
         skillLabel.setBounds(0, 0, 100, 40);
@@ -98,6 +108,7 @@ public class GameGUI extends Canvas {
         skillLabel.setBackground(Color.black);
         skillLabel.setForeground(Color.white);
         this.panel.add(skillLabel);
+
 
         // setup our canvas size and put it into the content of the frame
         setBounds(0, 0, GameConfig.FRAME_WIDTH, GameConfig.FRAME_HEIGHT);
@@ -174,11 +185,17 @@ public class GameGUI extends Canvas {
         shipHealthLabel.setText("Health: " + ((ShipEntity)ship).getHealth());
         shipPowerLabel.setText("Power: " + ((ShipEntity)ship).getPower());
         shipMoveSpeedLabel.setText("Speed: " + ((ShipEntity)ship).getHorizontalMovement());
+        magicPointLabel.setText("MagicPoint "+"|".repeat(((ShipEntity)ship).getMagicPoint()));
     }
 
     public void setSkillText(long interval, long elapsedTime) {
-        skillLabel.setText("Skill: " + (interval - elapsedTime) / 1000);
+        int cooldown = (int)(interval - elapsedTime);
+        if(cooldown>0){
+            skillLabel.setText("Skill: " + cooldown / 1000);
+        }
+        else {
+            skillLabel.setText("Skill is Ready!");
+        }
     }
-
 
 }

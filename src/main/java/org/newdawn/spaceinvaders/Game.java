@@ -4,6 +4,7 @@ import java.awt.event.*;
 import java.io.IOException;
 import java.util.*;
 import java.util.List;
+import java.util.Timer;
 import java.util.stream.Collectors;
 
 import javax.swing.*;
@@ -33,7 +34,7 @@ public class Game {
 	/**
 	 * The entity representing the player
 	 */
-	private Entity ship;
+	private ShipEntity ship;
 	private long lastShipFire = 0;
 	private long lastShipSkill1 = 0;
 	private long lastShipSkill2 = 0;
@@ -78,6 +79,9 @@ public class Game {
 	 * The last time at which we recorded the frame rate
 	 */
 	private long lastFpsTime;
+	private boolean magicPointRecovering = false;
+//	private long lastMagicPointRecover = 0;
+//	private long magicPointRecoverInterval = 10000;
 	/**
 	 * The current number of frames recorded
 	 */
@@ -245,6 +249,28 @@ public class Game {
 		entities.add(shot);
 	}
 
+	public void recoverMagicPoint(){
+		if(ship.getMagicPoint()==5){
+			System.out.println("마력이 가득찼습니다.");
+			magicPointRecovering = false;
+		}
+		else{
+			System.out.println("마력이 회복중입니다.");
+			if(!magicPointRecovering){
+				magicPointRecovering = true;
+				Timer timer = new Timer();
+				timer.schedule(new TimerTask(){
+					@Override
+					public void run() {
+						ship.recoverMagicPoint();
+						magicPointRecovering = false;
+					}
+				},10000);
+			}
+		}
+
+	}
+
 	private boolean isPossibleInterval(long lastTime, long interval) {
 		return System.currentTimeMillis() - lastTime >= interval;
 	}
@@ -364,6 +390,10 @@ public class Game {
 				entities.add(bossAttack);
 			}
 
+			recoverMagicPoint();
+
+			System.out.println(ship.getMagicPoint());
+
 			gameGUI.makeGraphics();
 
 			// cycle round asking each entity to move itself
@@ -472,9 +502,9 @@ public class Game {
 			// us our final value to wait for
 			SystemTimer.sleep(lastLoopTime + 10 - SystemTimer.getTime());
 
-			if(!isPossibleInterval(lastShipSkill1, skillInterval1)){
-				gameGUI.setSkillText(skillInterval1, System.currentTimeMillis()-lastShipSkill1);
-			}
+
+			gameGUI.setSkillText(skillInterval1, System.currentTimeMillis()-lastShipSkill1);
+
 		}
 	}
 
