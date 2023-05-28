@@ -138,6 +138,8 @@ public class GameConfig {
 
         stageSetting();
         shipSetting();
+
+        System.out.println(this.shipType);
     }
 
     private void shipSetting() {
@@ -147,9 +149,11 @@ public class GameConfig {
             this.shipHealth += shipConfig.getExtraHealth();
             this.shipMoveSpeed *= shipConfig.getMoveSpeedMultiplier();
             this.shipShotMoveSpeed *= shipConfig.getShotSpeedMultiplier();
+            System.out.println("not null");
             return;
         }
         this.shipRef = "sprites/ship.gif";
+        System.out.println("null");
     }
 
     private void stageSetting() {

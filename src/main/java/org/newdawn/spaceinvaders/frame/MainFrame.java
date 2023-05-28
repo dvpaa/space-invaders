@@ -206,15 +206,15 @@ public class MainFrame extends JFrame {
         });
 
         attackUpShipButton.addActionListener((e)->{
-            gameThreadStart("ATTACK_UP", stage);
+            gameThreadStart(ShipType.ATTACK_UP, stage);
         });
 
         speedUpShipButton.addActionListener((e)->{
-            gameThreadStart("SPEED_UP", stage);
+            gameThreadStart(ShipType.SPEED_UP, stage);
         });
 
         defenceUpShipButton.addActionListener((e)->{
-            gameThreadStart("DEFENCE_UP", stage);
+            gameThreadStart(ShipType.DEFENCE_UP, stage);
         });
 
         shopButton.addActionListener((e)->{
