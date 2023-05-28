@@ -94,11 +94,15 @@ public class ShipEntity extends Entity {
 
 	@Override
 	public Entity attackSkill() {
+		if(magicPoint<2) return null;
+		magicPoint-=2;
 		return new ShotEntity(game, power, shotMoveSpeed, skillRef, true, this.getX(), this.getY()-70, true);
 	}
 
 	@Override
 	public void defenceSkill() {
+		if(magicPoint<2) return;
+		magicPoint-=2;
 		for (Entity entity : game.entities) {
 			if (entity instanceof ShotEntity) {
 				if (!((ShotEntity) entity).isShip) {
@@ -113,6 +117,8 @@ public class ShipEntity extends Entity {
 //		return new ShotEntity(game, gameConfig, gameConfig.getShipFirstSkillRef(), true, this.getX(), this.getY()-70, true);
 //	}
 	public Entity secondSkill() {
+		if(magicPoint<2) return null;
+		magicPoint-=2;
 		return new ShotEntity(game, power, shotMoveSpeed, skillRef, true, this.getX(), this.getY()-70, true);
 	}
 
@@ -130,5 +136,11 @@ public class ShipEntity extends Entity {
 	}
 	public int getHealth() {
 		return health;
+	}
+	public int getMagicPoint() {
+		return magicPoint;
+	}
+	public void recoverMagicPoint() {
+		this.magicPoint += 1;
 	}
 }
