@@ -1,6 +1,7 @@
 package org.newdawn.spaceinvaders;
 
 import java.awt.event.*;
+import java.io.IOException;
 import java.util.*;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -329,7 +330,7 @@ public class Game {
 	 * - Checking Input
 	 * <p>
 	 */
-	public void gameLoop() {
+	public void gameLoop(){
 		long lastLoopTime = SystemTimer.getTime();
 
 		// keep looping round til the game ends
@@ -470,6 +471,10 @@ public class Game {
 			// to this and then factor in the current time to give
 			// us our final value to wait for
 			SystemTimer.sleep(lastLoopTime + 10 - SystemTimer.getTime());
+
+			if(!isPossibleInterval(lastShipSkill1, skillInterval1)){
+				gameGUI.setSkillText(skillInterval1, System.currentTimeMillis()-lastShipSkill1);
+			}
 		}
 	}
 

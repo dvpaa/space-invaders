@@ -35,6 +35,7 @@ public class GameGUI extends Canvas {
     private GameTimer gameTimer = GameTimer.getInstance();
     private GameConfig gameConfig;
     private Graphics2D g;
+    private JLabel skillLabel;
 
     public GameGUI(JFrame frame, GameConfig gameConfig) {
         this.frame = frame;
@@ -90,6 +91,13 @@ public class GameGUI extends Canvas {
         shipMoveSpeedLabel.setBackground(Color.black);
         shipMoveSpeedLabel.setForeground(Color.white);
         this.panel.add(shipMoveSpeedLabel);
+
+        skillLabel = new JLabel();
+        skillLabel.setBounds(0, 0, 100, 40);
+        skillLabel.setOpaque(true);
+        skillLabel.setBackground(Color.black);
+        skillLabel.setForeground(Color.white);
+        this.panel.add(skillLabel);
 
         // setup our canvas size and put it into the content of the frame
         setBounds(0, 0, GameConfig.FRAME_WIDTH, GameConfig.FRAME_HEIGHT);
@@ -167,4 +175,10 @@ public class GameGUI extends Canvas {
         shipPowerLabel.setText("Power: " + ((ShipEntity)ship).getPower());
         shipMoveSpeedLabel.setText("Speed: " + ((ShipEntity)ship).getHorizontalMovement());
     }
+
+    public void setSkillText(long interval, long elapsedTime) {
+        skillLabel.setText("Skill: " + (interval - elapsedTime) / 1000);
+    }
+
+
 }
