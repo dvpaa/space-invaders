@@ -38,11 +38,75 @@ public class GameConfig {
     public static final Map<String, ShipConfig> shipConfigMap = new HashMap<>();
 
     static {
-        stageConfigMap.put(1, new StageConfig("sprites/alien2.png", 2, 1, 3, 300, "sprites/boss1.png", 50, 2, -300, "sprites/boss2.png", 500));
-        stageConfigMap.put(2, new StageConfig("sprites/alien3.png", 3, 1, 4, 300, "sprites/boss2.png", 50, 2, -300, "sprites/alienshot.png", 500));
-        stageConfigMap.put(3, new StageConfig("sprites/alien4.png", 4, 2, 4, 400, "sprites/boss3.png", 50, 2, -400, "sprites/alienshot.png", 600));
-        stageConfigMap.put(4, new StageConfig("sprites/alien5.png", 5, 2, 4, 400, "sprites/boss4.png", 70, 2, -400, "sprites/alienshot.png", 600));
-        stageConfigMap.put(5, new StageConfig("sprites/alien5.png", 5, 3, 4, 400, "sprites/boss5.png", 100, 3, -500, "sprites/alienshot.png", 600));
+        stageConfigMap.put(1, new StageConfig.Builder()
+            .alienRef("sprites/alien2.png")
+            .alienHealth(2)
+            .alienPower(1)
+            .alienRow(3)
+            .alienShotMoveSpeed(300)
+            .bossAlienRef("sprites/boss1.png")
+            .bossAlienHealth(50)
+            .bossAlienPower(2)
+            .bossAlienMoveSpeed(-300)
+            .bossAlienShotRef("sprites/alienshot.png")
+            .bossAlienShotMoveSpeed(500)
+            .build());
+        stageConfigMap.put(2, new StageConfig.Builder()
+            .alienRef("sprites/alien3.png")
+            .alienHealth(3)
+            .alienPower(1)
+            .alienRow(4)
+            .alienShotMoveSpeed(300)
+            .bossAlienRef("sprites/boss2.png")
+            .bossAlienHealth(50)
+            .bossAlienPower(2)
+            .bossAlienMoveSpeed(-300)
+            .bossAlienShotRef("sprites/alienshot.png")
+            .bossAlienShotMoveSpeed(500)
+            .build());
+        stageConfigMap.put(3, new StageConfig.Builder()
+            .alienRef("sprites/alien4.png")
+            .alienHealth(4)
+            .alienPower(2)
+            .alienRow(4)
+            .alienShotMoveSpeed(400)
+            .bossAlienRef("sprites/boss3.png")
+            .bossAlienHealth(50)
+            .bossAlienPower(2)
+            .bossAlienMoveSpeed(-400)
+            .bossAlienShotRef("sprites/alienshot.png")
+            .bossAlienShotMoveSpeed(600)
+            .build());
+        stageConfigMap.put(4, new StageConfig.Builder()
+            .alienRef("sprites/alien5.png")
+            .alienHealth(5)
+            .alienPower(2)
+            .alienRow(4)
+            .alienShotMoveSpeed(400)
+            .bossAlienRef("sprites/boss4.png")
+            .bossAlienHealth(70)
+            .bossAlienPower(2)
+            .bossAlienMoveSpeed(-400)
+            .bossAlienShotRef("sprites/alienshot.png")
+            .bossAlienShotMoveSpeed(600)
+            .build());
+        stageConfigMap.put(5, new StageConfig.Builder()
+            .alienRef("sprites/alien5.png")
+            .alienHealth(5)
+            .alienPower(3)
+            .alienRow(4)
+            .alienShotMoveSpeed(400)
+            .bossAlienRef("sprites/boss5.png")
+            .bossAlienHealth(100)
+            .bossAlienPower(3)
+            .bossAlienMoveSpeed(-500)
+            .bossAlienShotRef("sprites/alienshot.png")
+            .bossAlienShotMoveSpeed(600)
+            .build());
+        // stageConfigMap.put(2, new StageConfig("sprites/alien3.png", 3, 1, 4, 300, "sprites/boss2.png", 50, 2, -300, "sprites/alienshot.png", 500));
+        // stageConfigMap.put(3, new StageConfig("sprites/alien4.png", 4, 2, 4, 400, "sprites/boss3.png", 50, 2, -400, "sprites/alienshot.png", 600));
+        // stageConfigMap.put(4, new StageConfig("sprites/alien5.png", 5, 2, 4, 400, "sprites/boss4.png", 70, 2, -400, "sprites/alienshot.png", 600));
+        // stageConfigMap.put(5, new StageConfig("sprites/alien5.png", 5, 3, 4, 400, "sprites/boss5.png", 100, 3, -500, "sprites/alienshot.png", 600));
 
         shipConfigMap.put(ShipType.ATTACK_UP, new ShipConfig("sprites/attackUpShip.png", 2, 0));
         shipConfigMap.put(ShipType.DEFENCE_UP, new ShipConfig("sprites/defenceUpShip.png", 0, 2));
@@ -52,9 +116,9 @@ public class GameConfig {
     public GameConfig(String shipType, int stage) {
         this.stage = stage;
         this.shipType = shipType;
-        this.shipPower = 5;
+        this.shipPower = 1;
         this.shipMagicPoint = 5;
-        this.shipHealth = 100;
+        this.shipHealth = 3;
         this.shipMoveSpeed = 300;
         this.alienMoveSpeed = -150;
         this.alienShotRef = "sprites/alienshot.png";
