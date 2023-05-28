@@ -241,7 +241,7 @@ public class Game {
 		}
 
 		lastShipFire = System.currentTimeMillis();
-		Entity shot = ship.fire();
+		Entity shot = ((ShipEntity)ship).fire();
 		entities.add(shot);
 	}
 
@@ -260,9 +260,9 @@ public class Game {
 
 		// if we waited long enough, create the shot entity, and record the time.
 		if (gameConfig.getShipType().equals(ShipType.DEFENCE_UP)) {
-			ship.defenceSkill();
+			((ShipEntity)ship).defenceSkill();
 		} else {
-			Entity shot = ship.attackSkill();
+			Entity shot = ((ShipEntity)ship).attackSkill();
 			entities.add(shot);
 		}
 		lastShipSkill1 = System.currentTimeMillis();
@@ -278,7 +278,7 @@ public class Game {
 		}
 
 		if (gameConfig.getShipType().equals(ShipType.SPEED_UP)) {
-			ship.defenceSkill();
+			((ShipEntity)ship).defenceSkill();
 			lastShipSkill2 = System.currentTimeMillis();
 		}
 	}
