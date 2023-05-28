@@ -38,7 +38,7 @@ public class PushItemEntity extends ItemEntity {
         if (used) {
             if (!is_apply) {
                 is_apply = true;
-                ailen = game.getAilen();
+                ailen = game.getAlien();
                 for (int i = 0; i < ailen.size(); i++) {
                     if (((Entity)ailen.get(i)).getY() < 10) {
                         return;

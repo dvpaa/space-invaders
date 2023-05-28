@@ -1,6 +1,7 @@
 package org.newdawn.spaceinvaders.entity;
 
 import org.newdawn.spaceinvaders.Game;
+import org.newdawn.spaceinvaders.entity.bossAttack.BossAttackEntity;
 import org.newdawn.spaceinvaders.entity.item.ItemEntity;
 import org.newdawn.spaceinvaders.configuration.GameConfig;
 
@@ -15,7 +16,6 @@ public class ShipEntity extends Entity {
 	private int power;
 	private int health;
 	private int magicPoint;
-	private GameConfig gameConfig;
 	private double moveSpeed;
 
 	// gameConfig에서 가져올 정보
@@ -28,7 +28,6 @@ public class ShipEntity extends Entity {
 		super(gameConfig.getShipRef(), x, y);
 
 		this.game = game;
-		this.gameConfig = gameConfig;
 		this.power = gameConfig.getShipPower();
 		this.health = gameConfig.getShipHealth();
 		this.magicPoint = gameConfig.getShipMagicPoint();

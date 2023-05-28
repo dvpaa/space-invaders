@@ -7,3 +7,4 @@ public class GameApplication {
 		new MainFrame();
 	}
 }
+ 

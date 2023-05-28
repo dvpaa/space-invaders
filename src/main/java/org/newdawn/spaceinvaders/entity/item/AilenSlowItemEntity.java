@@ -38,14 +38,14 @@ public class AilenSlowItemEntity extends ItemEntity{
     public void doItemLogic() {
         if (used){
             if (!is_apply) {
-                ailen = game.getAilen();
+                ailen = game.getAlien();
                 for (int i = 0; i < ailen.size(); i++) {
                     (ailen.get(i)).setHorizontalMovement((ailen.get(i)).getHorizontalMovement() / 10);
                 }
                 is_apply = true;
             }
             if (System.currentTimeMillis() - startTime > effectTime) {
-                ailen = game.getAilen();
+                ailen = game.getAlien();
                 for (int i = 0; i < ailen.size(); i++) {
                     (ailen.get(i)).setHorizontalMovement((ailen.get(i)).getHorizontalMovement() * 10);
                 }
