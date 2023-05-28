@@ -49,7 +49,7 @@ public class GameConfig {
     public static final Map<String, ShipConfig> shipConfigMap = new HashMap<>();
 
     static {
-        stageConfigMap.put(1, new StageConfig.Builder()
+        stageConfigMap.put(1, new StageConfig.StageBuilder()
             .alienRef("sprites/alien2.png")
             .alienHealth(2)
             .alienPower(1)
@@ -62,7 +62,7 @@ public class GameConfig {
             .bossAlienShotRef("sprites/alienshot.png")
             .bossAlienShotMoveSpeed(500)
             .build());
-        stageConfigMap.put(2, new StageConfig.Builder()
+        stageConfigMap.put(2, new StageConfig.StageBuilder()
             .alienRef("sprites/alien3.png")
             .alienHealth(3)
             .alienPower(1)
@@ -75,7 +75,7 @@ public class GameConfig {
             .bossAlienShotRef("sprites/alienshot.png")
             .bossAlienShotMoveSpeed(500)
             .build());
-        stageConfigMap.put(3, new StageConfig.Builder()
+        stageConfigMap.put(3, new StageConfig.StageBuilder()
             .alienRef("sprites/alien4.png")
             .alienHealth(4)
             .alienPower(2)
@@ -88,7 +88,7 @@ public class GameConfig {
             .bossAlienShotRef("sprites/alienshot.png")
             .bossAlienShotMoveSpeed(600)
             .build());
-        stageConfigMap.put(4, new StageConfig.Builder()
+        stageConfigMap.put(4, new StageConfig.StageBuilder()
             .alienRef("sprites/alien5.png")
             .alienHealth(5)
             .alienPower(2)
@@ -101,7 +101,7 @@ public class GameConfig {
             .bossAlienShotRef("sprites/alienshot.png")
             .bossAlienShotMoveSpeed(600)
             .build());
-        stageConfigMap.put(5, new StageConfig.Builder()
+        stageConfigMap.put(5, new StageConfig.StageBuilder()
             .alienRef("sprites/alien5.png")
             .alienHealth(5)
             .alienPower(3)
@@ -115,9 +115,16 @@ public class GameConfig {
             .bossAlienShotMoveSpeed(600)
             .build());
 
-        shipConfigMap.put(ShipType.ATTACK_UP, new ShipConfig("sprites/attackUpShip.png", 2, 0));
-        shipConfigMap.put(ShipType.DEFENCE_UP, new ShipConfig("sprites/defenceUpShip.png", 0, 2));
-        shipConfigMap.put(ShipType.SPEED_UP, new ShipConfig("sprites/speedUpShip.png", 0, 0, 1.4, 1.4));
+        shipConfigMap.put(ShipType.ATTACK_UP, new ShipConfig.ShipBuilder("sprites/attackUpShip.png")
+            .extraPower(2)
+            .build());
+        shipConfigMap.put(ShipType.DEFENCE_UP, new ShipConfig.ShipBuilder("sprites/defenceUpShip.png")
+            .extraHealth(2)
+            .build());
+        shipConfigMap.put(ShipType.SPEED_UP, new ShipConfig.ShipBuilder("sprites/speedUpShip.png")
+            .moveSpeedMultiplier(1.4)
+            .shotSpeedMultiplier(1.4)
+            .build());
     }
 
     public GameConfig(String shipType, int stage) {

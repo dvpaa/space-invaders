@@ -13,18 +13,18 @@ public class StageConfig {
 	private final String bossAlienShotRef;
 	private final int bossAlienShotMoveSpeed;
 
-	public StageConfig(Builder builder) {
-		this.alienRef = builder.alienRef;
-		this.alienHealth = builder.alienHealth;
-		this.alienPower = builder.alienPower;
-		this.alienRow = builder.alienRow;
-		this.alienShotMoveSpeed = builder.alienShotMoveSpeed;
-		this.bossAlienRef = builder.bossAlienRef;
-		this.bossAlienHealth = builder.bossAlienHealth;
-		this.bossAlienPower = builder.bossAlienPower;
-		this.bossAlienMoveSpeed = builder.bossAlienMoveSpeed;
-		this.bossAlienShotRef = builder.bossAlienShotRef;
-		this.bossAlienShotMoveSpeed = builder.bossAlienShotMoveSpeed;
+	public StageConfig(StageBuilder stageBuilder) {
+		this.alienRef = stageBuilder.alienRef;
+		this.alienHealth = stageBuilder.alienHealth;
+		this.alienPower = stageBuilder.alienPower;
+		this.alienRow = stageBuilder.alienRow;
+		this.alienShotMoveSpeed = stageBuilder.alienShotMoveSpeed;
+		this.bossAlienRef = stageBuilder.bossAlienRef;
+		this.bossAlienHealth = stageBuilder.bossAlienHealth;
+		this.bossAlienPower = stageBuilder.bossAlienPower;
+		this.bossAlienMoveSpeed = stageBuilder.bossAlienMoveSpeed;
+		this.bossAlienShotRef = stageBuilder.bossAlienShotRef;
+		this.bossAlienShotMoveSpeed = stageBuilder.bossAlienShotMoveSpeed;
 	}
 
 	public String getAlienRef() {
@@ -71,7 +71,7 @@ public class StageConfig {
 		return bossAlienShotMoveSpeed;
 	}
 
-	public static class Builder {
+	public static class StageBuilder {
 		private String alienRef;
 		private int alienHealth;
 		private int alienPower;
@@ -84,57 +84,57 @@ public class StageConfig {
 		private String bossAlienShotRef;
 		private int bossAlienShotMoveSpeed;
 
-		public Builder alienRef(String alienRef) {
+		public StageBuilder alienRef(String alienRef) {
 			this.alienRef = alienRef;
 			return this;
 		}
 
-		public Builder alienHealth(int alienHealth) {
+		public StageBuilder alienHealth(int alienHealth) {
 			this.alienHealth = alienHealth;
 			return this;
 		}
 
-		public Builder alienPower(int alienPower) {
+		public StageBuilder alienPower(int alienPower) {
 			this.alienPower = alienPower;
 			return this;
 		}
 
-		public Builder alienRow(int alienRow) {
+		public StageBuilder alienRow(int alienRow) {
 			this.alienRow = alienRow;
 			return this;
 		}
 
-		public Builder alienShotMoveSpeed(double alienShotMoveSpeed) {
+		public StageBuilder alienShotMoveSpeed(double alienShotMoveSpeed) {
 			this.alienShotMoveSpeed = alienShotMoveSpeed;
 			return this;
 		}
 
-		public Builder bossAlienRef(String bossAlienRef) {
+		public StageBuilder bossAlienRef(String bossAlienRef) {
 			this.bossAlienRef = bossAlienRef;
 			return this;
 		}
 
-		public Builder bossAlienHealth(int bossAlienHealth) {
+		public StageBuilder bossAlienHealth(int bossAlienHealth) {
 			this.bossAlienHealth = bossAlienHealth;
 			return this;
 		}
 
-		public Builder bossAlienPower(int bossAlienPower) {
+		public StageBuilder bossAlienPower(int bossAlienPower) {
 			this.bossAlienPower = bossAlienPower;
 			return this;
 		}
 
-		public Builder bossAlienMoveSpeed(int bossAlienMoveSpeed) {
+		public StageBuilder bossAlienMoveSpeed(int bossAlienMoveSpeed) {
 			this.bossAlienMoveSpeed = bossAlienMoveSpeed;
 			return this;
 		}
 
-		public Builder bossAlienShotRef(String bossAlienShotRef) {
+		public StageBuilder bossAlienShotRef(String bossAlienShotRef) {
 			this.bossAlienShotRef = bossAlienShotRef;
 			return this;
 		}
 
-		public Builder bossAlienShotMoveSpeed(int bossAlienShotMoveSpeed) {
+		public StageBuilder bossAlienShotMoveSpeed(int bossAlienShotMoveSpeed) {
 			this.bossAlienShotMoveSpeed = bossAlienShotMoveSpeed;
 			return this;
 		}
