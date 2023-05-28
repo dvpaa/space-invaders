@@ -37,7 +37,7 @@ public class MainFrame extends JFrame {
     private ArrayList<JButton> mainButtons = new ArrayList<>();
     private ArrayList<JButton> shipSelectButtons = new ArrayList<>();
     private JButton[] stageButtons = new JButton[5];
-    private int point = 0;
+    private int point = GameConfig.defaultPoint;
     private GameMusicPlayer gameMusicPlayer = new GameMusicPlayer("MainBgm");
 
     public void setAttackUpship(boolean attackUpship) {
