@@ -89,6 +89,7 @@ public class Game {
 	private Entity bossAlien;
 	private GameGUI gameGUI;
 	private ItemManager itemManager;
+	private BossAttackPattern bossAttackPattern;
 
 	/**
 	 * Construct our game and set it running.
@@ -99,6 +100,7 @@ public class Game {
 		gameGUI.requestFocus();
 		this.gameConfig = gameConfig;
 		itemManager = new ItemManager(this);
+		bossAttackPattern = new BossAttackPattern(this, gameConfig.getStage());
 
 		initEntities();
 	}
@@ -127,6 +129,7 @@ public class Game {
 		entities.add(ship);
 		initAlien();
 		itemManager.initItem();
+		bossAttackPattern.initBossAttackPattern();
 	}
 
 	private void initAlien() {
@@ -178,6 +181,8 @@ public class Game {
 			(itemList.get(i)).resetItemEffect();
 		}
 		itemList.clear();
+
+		bossAttackPattern.setBoss(false);
 	}
 
 	/**
@@ -192,6 +197,8 @@ public class Game {
 			itemList.get(i).resetItemEffect();
 		}
 		itemList.clear();
+
+		bossAttackPattern.setBoss(false);
 
 		gameGUI.win();
 	}
@@ -352,6 +359,11 @@ public class Game {
 				entities.add(item);
 			}
 
+			Entity bossAttack = bossAttackPattern.doBossAttack();
+			if(bossAttack!=null){
+				entities.add(bossAttack);
+			}
+
 			gameGUI.makeGraphics();
 
 			// cycle round asking each entity to move itself
@@ -446,6 +458,7 @@ public class Game {
 				bossAlien = new AlienEntity(this, gameConfig, gameConfig.getBossAlienRef(), MagicNumber.INITIAL_BOSS_X,
 					MagicNumber.INITIAL_BOSS_Y, true);
 				entities.add(bossAlien);
+				bossAttackPattern.setBoss(true);
 				alienCount = 0;
 			}
 			if (alienCount == 0) {
@@ -607,14 +620,14 @@ public class Game {
 		return skillInterval2;
 	}
 
-	public ArrayList<Entity> getAilen() {
-		ArrayList<Entity> ailens = new ArrayList<>();
+	public ArrayList<Entity> getAlien() {
+		ArrayList<Entity> aliens = new ArrayList<>();
 		for (int i = 0; i < entities.size(); i++) {
 			if (entities.get(i) instanceof AlienEntity) {
-				ailens.add(entities.get(i));
+				aliens.add(entities.get(i));
 			}
 		}
-		return ailens;
+		return aliens;
 	}
 
 	/**

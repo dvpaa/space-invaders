@@ -60,6 +60,9 @@ public class ShotEntity extends Entity {
 		if (y < -100) {
 			game.removeEntity(this);
 		}
+		if (y>800){
+			game.removeEntity(this);
+		}
 	}
 
 	/**

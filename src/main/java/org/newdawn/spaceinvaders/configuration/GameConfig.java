@@ -32,9 +32,9 @@ public class GameConfig {
     public GameConfig(String shipType, int stage) {
         this.stage = stage;
         this.shipType = shipType;
-        this.shipPower = 1;
+        this.shipPower = 5;
         this.shipMagicPoint = 5;
-        this.shipHealth = 3;
+        this.shipHealth = 100;
         this.shipMoveSpeed = 300;
         this.alienMoveSpeed = -150;
         this.alienShotRef = "sprites/alienshot.png";
