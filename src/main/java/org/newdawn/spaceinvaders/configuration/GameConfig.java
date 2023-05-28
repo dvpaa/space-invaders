@@ -6,10 +6,10 @@ import java.util.List;
 public class GameConfig {
 
     private List<StageConfig> stageConfigs;
+
 //    private StageConfig whatStage;
 
     public GameConfig(String shipType, int stage) {
-
 
         stageConfigs = new ArrayList<>();
         stageConfigs.add(null); // 0번 인덱스는 사용하지 않음
