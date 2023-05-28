@@ -189,7 +189,7 @@ public class GameGUI extends Canvas {
     }
 
     public void setSkillText(long interval, long elapsedTime) {
-        int cooldown = (int)(interval - elapsedTime);
+        long cooldown = (interval - elapsedTime);
         if(cooldown>0){
             skillLabel.setText("Skill: " + cooldown / 1000);
         }

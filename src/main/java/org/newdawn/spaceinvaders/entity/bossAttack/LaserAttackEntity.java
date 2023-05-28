@@ -1,7 +1,6 @@
 package org.newdawn.spaceinvaders.entity.bossAttack;
 
 import org.newdawn.spaceinvaders.Game;
-import org.newdawn.spaceinvaders.Sprite;
 import org.newdawn.spaceinvaders.SpriteStore;
 import org.newdawn.spaceinvaders.entity.Entity;
 import org.newdawn.spaceinvaders.entity.ShipEntity;
@@ -25,7 +24,6 @@ public class LaserAttackEntity extends BossAttackEntity{
                 sprite = SpriteStore.get().getSprite(laserRef);
             }
         },3000);
-
         timer.schedule(new TimerTask() {
             @Override
             public void run() {
@@ -33,11 +31,9 @@ public class LaserAttackEntity extends BossAttackEntity{
             }
         },6000);
     }
-
     @Override
     public void collidedWith(Entity other) {
         if(warningPhase) return;
-
         if(other instanceof ShipEntity){
             game.notifyDeath();
         }

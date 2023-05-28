@@ -251,11 +251,9 @@ public class Game {
 
 	public void recoverMagicPoint(){
 		if(ship.getMagicPoint()==5){
-			System.out.println("마력이 가득찼습니다.");
 			magicPointRecovering = false;
 		}
 		else{
-			System.out.println("마력이 회복중입니다.");
 			if(!magicPointRecovering){
 				magicPointRecovering = true;
 				Timer timer = new Timer();
@@ -392,7 +390,6 @@ public class Game {
 
 			recoverMagicPoint();
 
-			System.out.println(ship.getMagicPoint());
 
 			gameGUI.makeGraphics();
 
@@ -488,6 +485,7 @@ public class Game {
 				bossAlien = new AlienEntity(this, gameConfig, gameConfig.getBossAlienRef(), GameConfig.INITIAL_BOSS_X,
 					GameConfig.INITIAL_BOSS_Y, true);
 				entities.add(bossAlien);
+
 				bossAttackPattern.setBoss(true);
 				alienCount = 0;
 			}
