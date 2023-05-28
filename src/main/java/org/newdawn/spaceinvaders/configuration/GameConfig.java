@@ -103,10 +103,6 @@ public class GameConfig {
             .bossAlienShotRef("sprites/alienshot.png")
             .bossAlienShotMoveSpeed(600)
             .build());
-        // stageConfigMap.put(2, new StageConfig("sprites/alien3.png", 3, 1, 4, 300, "sprites/boss2.png", 50, 2, -300, "sprites/alienshot.png", 500));
-        // stageConfigMap.put(3, new StageConfig("sprites/alien4.png", 4, 2, 4, 400, "sprites/boss3.png", 50, 2, -400, "sprites/alienshot.png", 600));
-        // stageConfigMap.put(4, new StageConfig("sprites/alien5.png", 5, 2, 4, 400, "sprites/boss4.png", 70, 2, -400, "sprites/alienshot.png", 600));
-        // stageConfigMap.put(5, new StageConfig("sprites/alien5.png", 5, 3, 4, 400, "sprites/boss5.png", 100, 3, -500, "sprites/alienshot.png", 600));
 
         shipConfigMap.put(ShipType.ATTACK_UP, new ShipConfig("sprites/attackUpShip.png", 2, 0));
         shipConfigMap.put(ShipType.DEFENCE_UP, new ShipConfig("sprites/defenceUpShip.png", 0, 2));
