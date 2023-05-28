@@ -1,6 +1,6 @@
 package org.newdawn.spaceinvaders;
 
-import org.newdawn.spaceinvaders.configuration.MagicNumber;
+import org.newdawn.spaceinvaders.configuration.GameConfig;
 
 import com.dnsalias.java.timer.AdvancedTimer;
 
@@ -34,7 +34,7 @@ public class SystemTimer {
 		// multiply by 1000 so our end result is in milliseconds
 		// then divide by the number of ticks in a second giving
 		// us a nice clear time in milliseconds
-		return (timer.getClockTicks() * MagicNumber.MILLISECOND_PER_SECOND) / timerTicksPerSecond;
+		return (timer.getClockTicks() * GameConfig.MILLISECOND_PER_SECOND) / timerTicksPerSecond;
 	}
 	
 	/**
@@ -43,6 +43,6 @@ public class SystemTimer {
 	 * @param duration The amount of time in milliseconds to sleep for
 	 */
 	public static void sleep(long duration) {
-		timer.sleep((duration * timerTicksPerSecond) / MagicNumber.MILLISECOND_PER_SECOND);
+		timer.sleep((duration * timerTicksPerSecond) / GameConfig.MILLISECOND_PER_SECOND);
 	}
 }

@@ -8,7 +8,6 @@ import java.util.stream.Collectors;
 import javax.swing.*;
 
 import org.newdawn.spaceinvaders.configuration.GameConfig;
-import org.newdawn.spaceinvaders.configuration.MagicNumber;
 import org.newdawn.spaceinvaders.configuration.ShipType;
 import org.newdawn.spaceinvaders.entity.AlienEntity;
 import org.newdawn.spaceinvaders.entity.Entity;
@@ -125,7 +124,7 @@ public class Game {
 
 	private void initEntities() {
 		// create the player ship and place it roughly in the center of the screen
-		ship = new ShipEntity(this, gameConfig, MagicNumber.INITIAL_SHIP_X, MagicNumber.INITIAL_SHIP_Y);
+		ship = new ShipEntity(this, gameConfig, GameConfig.INITIAL_SHIP_X, GameConfig.INITIAL_SHIP_Y);
 		entities.add(ship);
 		initAlien();
 		itemManager.initItem();
@@ -455,8 +454,8 @@ public class Game {
 				}
 			}
 			if (alienCount == 1) {
-				bossAlien = new AlienEntity(this, gameConfig, gameConfig.getBossAlienRef(), MagicNumber.INITIAL_BOSS_X,
-					MagicNumber.INITIAL_BOSS_Y, true);
+				bossAlien = new AlienEntity(this, gameConfig, gameConfig.getBossAlienRef(), GameConfig.INITIAL_BOSS_X,
+					GameConfig.INITIAL_BOSS_Y, true);
 				entities.add(bossAlien);
 				bossAttackPattern.setBoss(true);
 				alienCount = 0;

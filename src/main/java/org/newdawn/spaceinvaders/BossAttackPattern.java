@@ -1,6 +1,6 @@
 package org.newdawn.spaceinvaders;
 
-import org.newdawn.spaceinvaders.configuration.MagicNumber;
+import org.newdawn.spaceinvaders.configuration.GameConfig;
 import org.newdawn.spaceinvaders.entity.Entity;
 import org.newdawn.spaceinvaders.entity.bossAttack.LaserAttackEntity;
 import org.newdawn.spaceinvaders.entity.bossAttack.MeteorAttackEntity;
@@ -32,8 +32,8 @@ public class BossAttackPattern {
     }
 
     public void initBossAttackPattern(){
-        bossAttackPattern.add(()->new MeteorAttackEntity(game, meteorRef,random.nextInt(MagicNumber.FRAME_WIDTH), -100));
-        bossAttackPattern.add(()->new LaserAttackEntity(game,laserRef, warningRef, random.nextInt(MagicNumber.FRAME_WIDTH), 0));
+        bossAttackPattern.add(()->new MeteorAttackEntity(game, meteorRef,random.nextInt(GameConfig.FRAME_WIDTH), -100));
+        bossAttackPattern.add(()->new LaserAttackEntity(game,laserRef, warningRef, random.nextInt(GameConfig.FRAME_WIDTH), 0));
     }
 
     public Entity doBossAttack(){
