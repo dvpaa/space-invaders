@@ -15,6 +15,7 @@
 
 ### 개선 후
 
+
 <!--
 ## Rules
 - **commit message**는 [Semantic Commit Messages](https://gist.github.com/joshbuchea/6f47e86d2510bce28f8e7f42ae84c716)를 바탕으로 작성한다.
