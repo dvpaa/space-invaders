@@ -195,16 +195,16 @@ public class Game {
 	 */
 	public void notifyWin() {
 		gameTimer.stopTimer();
+		resetItem();
+		bossAttackPattern.setBoss(false);
+		gameGUI.win();
+	}
 
-		// 게임 종료시 아이템 효과 초기화 및 아이템 제거 added by Eungyu
+	private void resetItem() {
 		for (int i = 0; i < itemList.size(); i++) {
 			itemList.get(i).resetItemEffect();
 		}
 		itemList.clear();
-
-		bossAttackPattern.setBoss(false);
-
-		gameGUI.win();
 	}
 
 	/**
