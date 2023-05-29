@@ -1,6 +1,20 @@
 package org.newdawn.spaceinvaders.configuration;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class GameConfig {
+    public static final int FRAME_WIDTH = 800;
+    public static final int FRAME_HEIGHT = 600;
+    public static final int TIMER_LABEL_WIDTH = 60;
+    public static final int LABEL_WIDTH = 100;
+    public static final int LABEL_HEIGHT = 25;
+    public static final int INITIAL_SHIP_X = 370;
+    public static final int INITIAL_SHIP_Y = 550;
+    public static final int INITIAL_BOSS_X = 400;
+    public static final int INITIAL_BOSS_Y = 90;
+    public static final int MILLISECOND_PER_SECOND = 1000;
+    public static final int defaultPoint = 1000;
 
     private String shipRef;
     private int shipPower;
@@ -18,10 +32,8 @@ public class GameConfig {
     private int alienPower;
     private int alienRow;
     private double alienMoveSpeed;
-
     private String alienShotRef;
     private double alienShotMoveSpeed;
-
     private String shipType;
     private String bossAlienRef;
     private int bossAlienHealth;
@@ -30,6 +42,90 @@ public class GameConfig {
     private String bossAlienShotRef;
     private int bossAlienShotMoveSpeed;
     private int stage;
+    private StageConfig stageConfig;
+    private ShipConfig shipConfig;
+
+    public static final Map<Integer, StageConfig> stageConfigMap = new HashMap<>();
+    public static final Map<String, ShipConfig> shipConfigMap = new HashMap<>();
+
+    static {
+        stageConfigMap.put(1, new StageConfig.StageBuilder()
+            .alienRef("sprites/alien2.png")
+            .alienHealth(2)
+            .alienPower(1)
+            .alienRow(3)
+            .alienShotMoveSpeed(300)
+            .bossAlienRef("sprites/boss1.png")
+            .bossAlienHealth(50)
+            .bossAlienPower(2)
+            .bossAlienMoveSpeed(-300)
+            .bossAlienShotRef("sprites/alienshot.png")
+            .bossAlienShotMoveSpeed(500)
+            .build());
+        stageConfigMap.put(2, new StageConfig.StageBuilder()
+            .alienRef("sprites/alien3.png")
+            .alienHealth(3)
+            .alienPower(1)
+            .alienRow(4)
+            .alienShotMoveSpeed(300)
+            .bossAlienRef("sprites/boss2.png")
+            .bossAlienHealth(50)
+            .bossAlienPower(2)
+            .bossAlienMoveSpeed(-300)
+            .bossAlienShotRef("sprites/alienshot.png")
+            .bossAlienShotMoveSpeed(500)
+            .build());
+        stageConfigMap.put(3, new StageConfig.StageBuilder()
+            .alienRef("sprites/alien4.png")
+            .alienHealth(4)
+            .alienPower(2)
+            .alienRow(4)
+            .alienShotMoveSpeed(400)
+            .bossAlienRef("sprites/boss3.png")
+            .bossAlienHealth(50)
+            .bossAlienPower(2)
+            .bossAlienMoveSpeed(-400)
+            .bossAlienShotRef("sprites/alienshot.png")
+            .bossAlienShotMoveSpeed(600)
+            .build());
+        stageConfigMap.put(4, new StageConfig.StageBuilder()
+            .alienRef("sprites/alien5.png")
+            .alienHealth(5)
+            .alienPower(2)
+            .alienRow(4)
+            .alienShotMoveSpeed(400)
+            .bossAlienRef("sprites/boss4.png")
+            .bossAlienHealth(70)
+            .bossAlienPower(2)
+            .bossAlienMoveSpeed(-400)
+            .bossAlienShotRef("sprites/alienshot.png")
+            .bossAlienShotMoveSpeed(600)
+            .build());
+        stageConfigMap.put(5, new StageConfig.StageBuilder()
+            .alienRef("sprites/alien5.png")
+            .alienHealth(5)
+            .alienPower(3)
+            .alienRow(4)
+            .alienShotMoveSpeed(400)
+            .bossAlienRef("sprites/boss5.png")
+            .bossAlienHealth(100)
+            .bossAlienPower(3)
+            .bossAlienMoveSpeed(-500)
+            .bossAlienShotRef("sprites/alienshot.png")
+            .bossAlienShotMoveSpeed(600)
+            .build());
+
+        shipConfigMap.put(ShipType.ATTACK_UP, new ShipConfig.ShipBuilder("sprites/attackUpShip.png")
+            .extraPower(2)
+            .build());
+        shipConfigMap.put(ShipType.DEFENCE_UP, new ShipConfig.ShipBuilder("sprites/defenceUpShip.png")
+            .extraHealth(2)
+            .build());
+        shipConfigMap.put(ShipType.SPEED_UP, new ShipConfig.ShipBuilder("sprites/speedUpShip.png")
+            .moveSpeedMultiplier(1.4)
+            .shotSpeedMultiplier(1.4)
+            .build());
+    }
 
     public GameConfig(String shipType, int stage) {
         this.stage = stage;
@@ -44,91 +140,42 @@ public class GameConfig {
         this.shipShotMoveSpeed = -300;
         this.shipFirstSkillRef = "sprites/shot2.png";
 
-        switch (stage) {
-            case 1:
-                this.alienRef = "sprites/alien2.png";
-                this.alienHealth = 2;
-                this.alienPower = 1;
-                this.alienRow = 3;
-                this.alienShotMoveSpeed = 300;
-                this.bossAlienRef = "sprites/boss1.png";
-                this.bossAlienHealth = 50;
-                this.bossAlienPower = 2;
-                this.bossAlienMoveSpeed = -300;
-                this.bossAlienShotRef = "sprites/boss2.png";
-                this.bossAlienShotMoveSpeed = 500;
-                break;
-            case 2:
-                this.alienRef = "sprites/alien3.png";
-                this.alienHealth = 3;
-                this.alienPower = 1;
-                this.alienRow = 4;
-                this.alienShotMoveSpeed = 300;
-                this.bossAlienRef = "sprites/boss2.png";
-                this.bossAlienHealth = 50;
-                this.bossAlienPower = 2;
-                this.bossAlienMoveSpeed = -300;
-                this.bossAlienShotRef = "sprites/alienshot.png";
-                this.bossAlienShotMoveSpeed = 500;
-                break;
-            case 3:
-                this.alienRef = "sprites/alien4.png";
-                this.alienHealth = 4;
-                this.alienPower = 2;
-                this.alienRow = 4;
-                this.alienShotMoveSpeed = 400;
-                this.bossAlienRef = "sprites/boss3.png";
-                this.bossAlienHealth = 50;
-                this.bossAlienPower = 2;
-                this.bossAlienMoveSpeed = -400;
-                this.bossAlienShotRef = "sprites/alienshot.png";
-                this.bossAlienShotMoveSpeed = 600;
-                break;
-            case 4:
-                this.alienRef = "sprites/alien5.png";
-                this.alienHealth = 5;
-                this.alienPower = 2;
-                this.alienRow = 4;
-                this.alienShotMoveSpeed = 400;
-                this.bossAlienRef = "sprites/boss4.png";
-                this.bossAlienHealth = 70;
-                this.bossAlienPower = 2;
-                this.bossAlienMoveSpeed = -400;
-                this.bossAlienShotRef = "sprites/alienshot.png";
-                this.bossAlienShotMoveSpeed = 600;
-                break;
-            case 5:
-                this.alienRef = "sprites/alien5.png";
-                this.alienHealth = 5;
-                this.alienPower = 3;
-                this.alienRow = 4;
-                this.alienShotMoveSpeed = 400;
-                this.bossAlienRef = "sprites/boss5.png";
-                this.bossAlienHealth = 100;
-                this.bossAlienPower = 3;
-                this.bossAlienMoveSpeed = -500;
-                this.bossAlienShotRef = "sprites/alienshot.png";
-                this.bossAlienShotMoveSpeed = 600;
-                break;
-        }
+        this.stageConfig = stageConfigMap.get(this.stage);
+        this.shipConfig = shipConfigMap.get(this.shipType);
 
-        switch (shipType) {
-            case ShipType.ATTACK_UP:
-                this.shipRef = "sprites/attackUpShip.png";
-                this.shipPower = shipPower + 2;
-                break;
-            case ShipType.DEFENCE_UP:
-                this.shipRef = "sprites/defenceUpShip.png";
-                this.shipHealth = shipHealth + 2;
-                break;
-            case ShipType.SPEED_UP:
-                this.shipRef = "sprites/speedUpShip.png";
-                this.shipMoveSpeed = shipMoveSpeed * 1.4;
-                this.shipShotMoveSpeed = shipShotMoveSpeed * 1.4;
-                break;
-            default:
-                this.shipRef = "sprites/ship.gif";
-                break;
+        stageSetting();
+        shipSetting();
+
+        System.out.println(this.shipType);
+    }
+
+    private void shipSetting() {
+        if (shipConfig != null) {
+            this.shipRef = shipConfig.getShipRef();
+            this.shipPower += shipConfig.getExtraPower();
+            this.shipHealth += shipConfig.getExtraHealth();
+            this.shipMoveSpeed *= shipConfig.getMoveSpeedMultiplier();
+            this.shipShotMoveSpeed *= shipConfig.getShotSpeedMultiplier();
+            System.out.println("not null");
+            return;
+        }
+        this.shipRef = "sprites/ship.gif";
+        System.out.println("null");
+    }
+
+    private void stageSetting() {
+        if (stageConfig != null) {
+            this.alienRef = stageConfig.getAlienRef();
+            this.alienHealth = stageConfig.getAlienHealth();
+            this.alienPower = stageConfig.getAlienPower();
+            this.alienRow = stageConfig.getAlienRow();
+            this.alienShotMoveSpeed = stageConfig.getAlienShotMoveSpeed();
+            this.bossAlienRef = stageConfig.getBossAlienRef();
+            this.bossAlienHealth = stageConfig.getBossAlienHealth();
+            this.bossAlienPower = stageConfig.getBossAlienPower();
+            this.bossAlienMoveSpeed = stageConfig.getBossAlienMoveSpeed();
+            this.bossAlienShotRef = stageConfig.getBossAlienShotRef();
+            this.bossAlienShotMoveSpeed = stageConfig.getBossAlienShotMoveSpeed();
         }
     }
 

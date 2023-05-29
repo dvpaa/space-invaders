@@ -4,12 +4,10 @@ import org.newdawn.spaceinvaders.Game;
 import org.newdawn.spaceinvaders.entity.Entity;
 import org.newdawn.spaceinvaders.entity.ShipEntity;
 
-import java.awt.*;
 import java.util.ArrayList;
 
-public class PushItemEntity extends ItemEntity{
-    private Rectangle me = new Rectangle();
-    private Rectangle him = new Rectangle();
+public class PushItemEntity extends ItemEntity {
+
     private ArrayList ailen = new ArrayList();
 
     public PushItemEntity(Game game, int x, int y) {
@@ -17,17 +15,13 @@ public class PushItemEntity extends ItemEntity{
         dx = 0;
         dy = moveSpeed * 0.5;
     }
+
     @Override
-    public boolean collidesWith(Entity other) {
-        me.setBounds((int) x, (int) y, sprite.getWidth(), sprite.getHeight());
-        him.setBounds(other.getX(), other.getY(), other.getSprite().getWidth(), other.getSprite().getHeight());
-
-        return me.intersects(him);
-    }
-
     public void collidedWith(Entity other) {
-        if(other instanceof ShipEntity){
-            if(used){return;}
+        if (other instanceof ShipEntity) {
+            if (used) {
+                return;
+            }
             game.removeEntity(this);
             game.addItem(this);
             used = true;
@@ -41,24 +35,24 @@ public class PushItemEntity extends ItemEntity{
 
     @Override
     public void doItemLogic() {
-        if(used){
-            if(!is_apply){
+        if (used) {
+            if (!is_apply) {
                 is_apply = true;
-                ailen = game.getAilen();
-                for(int i=0;i< ailen.size();i++){
-                    if(((Entity)ailen.get(i)).getY()< 10){
+                ailen = game.getAlien();
+                for (int i = 0; i < ailen.size(); i++) {
+                    if (((Entity)ailen.get(i)).getY() < 10) {
                         return;
                     }
                     ((Entity)ailen.get(i)).setY(((Entity)ailen.get(i)).getY() - 10);
                 }
                 is_apply = true;
-            }
-            else{
+            } else {
                 game.removeItem(this);
             }
         }
 
     }
-    public void resetItemEffect(){
+
+    public void resetItemEffect() {
     }
 }

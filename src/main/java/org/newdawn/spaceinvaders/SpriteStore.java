@@ -24,6 +24,10 @@ import javax.imageio.ImageIO;
 public class SpriteStore {
 	/** The single instance of this class */
 	private static SpriteStore single = new SpriteStore();
+
+	private SpriteStore() {
+
+	}
 	
 	/**
 	 * Get the single instance of this class 
@@ -33,9 +37,9 @@ public class SpriteStore {
 	public static SpriteStore get() {
 		return single;
 	}
-	
+
 	/** The cached sprite map, from reference to sprite instance */
-	private HashMap sprites = new HashMap();
+	private HashMap<String, Sprite> sprites = new HashMap<>();
 	
 	/**
 	 * Retrieve a sprite from the store
@@ -47,7 +51,7 @@ public class SpriteStore {
 		// if we've already got the sprite in the cache
 		// then just return the existing version
 		if (sprites.get(ref) != null) {
-			return (Sprite) sprites.get(ref);
+			return sprites.get(ref);
 		}
 		
 		// otherwise, go away and grab the sprite from the resource
@@ -72,11 +76,12 @@ public class SpriteStore {
 		}
 		
 		// create an accelerated image of the right size to store our sprite in
-		GraphicsConfiguration gc = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice().getDefaultConfiguration();
-		Image image = gc.createCompatibleImage(sourceImage.getWidth(),sourceImage.getHeight(),Transparency.BITMASK);
-		
+		GraphicsConfiguration gc = GraphicsEnvironment.getLocalGraphicsEnvironment()
+			.getDefaultScreenDevice()
+			.getDefaultConfiguration();
+		Image image = gc.createCompatibleImage(sourceImage.getWidth(), sourceImage.getHeight(), Transparency.BITMASK);
 		// draw our source image into the accelerated image
-		image.getGraphics().drawImage(sourceImage,0,0,null);
+		image.getGraphics().drawImage(sourceImage, 0, 0, null);
 		
 		// create a sprite, add it the cache then return it
 		Sprite sprite = new Sprite(image);

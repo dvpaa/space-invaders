@@ -4,11 +4,7 @@ import org.newdawn.spaceinvaders.Game;
 import org.newdawn.spaceinvaders.entity.Entity;
 import org.newdawn.spaceinvaders.entity.ShipEntity;
 
-import java.awt.*;
-
-public abstract class ItemEntity extends Entity{
-    private Rectangle me = new Rectangle();
-    private Rectangle him = new Rectangle();
+public abstract class ItemEntity extends Entity {
     protected boolean used = false;
     protected double moveSpeed = 300;
     protected ShipEntity shipEntity;
@@ -27,20 +23,14 @@ public abstract class ItemEntity extends Entity{
         }
     }
 
-    public boolean collidesWith(Entity other) {
-        me.setBounds((int) x,(int) y,sprite.getWidth(),sprite.getHeight());
-        him.setBounds((int) other.getX(),(int) other.getY(),other.getSprite().getWidth(),other.getSprite().getHeight());
-
-        return me.intersects(him);
-    }
-
-    public void collidedWith(Entity other){
+    public void collidedWith(Entity other) {
         // TODO Auto-generated method stub
     }
 
-    public void setShipEntity(ShipEntity shipEntity){
+    public void setShipEntity(ShipEntity shipEntity) {
         this.shipEntity = shipEntity;
     }
+
     public abstract void doItemLogic();
 
     public abstract void resetItemEffect();

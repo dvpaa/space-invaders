@@ -30,12 +30,19 @@ public class AlienEntity extends Entity {
 	private GameConfig gameConfig;
 	private boolean isBoss;
 
+	private double shotMoveSpeed;
+	private String shotRef;
+
 	public AlienEntity(Game game, GameConfig gameConfig, String alienRef, int x, int y, boolean isBoss) {
+
 	super(alienRef, x, y);
 
 	this.game = game;
 	this.gameConfig = gameConfig;
 	this.isBoss = isBoss;
+
+	this.shotMoveSpeed = gameConfig.getAlienShotMoveSpeed();
+	this.shotRef = gameConfig.getAlienShotRef();
 	if (isBoss) {
 		this.health = gameConfig.getBossAlienHealth();
 		this.power = gameConfig.getBossAlienPower();
@@ -46,15 +53,13 @@ public class AlienEntity extends Entity {
 		dx = gameConfig.getAlienMoveSpeed();
 	}
 
-
-
-	// setup the animatin frames
-	frames[0] = SpriteStore.get().getSprite("sprites/alien1.png");
-	frames[1] = SpriteStore.get().getSprite("sprites/alien2.png");
-	frames[2] = SpriteStore.get().getSprite("sprites/alien3.png");
-	frames[3] = SpriteStore.get().getSprite("sprites/alien4.png");
-	frames[4] = SpriteStore.get().getSprite("sprites/alien5.png");
-}
+		// setup the animatin frames
+		frames[0] = SpriteStore.get().getSprite("sprites/alien1.png");
+		frames[1] = SpriteStore.get().getSprite("sprites/alien2.png");
+		frames[2] = SpriteStore.get().getSprite("sprites/alien3.png");
+		frames[3] = SpriteStore.get().getSprite("sprites/alien4.png");
+		frames[4] = SpriteStore.get().getSprite("sprites/alien5.png");
+	}
 
 	/**
 	 * Request that this alien moved based on time elapsed
@@ -77,7 +82,7 @@ public class AlienEntity extends Entity {
 		}
 		// and vice vesa, if we have reached the right hand side of 
 		// the screen and are moving right, request a logic update
-		if ((dx > 0) && (x > 800 - this.sprite.getWidth()-10)) {
+		if ((dx > 0) && (x > 800 - this.sprite.getWidth() - 10)) {
 			game.updateLogic();
 		}
 		
@@ -127,8 +132,7 @@ public class AlienEntity extends Entity {
 
 	@Override
 	public ShotEntity fire() {
-//		return new ShotEntity(game, "sprites/alienshot.png",this.getX()+25,this.getY()+30, this.power, -1);
-		return new ShotEntity(game, gameConfig, gameConfig.getAlienShotRef(), false, this.getX() + this.sprite.getWidth() / 2, this.getY() + this.sprite.getHeight(), false);
+		return new ShotEntity(game, power, shotMoveSpeed, shotRef, false, this.getX() + this.sprite.getWidth() / 2, this.getY() + this.sprite.getHeight(), false);
 	}
 
 	public int getHealth() {

@@ -13,7 +13,7 @@ public class ImageUtil {
     public static Image getImage(Class<?> clazz, String filename) {
         try {
             return ImageIO.read(Objects.requireNonNull(clazz.getResourceAsStream(
-                    "/" + filename)));
+                "/" + filename)));
         } catch (IOException e) {
             e.printStackTrace();
             return null;

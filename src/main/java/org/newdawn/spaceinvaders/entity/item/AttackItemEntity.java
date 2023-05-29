@@ -4,32 +4,22 @@ import org.newdawn.spaceinvaders.Game;
 import org.newdawn.spaceinvaders.entity.Entity;
 import org.newdawn.spaceinvaders.entity.ShipEntity;
 
-import java.awt.*;
-
-public class AttackItemEntity extends ItemEntity{
-    private Rectangle me = new Rectangle();
-    private Rectangle him = new Rectangle();
+public class AttackItemEntity extends ItemEntity {
     private long effectTime = 3000;
     private long startTime = 0;
-
-
 
     public AttackItemEntity(Game game, int x, int y) {
         super(game, "sprites/attackItem.png", x, y);
         dx = 0;
         dy = moveSpeed * 0.5;
     }
+
     @Override
-    public boolean collidesWith(Entity other) {
-        me.setBounds((int) x, (int) y, sprite.getWidth(), sprite.getHeight());
-        him.setBounds(other.getX(), other.getY(), other.getSprite().getWidth(), other.getSprite().getHeight());
-
-        return me.intersects(him);
-    }
-
     public void collidedWith(Entity other) {
-        if(other instanceof ShipEntity){
-            if(used){return;}
+        if (other instanceof ShipEntity) {
+            if (used) {
+                return;
+            }
             game.removeEntity(this);
             game.addItem(this);
             used = true;
@@ -44,18 +34,19 @@ public class AttackItemEntity extends ItemEntity{
 
     @Override
     public void doItemLogic() {
-        if(used){
-            if(!is_apply){
+        if (used) {
+            if (!is_apply) {
                 shipEntity.setPower(shipEntity.getPower() + 1);
                 is_apply = true;
             }
-            if(System.currentTimeMillis() - startTime > effectTime){
+            if (System.currentTimeMillis() - startTime > effectTime) {
                 shipEntity.setPower(shipEntity.getPower() - 1);
                 game.removeItem(this);
             }
         }
     }
-    public void resetItemEffect(){
+
+    public void resetItemEffect() {
         shipEntity.setPower(shipEntity.getPower() - 1);
     }
 }
