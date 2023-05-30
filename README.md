@@ -9,11 +9,6 @@
 ## 1차과제
 ### Requirement
 - [github issues](https://github.com/dvpaa/space-invaders/issues) 참고
-### Class Diagram
-
-### 개선 전
-
-### 개선 후
 
 
 <!--
